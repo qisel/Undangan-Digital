@@ -5,47 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Undangan Ulang Tahun Juju Junior</title>
     
-    <!-- Tailwind CSS -->
+    <!-- Tailwind CSS CDN for utility classes -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Google Fonts -->
+    <!-- Google Fonts for custom typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
     <style>
-        /* Basic setup to prevent default scrollbars */
-        html, body {
-            margin: 0;
-            padding: 0;
-            overflow: hidden; /* Prevent vertical scroll on the body */
-            height: 100%;
-            width: 100%;
-            font-family: 'Poppins', sans-serif;
-            background-color: #f4f1eb;
-        }
-
+        /* A custom font family from Google Fonts for a more elegant look */
         .font-great-vibes {
             font-family: 'Great Vibes', cursive;
         }
 
-        /* Cover page styling */
+        /* Set base styles for the entire page to handle scrolling and fonts */
+        html, body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* Prevents both vertical and horizontal default scrolling */
+            height: 100%;
+            width: 100%;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f1eb; /* A soft, warm background color */
+        }
+
+        /* Styles for the initial cover page, which acts as a splash screen */
         #cover {
-            position: fixed;
+            position: fixed; /* Mengunci posisi cover agar selalu di atas viewport */
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('http://googleusercontent.com/file_content/0') no-repeat center center;
+            /* Using a simple placeholder image for the background, you can replace this with your own image URL */
+            background: url('https://placehold.co/1920x1080/ffedd5/4a4a4a?text=Birthday+Party') no-repeat center center;
             background-size: cover;
             display: flex;
             justify-content: center;
             align-items: center;
             text-align: center;
-            z-index: 100;
-            transition: opacity 0.8s ease-in-out;
+            z-index: 100; /* Ensures the cover page is on top of everything */
+            transition: opacity 0.8s ease-in-out; /* Smooth fade-out effect */
             color: white;
         }
+
+        /* A semi-transparent overlay to make the text more readable on the background image */
         .cover-overlay {
             background-color: rgba(0, 0, 0, 0.5);
             padding: 2rem;
@@ -53,42 +57,40 @@
             backdrop-filter: blur(5px);
         }
 
-        /* Main container for horizontal scrolling */
+        /* Main container for the invitation content, designed for horizontal scrolling */
         #main-content {
             display: flex;
             width: 100%;
             height: 100%;
-            overflow-x: scroll;
-            overflow-y: hidden;
-            /* CSS Scroll Snap for a smooth, section-by-section scroll */
-            scroll-snap-type: x mandatory;
-            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+            overflow-x: scroll; /* Enables horizontal scrolling */
+            overflow-y: hidden; /* Prevents vertical scrolling */
+            scroll-snap-type: x mandatory; /* Snaps to each section for a smooth, page-like experience */
+            -webkit-overflow-scrolling: touch; /* Improves scrolling performance on iOS devices */
         }
 
-        /* Each section wrapper */
+        /* Each section wrapper occupies the full viewport and handles the snap and fade-in animations */
         .section-wrapper {
             width: 100vw;
             height: 100vh;
-            flex-shrink: 0;
+            flex-shrink: 0; /* Prevents sections from shrinking */
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 2rem;
             box-sizing: border-box;
-            /* Snap to the start of the container */
-            scroll-snap-align: start;
-            /* Initial state for fade-in animation */
-            opacity: 0;
+            scroll-snap-align: start; /* Snaps the start of the section to the start of the scroll container */
+            opacity: 0; /* Initial state for the fade-in animation */
             transform: translateY(20px);
-            transition: opacity 1s ease-out, transform 1s ease-out;
+            transition: opacity 1s ease-out, transform 1s ease-out; /* Smooth transition for the fade-in effect */
         }
         
-        /* State when the section is visible */
+        /* The state when the section becomes visible, triggering the fade-in animation */
         .section-wrapper.is-visible {
             opacity: 1;
             transform: translateY(0);
         }
 
+        /* Styles for the card-like container within each section */
         .section-card {
             background-color: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(10px);
@@ -99,9 +101,10 @@
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
             text-align: center;
             color: #4a4a4a;
-            white-space: normal; /* Allow text to wrap inside the card */
+            white-space: normal;
         }
         
+        /* Styles for the countdown timer's individual boxes */
         .countdown-box {
             background: #4a4a4a;
             color: white;
@@ -118,7 +121,7 @@
 </head>
 <body>
 
-    <!-- Cover Page -->
+    <!-- Cover Page - The first page the user sees -->
     <div id="cover">
         <div class="cover-overlay">
             <p class="text-xl md:text-2xl">Undangan Syukuran Ulang Tahun</p>
@@ -132,7 +135,7 @@
     <!-- Main Content with Horizontal Scroll -->
     <main id="main-content" class="hidden">
 
-        <!-- Section 1: Opening -->
+        <!-- Section 1: Opening Message -->
         <section class="section-wrapper">
             <div class="section-card">
                 <h2 class="font-great-vibes text-5xl mb-6 text-amber-800">Assalamu'alaikum Wr. Wb.</h2>
@@ -142,7 +145,7 @@
             </div>
         </section>
 
-        <!-- Section 2: Prayer -->
+        <!-- Section 2: Prayer & Hope -->
         <section class="section-wrapper">
             <div class="section-card">
                 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-4 text-amber-800"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline><path d="M12.5 15.5c-1.5-1-1.5-3-0-4 1.5-1 1.5-3 0-4"></path><path d="M8.5 15.5c1.5-1 1.5-3 0-4-1.5-1-1.5-3 0-4"></path></svg>
@@ -151,7 +154,7 @@
             </div>
         </section>
 
-        <!-- Section 3: Family -->
+        <!-- Section 3: The Family -->
         <section class="section-wrapper">
             <div class="section-card">
                 <h2 class="font-great-vibes text-5xl mb-6 text-amber-800">Kami yang Berbahagia</h2>
@@ -162,7 +165,7 @@
             </div>
         </section>
 
-        <!-- Section 4: Details & Countdown -->
+        <!-- Section 4: Event Details & Countdown -->
         <section class="section-wrapper">
             <div class="section-card">
                 <h2 class="font-great-vibes text-5xl mb-8 text-amber-800">Save The Date</h2>
@@ -180,12 +183,13 @@
             </div>
         </section>
 
-        <!-- Section 5: Location -->
+        <!-- Section 5: Location Details -->
         <section class="section-wrapper">
             <div class="section-card">
                 <h2 class="font-great-vibes text-5xl mb-6 text-amber-800">Lokasi Acara</h2>
                 <p class="text-lg font-semibold">Kediaman Bapak Rizky R. Harun & Istri</p>
                 <p class="mb-6">Komplek RO. Barakati</p>
+                <!-- An embedded Google Map for easy navigation -->
                 <div class="w-full h-60 rounded-xl overflow-hidden border-4 border-white shadow-lg my-4">
                     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.498077583713!2d124.8422223152643!3d1.484857761406886!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x328774e50889987d%3A0x264d974a6218777!2sManado%2C%20Kota%20Manado%2C%20Sulawesi%20Utara!5e0!3m2!1sid!2sid!4v1661152912345!5m2!1sid!2sid" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
@@ -193,7 +197,7 @@
             </div>
         </section>
 
-        <!-- Section 6: Gift -->
+        <!-- Section 6: Gift Information -->
         <section class="section-wrapper">
             <div class="section-card">
                 <h2 class="font-great-vibes text-5xl mb-6 text-amber-800">Kirim Hadiah</h2>
@@ -215,7 +219,7 @@
             </div>
         </section>
 
-        <!-- Section 7: Footer -->
+        <!-- Section 7: Closing Message -->
         <section class="section-wrapper">
             <div class="section-card">
                 <h2 class="font-great-vibes text-5xl mb-6 text-amber-800">Terima Kasih</h2>
@@ -235,51 +239,58 @@
 
             // --- Open Invitation Button Logic ---
             openButton.addEventListener('click', () => {
-                // Fade out the cover
+                // Fades out the cover page by setting its opacity to 0
                 cover.style.opacity = '0';
                 
-                // After the fade-out animation, hide the cover and show the main content
+                // After the fade-out transition, hide the cover and show the main content
                 setTimeout(() => {
                     cover.style.display = 'none';
                     mainContent.classList.remove('hidden');
-                }, 800); // Match the CSS transition duration
+                }, 800); // Matches the 0.8s CSS transition duration
             });
 
             // --- Intersection Observer for Fade-in Effect on Scroll ---
+            // This observer detects when a section becomes visible in the viewport and adds a class
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
-                    // If the section is intersecting (visible) in the viewport
+                    // If the section is intersecting (visible), add the 'is-visible' class to trigger the animation
                     if (entry.isIntersecting) {
                         entry.target.classList.add('is-visible');
                     }
                 });
             }, {
-                root: mainContent, // Observe within the main scrolling container
-                threshold: 0.5 // Trigger when 50% of the section is visible
+                root: mainContent, // Specifies the scrolling container to observe within
+                threshold: 0.5 // Triggers when 50% of the section is visible
             });
 
-            // Attach the observer to each section
+            // Attach the observer to each section to monitor its visibility
             sections.forEach(section => {
                 observer.observe(section);
             });
 
             // --- Countdown Timer Script ---
+            // Set the target date for the birthday event
             const countdownDate = new Date("Aug 23, 2025 09:00:00").getTime();
+
+            // Update the countdown every 1 second
             const countdownFunction = setInterval(() => {
                 const now = new Date().getTime();
                 const distance = countdownDate - now;
 
+                // If the countdown is over, display a message and stop the timer
                 if (distance < 0) {
                     clearInterval(countdownFunction);
                     document.getElementById("countdown").innerHTML = "<div class='text-center w-full text-xl font-bold'>Acara Telah Berlangsung!</div>";
                     return;
                 }
 
+                // Calculate days, hours, minutes, and seconds from the remaining time
                 const days = Math.floor(distance / (1000 * 60 * 60 * 24));
                 const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
+                // Update the HTML elements with the new values, padding with a leading zero if needed
                 document.getElementById("days").innerText = days.toString().padStart(2, '0');
                 document.getElementById("hours").innerText = hours.toString().padStart(2, '0');
                 document.getElementById("minutes").innerText = minutes.toString().padStart(2, '0');
@@ -290,18 +301,25 @@
 
         // --- Copy to Clipboard Script ---
         function copyToClipboard(elementId, button) {
+            // Get the text content from the specified element
             const textToCopy = document.getElementById(elementId).innerText;
+            
+            // Create a temporary textarea element to hold the text
             const tempTextArea = document.createElement('textarea');
             tempTextArea.value = textToCopy;
             document.body.appendChild(tempTextArea);
             tempTextArea.select();
+
+            // Execute the copy command
             try {
                 document.execCommand('copy');
+                // Provide user feedback that the copy was successful
                 button.innerText = 'Tersalin!';
-                setTimeout(() => { button.innerText = 'Salin Nomor'; }, 2000);
+                setTimeout(() => { button.innerText = 'Salin Nomor'; }, 2000); // Reset button text after 2 seconds
             } catch (err) {
                 console.error('Gagal menyalin teks: ', err);
             }
+            // Remove the temporary textarea from the DOM
             document.body.removeChild(tempTextArea);
         }
     </script>
