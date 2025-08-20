@@ -156,13 +156,31 @@
             gap: 0.5rem;
             text-align: left;
         }
+
+        /* Styles for the guest link generator box */
+        #link-box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            z-index: 110;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
 
     <!-- Cover Page - The first page the user sees -->
     <div id="cover">
-        <!-- New buttons for music and font settings -->
+        <!-- New buttons for music, font, and link generation -->
         <button id="music-btn" class="floating-btn right-2 sm:right-4">
             <!-- Music icon (SVG from Feather Icons) -->
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -181,6 +199,14 @@
             </svg>
         </button>
 
+        <button id="link-gen-btn" class="floating-btn right-24 sm:right-28">
+            <!-- Link icon (SVG from Feather Icons) -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+            </svg>
+        </button>
+
         <!-- Font selector menu -->
         <div id="font-menu" class="menu-container text-black">
             <h4 class="font-bold text-lg mb-2 text-center text-amber-800">Pilih Font & Warna</h4>
@@ -191,8 +217,26 @@
             <input type="color" id="font-color" value="#4a4a4a" class="w-full h-8 rounded-lg cursor-pointer">
         </div>
 
+        <!-- Guest link generator box -->
+        <div id="link-box" class="text-black">
+            <h4 class="font-bold text-lg mb-4 text-amber-800">Buat Link Tamu</h4>
+            <p class="text-sm mb-2">Masukkan nama tamu yang ingin diundang:</p>
+            <input type="text" id="guest-name-input" placeholder="Nama Tamu" class="w-full px-4 py-2 mb-4 border rounded-md">
+            <button id="generate-link-btn" class="bg-amber-800 text-white px-6 py-2 rounded-full hover:bg-amber-900 transition duration-300 shadow-md">
+                Generate Link
+            </button>
+            <div id="generated-link-area" class="mt-4 w-full">
+                <!-- Generated link and copy button will appear here -->
+            </div>
+            <button id="close-link-box" class="absolute top-2 right-2 text-gray-500 hover:text-gray-800 transition">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+        </div>
+
         <div class="cover-overlay">
             <p class="text-xl md:text-2xl">Undangan Syukuran Ulang Tahun</p>
+            <!-- New greeting for the guest, initially hidden -->
+            <p id="guest-greeting" class="text-lg md:text-xl mt-4 hidden">Yang terhormat Bpk/Ibu/Sdr/i</p>
             <h1 id="child-name" class="font-great-vibes text-6xl md:text-9xl my-4">Juju Junior</h1>
             <button id="open-button" class="bg-amber-800 text-white px-8 py-3 rounded-full hover:bg-amber-900 transition duration-300 shadow-lg text-lg">
                 Buka Undangan
@@ -308,23 +352,58 @@
             const sections = document.querySelectorAll('.section-wrapper');
             const musicBtn = document.getElementById('music-btn');
             const fontBtn = document.getElementById('font-btn');
+            const linkGenBtn = document.getElementById('link-gen-btn');
             const fontMenu = document.getElementById('font-menu');
             const fontOptionsContainer = document.getElementById('font-options');
             const fontColorInput = document.getElementById('font-color');
             const childNameElement = document.getElementById('child-name');
             const audioPlayer = document.getElementById('background-music');
+            const linkBox = document.getElementById('link-box');
+            const closeLinkBoxBtn = document.getElementById('close-link-box');
+            const guestNameInput = document.getElementById('guest-name-input');
+            const generateLinkBtn = document.getElementById('generate-link-btn');
+            const generatedLinkArea = document.getElementById('generated-link-area');
+            const guestGreetingElement = document.getElementById('guest-greeting');
+
+            // Store current font and color settings
+            let currentFont = 'Great Vibes';
+            let currentColor = '#4a4a4a';
+
+            // --- URL Parameter Handling ---
+            const urlParams = new URLSearchParams(window.location.search);
+            const guestName = urlParams.get('to');
+            const invitedFont = urlParams.get('font');
+            const invitedColor = urlParams.get('color');
+
+            // Check if there's a guest name in the URL
+            if (guestName) {
+                // Update the greeting element with the guest's name and show it
+                guestGreetingElement.innerText = `Yang terhormat Bpk/Ibu/Sdr/i ${decodeURIComponent(guestName)}`;
+                guestGreetingElement.classList.remove('hidden');
+                
+                // Apply font and color from URL parameters, if available
+                if (invitedFont) {
+                    childNameElement.style.fontFamily = `'${invitedFont}', cursive`;
+                    currentFont = invitedFont;
+                }
+                if (invitedColor) {
+                    childNameElement.style.color = '#' + invitedColor;
+                    currentColor = '#' + invitedColor;
+                }
+            }
+
 
             // --- Music Playlist and Player Logic ---
             const playlist = [
+                'https://dn721908.ca.archive.org/0/items/man-ana_202211/MAN%20ANA.mp3',
                 'https://files.catbox.moe/18l2h9.mp3',
                 'https://files.catbox.moe/51rfqh.mp3',
-                'https://dn721908.ca.archive.org/0/items/man-ana_202211/MAN%20ANA.mp3',
                 'https://ia902806.us.archive.org/28/items/SABYAN-DEENASSALAM/SABYAN%20-%20DEEN%20ASSALAM.mp3'
             ];
             let currentSongIndex = 0;
             let isMusicPlaying = false;
 
-            // Set the first song as the source
+            // Set the default song as the source
             audioPlayer.src = playlist[currentSongIndex];
 
             // Function to toggle play/pause and update button icon
@@ -386,6 +465,7 @@
             fontBtn.addEventListener('click', (e) => {
                 e.stopPropagation(); // Prevents the click from propagating to the document
                 fontMenu.style.display = fontMenu.style.display === 'flex' ? 'none' : 'flex';
+                linkBox.style.display = 'none'; // Hide link box
             });
             
             // Close the font menu when clicking outside
@@ -405,6 +485,7 @@
                 // Add click listener to change the font
                 button.addEventListener('click', () => {
                     childNameElement.style.fontFamily = `'${font}', cursive`;
+                    currentFont = font;
                     fontMenu.style.display = 'none'; // Hide menu after selection
                 });
                 fontOptionsContainer.appendChild(button);
@@ -413,6 +494,54 @@
             // Event listener for color input change
             fontColorInput.addEventListener('input', (e) => {
                 childNameElement.style.color = e.target.value;
+                currentColor = e.target.value;
+            });
+
+            // --- Guest Link Generator Logic ---
+            linkGenBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                fontMenu.style.display = 'none'; // Hide font menu
+                linkBox.style.display = 'flex';
+                generatedLinkArea.innerHTML = ''; // Clear previous link
+                guestNameInput.value = ''; // Clear input field
+            });
+
+            closeLinkBoxBtn.addEventListener('click', () => {
+                linkBox.style.display = 'none';
+            });
+            
+            // Generate link when the button is clicked
+            generateLinkBtn.addEventListener('click', () => {
+                const name = guestNameInput.value.trim();
+                if (name === "") {
+                    // Show a message if the name is empty
+                    generatedLinkArea.innerHTML = `<p class="text-red-500 text-sm">Nama tamu tidak boleh kosong.</p>`;
+                    return;
+                }
+
+                // Construct the URL with parameters
+                const params = new URLSearchParams();
+                params.set('to', name);
+                params.set('font', currentFont);
+                params.set('color', currentColor.substring(1)); // Remove '#' for the URL
+
+                const generatedLink = window.location.origin + window.location.pathname + '?' + params.toString();
+
+                // Display the generated link with a copy button
+                generatedLinkArea.innerHTML = `
+                    <p class="text-sm font-semibold mb-2">Link Undangan Anda:</p>
+                    <div class="flex items-center space-x-2">
+                        <input type="text" id="generated-link-input" value="${generatedLink}" readonly class="flex-grow px-2 py-1 border rounded-md text-sm">
+                        <button id="copy-link-btn" class="bg-amber-700 text-white text-sm px-4 py-1 rounded-md hover:bg-amber-800">
+                            Salin
+                        </button>
+                    </div>
+                `;
+
+                // Add event listener for the new copy button
+                document.getElementById('copy-link-btn').addEventListener('click', () => {
+                    copyToClipboard('generated-link-input', document.getElementById('copy-link-btn'));
+                });
             });
 
             // --- Intersection Observer for Fade-in Effect on Scroll ---
@@ -456,7 +585,7 @@
 
             // --- Copy to Clipboard Script ---
             function copyToClipboard(elementId, button) {
-                const textToCopy = document.getElementById(elementId).innerText;
+                const textToCopy = document.getElementById(elementId).value;
                 const tempTextArea = document.createElement('textarea');
                 tempTextArea.value = textToCopy;
                 document.body.appendChild(tempTextArea);
@@ -465,7 +594,7 @@
                 try {
                     document.execCommand('copy');
                     button.innerText = 'Tersalin!';
-                    setTimeout(() => { button.innerText = 'Salin Nomor'; }, 2000);
+                    setTimeout(() => { button.innerText = 'Salin'; }, 2000);
                 } catch (err) {
                     console.error('Gagal menyalin teks: ', err);
                 }
