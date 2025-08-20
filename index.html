@@ -23,7 +23,7 @@
         html, body {
             margin: 0;
             padding: 0;
-            overflow: hidden; /* Prevents both vertical and horizontal default scrolling */
+            overflow-x: hidden; /* Prevent horizontal scrolling on the body */
             height: 100%;
             width: 100%;
             font-family: 'Poppins', sans-serif;
@@ -68,15 +68,12 @@
             100% { transform: scale(1); }
         }
 
-        /* Main container for the invitation content, designed for horizontal and vertical scrolling */
+        /* Main container for the invitation content, designed for vertical scrolling */
         #main-content {
-            display: flex;
             width: 100%;
             height: 100%;
-            overflow-x: scroll; /* Enables horizontal scrolling */
-            overflow-y: scroll; /* Enables vertical scrolling for long content */
-            scroll-snap-type: x mandatory; /* Snaps to each section for a smooth, page-like experience */
-            -webkit-overflow-scrolling: touch; /* Improves scrolling performance on iOS devices */
+            overflow-x: hidden; /* Disables horizontal scrolling */
+            overflow-y: scroll; /* Enables vertical scrolling */
         }
 
         /* Each section wrapper occupies the full viewport and handles the snap and fade-in animations */
@@ -89,7 +86,7 @@
             align-items: center;
             padding: 2rem;
             box-sizing: border-box;
-            scroll-snap-align: start; /* Snaps the start of the section to the start of the scroll container */
+            /* Removed scroll-snap-align since we are now scrolling vertically */
             opacity: 0; /* Initial state for the fade-in animation */
             transform: translateY(20px);
             transition: opacity 1s ease-out, transform 1s ease-out; /* Smooth transition for the fade-in effect */
@@ -304,8 +301,8 @@
         </div>
     </div>
 
-    <!-- Main Content with Horizontal Scroll -->
-    <main id="main-content" class="hidden">
+    <!-- Main Content with Vertical Scrolling -->
+    <main id="main-content" class="hidden flex-col">
         <!-- Section 1: Opening Message -->
         <section class="section-wrapper">
             <div class="section-card">
@@ -364,7 +361,7 @@
                 <div class="w-full h-60 rounded-xl overflow-hidden border-4 border-white shadow-lg my-4">
                     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.498077583713!2d124.8422223152643!3d1.484857761406886!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x328774e50889987d%3A0x264d974a6218777!2sManado%2C%20Kota%20Manado%2C%20Sulawesi%20Utara!5e0!3m2!1sid!2sid!4v1661152912345!5m2!1sid!2sid" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
-                <a href="https://maps.app.goo.gl/mYg2rPEiC3tGvYtKA" target="_blank" class="inline-block bg-amber-800 text-white px-8 py-3 rounded-full hover:bg-amber-900 transition duration-300 shadow-md">Buka di Google Maps</a>
+                <a href="https://maps.app.goo.gl/UJoYsc5eEwjj43q99" target="_blank" class="inline-block bg-amber-800 text-white px-8 py-3 rounded-full hover:bg-amber-900 transition duration-300 shadow-md">Buka di Google Maps</a>
             </div>
         </section>
 
@@ -374,17 +371,12 @@
                 <h2 class="font-great-vibes text-5xl mb-6 text-amber-800">Kirim Hadiah</h2>
                 <p class="mb-6">Doa restu Anda adalah hadiah terindah. Namun, jika ingin memberikan tanda kasih, Anda dapat melakukannya melalui:</p>
                 <div class="space-y-4 text-left">
-                    <div class="bg-gray-100 p-4 rounded-lg">
-                        <p class="font-bold text-lg">Bank Mandiri</p>
+                    <div class="bg-gray-100 p-4 rounded-lg flex flex-col items-center">
+                        <img src="https://raw.githubusercontent.com/qisel/Digitalinvit/main/ewallet.jpg" alt="E-wallet logos" class="h-16 w-auto mb-2">
+                        <p class="font-bold text-lg">DANA / OVO / GoPay</p>
                         <p class="text-sm">a.n. Rizky R. Harun</p>
-                        <p id="bank-number" class="text-xl my-1">1234 5678 9012</p>
-                        <button onclick="copyToClipboard('bank-number', this)" class="bg-amber-700 text-white text-sm px-4 py-1 rounded-md hover:bg-amber-800">Salin Nomor</button>
-                    </div>
-                    <div class="bg-gray-100 p-4 rounded-lg">
-                        <p class="font-bold text-lg">GoPay / OVO / Dana</p>
-                        <p class="text-sm">a.n. Inang Mopangga</p>
-                        <p id="wallet-number" class="text-xl my-1">0812 3456 7890</p>
-                        <button onclick="copyToClipboard('wallet-number', this)" class="bg-amber-700 text-white text-sm px-4 py-1 rounded-md hover:bg-amber-800">Salin Nomor</button>
+                        <p id="ewallet-number" class="text-xl my-1">0823-1194-5664</p>
+                        <button onclick="copyToClipboard('ewallet-number', this)" class="bg-amber-700 text-white text-sm px-4 py-1 rounded-md hover:bg-amber-800 mt-2">Salin Nomor</button>
                     </div>
                 </div>
             </div>
@@ -395,10 +387,9 @@
             <div class="section-card">
                 <h2 class="font-great-vibes text-5xl mb-6 text-amber-800">Terima Kasih</h2>
                 <p>Atas kehadiran dan doa restu Bapak/Ibu/Saudara/i, kami ucapkan terima kasih.</p>
-                <p class="text-sm mt-8">Digital Invitation by Arkan. Digi Desa Barakati.</p>
+                <p class="text-sm mt-8">Digital Invitation by <a href="https://wa.me/6285299069883" target="_blank" class="text-amber-800 hover:underline">Arkan. Digi Desa Barakati.</a></p>
             </div>
         </section>
-
     </main>
 
     <!-- Audio element for music playback -->
@@ -429,7 +420,7 @@
             const bgMenu = document.getElementById('bg-menu');
             const bgImageOptionsContainer = document.getElementById('bg-image-options');
             const bgSolidColorInput = document.getElementById('bg-solid-color');
-            const bgGradColor1Input = document.getElementById('bg-grad-color1');
+            const bgGradColor1Input = document = document.getElementById('bg-grad-color1');
             const bgGradColor2Input = document.getElementById('bg-grad-color2');
             const applyBgGradientBtn = document.getElementById('apply-bg-gradient-btn');
             const apologyTextElement = document.getElementById('apology-text');
@@ -730,6 +721,7 @@
 
 
             // --- Intersection Observer for Fade-in Effect on Scroll ---
+            // IntersectionObserver now correctly observes vertically-scrolling sections
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
