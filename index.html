@@ -420,7 +420,7 @@
             const bgMenu = document.getElementById('bg-menu');
             const bgImageOptionsContainer = document.getElementById('bg-image-options');
             const bgSolidColorInput = document.getElementById('bg-solid-color');
-            const bgGradColor1Input = document = document.getElementById('bg-grad-color1');
+            const bgGradColor1Input = document.getElementById('bg-grad-color1');
             const bgGradColor2Input = document.getElementById('bg-grad-color2');
             const applyBgGradientBtn = document.getElementById('apply-bg-gradient-btn');
             const apologyTextElement = document.getElementById('apology-text');
@@ -461,7 +461,7 @@
                         const rgb2 = colors[1].match(/\d+/g).map(Number);
                         const avgR = (rgb1[0] + rgb2[0]) / 2;
                         const avgG = (rgb1[1] + rgb2[1]) / 2;
-                        const avgB = (rgb1[2] + rgb2[2]) / 2;
+                        const avgB = (rgb2[2] + rgb2[2]) / 2;
                         luminance = (0.2126 * avgR + 0.7152 * avgG + 0.0722 * avgB);
                     }
                 } else if (computedBg.startsWith('rgb')) {
@@ -504,9 +504,9 @@
 
             // --- Music Playlist and Player Logic ---
             const playlist = [
-                'https://dn721908.ca.archive.org/0/items/man-ana_202211/MAN%20ANA.mp3',
                 'https://files.catbox.moe/18l2h9.mp3',
                 'https://files.catbox.moe/51rfqh.mp3',
+                'https://dn721908.ca.archive.org/0/items/man-ana_202211/MAN%20ANA.mp3',
                 'https://ia902806.us.archive.org/28/items/SABYAN-DEENASSALAM/SABYAN%20-%20DEEN%20ASSALAM.mp3'
             ];
             let currentSongIndex = 0;
@@ -638,20 +638,63 @@
 
                 const generatedLink = window.location.origin + window.location.pathname + '?' + params.toString();
 
-                // Display the generated link with a copy button
+                // Generate the full WhatsApp message
+                const whatsappMessage = `
+بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ
+Bismillahirrahmanirrahim
+
+Assalamu'alaikum Wr. Wb.
+
+🌟 *Undangan Syukuran Ulang Tahun* 🌟
+
+Yang terhormat Bpk/Ibu/Sdr/i,
+*${name}*
+
+Tanpa mengurangi rasa hormat, perkenankanlah kami mengundang Anda untuk hadir dalam acara syukuran ulang tahun putra kami tercinta, *Juju Junior*.
+
+🗓️ Hari, Tanggal: Sabtu, 23 Agustus 2025
+⏰ Pukul: 09.00 WITA - Selesai
+📍 Tempat: Komplek RO. Barakati
+
+Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Sdr/i berkenan hadir untuk memberikan doa restu.
+Semoga Allah SWT senantiasa melimpahkan berkah-Nya kepada kita semua. Aamiin yaa Rabbal 'Alamin.
+
+Untuk melihat detail lengkap undangan, silakan klik link di bawah ini:
+${generatedLink}
+
+Wassalamu'alaikum Wr. Wb.
+`.trim(); // .trim() removes leading/trailing whitespace
+
+                // Display the generated link and message with a copy button
                 generatedLinkArea.innerHTML = `
-                    <p class="text-sm font-semibold mb-2">Link Undangan Anda:</p>
-                    <div class="flex items-center space-x-2">
-                        <input type="text" id="generated-link-input" value="${generatedLink}" readonly class="flex-grow px-2 py-1 border rounded-md text-sm">
-                        <button id="copy-link-btn" class="bg-amber-700 text-white text-sm px-4 py-1 rounded-md hover:bg-amber-800">
-                            Salin
-                        </button>
+                    <div class="space-y-4">
+                        <div>
+                            <p class="text-sm font-semibold mb-2">Link Undangan:</p>
+                            <div class="flex items-center space-x-2">
+                                <input type="text" id="generated-link-input" value="${generatedLink}" readonly class="flex-grow px-2 py-1 border rounded-md text-sm">
+                                <button id="copy-link-btn" class="bg-amber-700 text-white text-sm px-4 py-1 rounded-md hover:bg-amber-800">
+                                    Salin Link
+                                </button>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="text-sm font-semibold mb-2">Teks WhatsApp:</p>
+                            <div class="flex items-center space-x-2">
+                                <textarea id="generated-wa-text" readonly rows="8" class="flex-grow p-2 border rounded-md text-sm resize-none">${whatsappMessage}</textarea>
+                                <button id="copy-wa-btn" class="bg-green-600 text-white text-sm px-4 py-1 rounded-md hover:bg-green-700">
+                                    Salin Teks
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 `;
 
-                // Add event listener for the new copy button
+                // Add event listeners for the new copy buttons
                 document.getElementById('copy-link-btn').addEventListener('click', () => {
                     copyToClipboard('generated-link-input', document.getElementById('copy-link-btn'));
+                });
+                document.getElementById('copy-wa-btn').addEventListener('click', () => {
+                    copyToClipboard('generated-wa-text', document.getElementById('copy-wa-btn'));
                 });
             });
 
@@ -721,7 +764,6 @@
 
 
             // --- Intersection Observer for Fade-in Effect on Scroll ---
-            // IntersectionObserver now correctly observes vertically-scrolling sections
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -771,7 +813,13 @@
                 try {
                     document.execCommand('copy');
                     button.innerText = 'Tersalin!';
-                    setTimeout(() => { button.innerText = 'Salin'; }, 2000);
+                    setTimeout(() => { 
+                        if (button.id === 'copy-link-btn') {
+                            button.innerText = 'Salin Link'; 
+                        } else if (button.id === 'copy-wa-btn') {
+                            button.innerText = 'Salin Teks';
+                        }
+                    }, 2000);
                 } catch (err) {
                     console.error('Gagal menyalin teks: ', err);
                 }
