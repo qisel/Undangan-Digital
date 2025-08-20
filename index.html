@@ -68,7 +68,7 @@
             100% { transform: scale(1); }
         }
 
-        /* Main container for the invitation content, designed for horizontal scrolling */
+        /* Main container for the invitation content, designed for horizontal and vertical scrolling */
         #main-content {
             display: flex;
             width: 100%;
@@ -82,7 +82,7 @@
         /* Each section wrapper occupies the full viewport and handles the snap and fade-in animations */
         .section-wrapper {
             width: 100vw;
-            height: 100vh;
+            min-height: 100vh; /* Changed from height to min-height to allow vertical scrolling */
             flex-shrink: 0; /* Prevents sections from shrinking */
             display: flex;
             justify-content: center;
@@ -425,7 +425,7 @@
             const generateLinkBtn = document.getElementById('generate-link-btn');
             const generatedLinkArea = document.getElementById('generated-link-area');
             const guestDisplayBox = document.getElementById('guest-display-box');
-            const guestNameElement = document = document.getElementById('guest-name');
+            const guestNameElement = document.getElementById('guest-name');
             const bgMenu = document.getElementById('bg-menu');
             const bgImageOptionsContainer = document.getElementById('bg-image-options');
             const bgSolidColorInput = document.getElementById('bg-solid-color');
@@ -434,6 +434,7 @@
             const applyBgGradientBtn = document.getElementById('apply-bg-gradient-btn');
             const apologyTextElement = document.getElementById('apology-text');
             const coverTitle = document.getElementById('cover-title');
+
 
             // Store current font and color settings
             let currentFont = 'Great Vibes';
