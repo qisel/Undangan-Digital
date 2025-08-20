@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Undangan Ulang Tahun Juju Junior</title>
+    <title>Undangan Ulang Tahun Juju Ayman</title>
     
     <!-- Tailwind CSS CDN for utility classes -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -112,6 +112,7 @@
             text-align: center;
             color: #4a4a4a;
             white-space: normal;
+            position: relative; /* Make it a positioning context for absolute children */
         }
         
         /* Styles for the countdown timer's individual boxes */
@@ -181,7 +182,6 @@
             background-color: rgba(255, 255, 255, 0.2);
             padding: 1.5rem;
             border-radius: 1rem;
-            margin-top: 2rem; /* Adjusted margin for new position */
             backdrop-filter: blur(10px);
             text-align: center;
             width: 90%;
@@ -287,19 +287,19 @@
             </button>
         </div>
 
-        <div class="cover-overlay flex-col space-y-4">
+        <div class="cover-overlay flex-col">
             <p id="cover-title" class="text-xl md:text-2xl">Undangan Syukuran Ulang Tahun</p>
-            <h1 id="child-name" class="font-great-vibes text-6xl md:text-9xl my-4">Juju Junior</h1>
+            <h1 id="child-name" class="font-great-vibes text-6xl md:text-9xl my-2">Juju Ayman</h1>
             
             <button id="open-button" class="bg-amber-800 text-white px-8 py-3 rounded-full hover:bg-amber-900 transition duration-300 shadow-lg text-lg">
                 Buka Undangan
             </button>
 
             <!-- New guest greeting box, initially hidden -->
-            <div id="guest-display-box" class="hidden text-white">
+            <div id="guest-display-box" class="hidden text-white mt-2">
                 <p class="text-lg md:text-xl">Yang terhormat Bpk/Ibu/Sdr/i</p>
                 <p id="guest-name" class="font-bold text-2xl md:text-3xl mt-2"></p>
-                <p id="apology-text" class="text-xs opacity-70 mt-4">Mohon maaf jika ada kesalahan penulisan nama / gelar</p>
+                <p id="apology-text" class="text-xs opacity-70 mt-2">Mohon maaf jika ada kesalahan penulisan nama / gelar</p>
             </div>
         </div>
     </div>
@@ -308,17 +308,22 @@
     <main id="main-content" class="hidden flex-col">
         <!-- Section 1: Opening Message -->
         <section class="section-wrapper">
-            <div class="section-card">
+            <div class="section-card relative">
+                <div class="absolute top-4 left-4 text-4xl transform -rotate-12 animate-bounce">🎈</div>
+                <div class="absolute top-4 right-4 text-4xl transform rotate-12 animate-bounce">🎁</div>
                 <h2 class="font-great-vibes text-5xl mb-6 text-amber-800">Assalamu'alaikum Wr. Wb.</h2>
                 <p class="mb-4">Dengan memohon rahmat dan ridho Allah SWT, kami mengundang Bapak/Ibu/Saudara/i untuk hadir dalam acara syukuran ulang tahun putra kami:</p>
-                <h3 class="font-great-vibes text-6xl my-6 text-amber-900">Juju Junior</h3>
+                <h3 class="font-great-vibes text-6xl my-6 text-amber-900">Juju Ayman</h3>
                 <p>Kehadiran dan doa restu Anda adalah kebahagiaan bagi kami.</p>
+                <div class="absolute bottom-4 left-1/2 -ml-8 text-4xl transform -translate-x-1/2">🎂</div>
             </div>
         </section>
 
         <!-- Section 2: Prayer & Hope -->
         <section class="section-wrapper">
             <div class="section-card">
+                <div class="absolute top-4 right-4 text-4xl transform rotate-12">🕯️</div>
+                <div class="absolute bottom-4 left-4 text-4xl transform -rotate-12">🎉</div>
                 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-4 text-amber-800"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline><path d="M12.5 15.5c-1.5-1-1.5-3-0-4 1.5-1 1.5-3 0-4"></path><path d="M8.5 15.5c1.5-1 1.5-3 0-4-1.5-1-1.5-3 0-4"></path></svg>
                 <h2 class="text-3xl font-bold mb-4 text-amber-900">Doa & Harapan</h2>
                 <p class="text-md italic">"Ya Allah, panjangkanlah umurnya, sehatkanlah jasadnya, terangilah hatinya, tetapkanlah imannya, baikkanlah amalannya, luaskanlah rezekinya, dan jauhkanlah dari keburukan. Aamiin."</p>
@@ -328,6 +333,8 @@
         <!-- Section 3: The Family -->
         <section class="section-wrapper">
             <div class="section-card">
+                <div class="absolute top-4 left-1/2 -ml-8 text-4xl transform -rotate-12">👨‍👩‍👧‍👦</div>
+                <div class="absolute bottom-4 right-4 text-4xl transform rotate-12">💖</div>
                 <h2 class="font-great-vibes text-5xl mb-6 text-amber-800">Kami yang Berbahagia</h2>
                 <p class="text-lg">Keluarga Besar:</p>
                 <p class="text-2xl font-bold mt-2">Bapak Rizky R. Harun</p>
@@ -653,17 +660,13 @@ Assalamu'alaikum Wr. Wb.
 Yang terhormat Bpk/Ibu/Sdr/i,
 *${name}*
 
-Tanpa mengurangi rasa hormat, perkenankanlah kami mengundang Anda untuk hadir dalam acara syukuran ulang tahun putra kami tercinta, *Juju Junior*.
+Tanpa mengurangi rasa hormat, perkenankanlah kami mengundang Anda untuk hadir dalam acara syukuran ulang tahun putra kami tercinta, *Juju Ayman*.
 
-🗓️ Hari, Tanggal: Sabtu, 23 Agustus 2025
-⏰ Pukul: 08.00 WITA - Selesai
-📍 Tempat: Kompleks R.O Taluhu Barakati Kec. Batudaa
+Untuk detail lengkap dan lokasi acara, silakan kunjungi undangan digital khusus untuk Anda:
+${generatedLink}
 
 Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Sdr/i berkenan hadir untuk memberikan doa restu.
 Semoga Allah SWT senantiasa melimpahkan berkah-Nya kepada kita semua. Aamiin yaa Rabbal 'Alamin.
-
-Untuk melihat detail lengkap undangan, silakan klik link di bawah ini:
-${generatedLink}
 
 Wassalamu'alaikum Wr. Wb.
 `.trim(); // .trim() removes leading/trailing whitespace
