@@ -11,7 +11,7 @@
     <!-- Google Fonts for custom typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600;700&family=Dancing+Script&family=Lobster&family=Pacifico&family=Caveat&family=Satisfy&family=Courgette&family=Permanent+Marker&family=Roboto+Slab&family=Fugaz+One&display=swap" rel="stylesheet">
 
     <style>
         /* A custom font family from Google Fonts for a more elegant look */
@@ -55,6 +55,15 @@
             padding: 2rem;
             border-radius: 1rem;
             backdrop-filter: blur(5px);
+            /* Applying a simple animation to the overlay */
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        /* CSS Keyframes for the looping pulse animation */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
         }
 
         /* Main container for the invitation content, designed for horizontal scrolling */
@@ -117,15 +126,74 @@
             justify-content: center;
             align-items: center;
         }
+
+        /* General styles for the new buttons and menus on the cover page */
+        .floating-btn {
+            position: absolute;
+            top: 2rem;
+            padding: 0.5rem;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border-radius: 9999px;
+            cursor: pointer;
+            z-index: 101;
+        }
+
+        .menu-container {
+            position: absolute;
+            top: 6rem;
+            right: 1.5rem;
+            background-color: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            padding: 1rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            z-index: 102;
+            max-height: 70vh;
+            overflow-y: auto;
+            display: none;
+            flex-direction: column;
+            gap: 0.5rem;
+            text-align: left;
+        }
     </style>
 </head>
 <body>
 
     <!-- Cover Page - The first page the user sees -->
     <div id="cover">
+        <!-- New buttons for music and font settings -->
+        <button id="music-btn" class="floating-btn right-2 sm:right-4">
+            <!-- Music icon (SVG from Feather Icons) -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 18V5l12-2v13"></path>
+                <circle cx="6" cy="18" r="3"></circle>
+                <circle cx="18" cy="16" r="3"></circle>
+            </svg>
+        </button>
+
+        <button id="font-btn" class="floating-btn right-12 sm:right-16">
+            <!-- Font icon (SVG from Feather Icons) -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="4 7 4 4 20 4 20 7"></polyline>
+                <line x1="9" y1="20" x2="15" y2="20"></line>
+                <line x1="12" y1="4" x2="12" y2="20"></line>
+            </svg>
+        </button>
+
+        <!-- Font selector menu -->
+        <div id="font-menu" class="menu-container text-black">
+            <h4 class="font-bold text-lg mb-2 text-center text-amber-800">Pilih Font & Warna</h4>
+            <div id="font-options" class="flex flex-col gap-2 mb-4">
+                <!-- Font buttons will be generated here by JavaScript -->
+            </div>
+            <label for="font-color" class="block mb-2 text-sm text-center">Pilih Warna Font:</label>
+            <input type="color" id="font-color" value="#4a4a4a" class="w-full h-8 rounded-lg cursor-pointer">
+        </div>
+
         <div class="cover-overlay">
             <p class="text-xl md:text-2xl">Undangan Syukuran Ulang Tahun</p>
-            <h1 class="font-great-vibes text-6xl md:text-9xl my-4">Juju Junior</h1>
+            <h1 id="child-name" class="font-great-vibes text-6xl md:text-9xl my-4">Juju Junior</h1>
             <button id="open-button" class="bg-amber-800 text-white px-8 py-3 rounded-full hover:bg-amber-900 transition duration-300 shadow-lg text-lg">
                 Buka Undangan
             </button>
@@ -134,7 +202,6 @@
 
     <!-- Main Content with Horizontal Scroll -->
     <main id="main-content" class="hidden">
-
         <!-- Section 1: Opening Message -->
         <section class="section-wrapper">
             <div class="section-card">
@@ -230,12 +297,67 @@
 
     </main>
 
+    <!-- Audio element for music playback -->
+    <audio id="background-music" loop></audio>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const openButton = document.getElementById('open-button');
             const cover = document.getElementById('cover');
             const mainContent = document.getElementById('main-content');
             const sections = document.querySelectorAll('.section-wrapper');
+            const musicBtn = document.getElementById('music-btn');
+            const fontBtn = document.getElementById('font-btn');
+            const fontMenu = document.getElementById('font-menu');
+            const fontOptionsContainer = document.getElementById('font-options');
+            const fontColorInput = document.getElementById('font-color');
+            const childNameElement = document.getElementById('child-name');
+            const audioPlayer = document.getElementById('background-music');
+
+            // --- Music Playlist and Player Logic ---
+            const playlist = [
+                'https://files.catbox.moe/18l2h9.mp3',
+                'https://files.catbox.moe/51rfqh.mp3',
+                'https://dn721908.ca.archive.org/0/items/man-ana_202211/MAN%20ANA.mp3',
+                'https://ia902806.us.archive.org/28/items/SABYAN-DEENASSALAM/SABYAN%20-%20DEEN%20ASSALAM.mp3'
+            ];
+            let currentSongIndex = 0;
+            let isMusicPlaying = false;
+
+            // Set the first song as the source
+            audioPlayer.src = playlist[currentSongIndex];
+
+            // Function to toggle play/pause and update button icon
+            const toggleMusic = () => {
+                if (isMusicPlaying) {
+                    audioPlayer.pause();
+                    isMusicPlaying = false;
+                    musicBtn.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 18V5l12-2v13"></path>
+                            <circle cx="6" cy="18" r="3"></circle>
+                            <circle cx="18" cy="16" r="3"></circle>
+                        </svg>`;
+                } else {
+                    audioPlayer.play().catch(e => console.error("Playback failed:", e));
+                    isMusicPlaying = true;
+                    musicBtn.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polygon points="10 8 16 12 10 16 10 8"></polygon>
+                        </svg>`;
+                }
+            };
+            
+            // Event listener for the music button
+            musicBtn.addEventListener('click', toggleMusic);
+
+            // Play the next song when the current one ends
+            audioPlayer.addEventListener('ended', () => {
+                currentSongIndex = (currentSongIndex + 1) % playlist.length;
+                audioPlayer.src = playlist[currentSongIndex];
+                audioPlayer.play().catch(e => console.error("Playback failed:", e));
+            });
 
             // --- Open Invitation Button Logic ---
             openButton.addEventListener('click', () => {
@@ -246,83 +368,110 @@
                 setTimeout(() => {
                     cover.style.display = 'none';
                     mainContent.classList.remove('hidden');
+                    // Start playing music automatically when the invitation is opened
+                    if (!isMusicPlaying) {
+                        toggleMusic();
+                    }
                 }, 800); // Matches the 0.8s CSS transition duration
             });
 
+            // --- Font Selector Logic ---
+            const fontFamilies = [
+                'Great Vibes', 'Poppins', 'Dancing Script', 'Lobster', 
+                'Pacifico', 'Caveat', 'Satisfy', 'Courgette', 
+                'Permanent Marker', 'Roboto Slab'
+            ];
+
+            // Toggle the font menu visibility
+            fontBtn.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevents the click from propagating to the document
+                fontMenu.style.display = fontMenu.style.display === 'flex' ? 'none' : 'flex';
+            });
+            
+            // Close the font menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!fontMenu.contains(e.target) && e.target !== fontBtn) {
+                    fontMenu.style.display = 'none';
+                }
+            });
+
+            // Generate font buttons dynamically
+            fontFamilies.forEach(font => {
+                const button = document.createElement('button');
+                button.textContent = font;
+                button.classList.add('px-4', 'py-2', 'rounded-full', 'bg-white', 'hover:bg-gray-200', 'transition', 'duration-200', 'text-sm');
+                button.style.fontFamily = `'${font}', sans-serif`;
+                
+                // Add click listener to change the font
+                button.addEventListener('click', () => {
+                    childNameElement.style.fontFamily = `'${font}', cursive`;
+                    fontMenu.style.display = 'none'; // Hide menu after selection
+                });
+                fontOptionsContainer.appendChild(button);
+            });
+
+            // Event listener for color input change
+            fontColorInput.addEventListener('input', (e) => {
+                childNameElement.style.color = e.target.value;
+            });
+
             // --- Intersection Observer for Fade-in Effect on Scroll ---
-            // This observer detects when a section becomes visible in the viewport and adds a class
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
-                    // If the section is intersecting (visible), add the 'is-visible' class to trigger the animation
                     if (entry.isIntersecting) {
                         entry.target.classList.add('is-visible');
                     }
                 });
             }, {
-                root: mainContent, // Specifies the scrolling container to observe within
-                threshold: 0.5 // Triggers when 50% of the section is visible
+                root: mainContent,
+                threshold: 0.5
             });
 
-            // Attach the observer to each section to monitor its visibility
             sections.forEach(section => {
                 observer.observe(section);
             });
 
             // --- Countdown Timer Script ---
-            // Set the target date for the birthday event
             const countdownDate = new Date("Aug 23, 2025 09:00:00").getTime();
-
-            // Update the countdown every 1 second
             const countdownFunction = setInterval(() => {
                 const now = new Date().getTime();
                 const distance = countdownDate - now;
 
-                // If the countdown is over, display a message and stop the timer
                 if (distance < 0) {
                     clearInterval(countdownFunction);
                     document.getElementById("countdown").innerHTML = "<div class='text-center w-full text-xl font-bold'>Acara Telah Berlangsung!</div>";
                     return;
                 }
 
-                // Calculate days, hours, minutes, and seconds from the remaining time
                 const days = Math.floor(distance / (1000 * 60 * 60 * 24));
                 const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-                // Update the HTML elements with the new values, padding with a leading zero if needed
                 document.getElementById("days").innerText = days.toString().padStart(2, '0');
                 document.getElementById("hours").innerText = hours.toString().padStart(2, '0');
                 document.getElementById("minutes").innerText = minutes.toString().padStart(2, '0');
                 document.getElementById("seconds").innerText = seconds.toString().padStart(2, '0');
             }, 1000);
 
-        });
+            // --- Copy to Clipboard Script ---
+            function copyToClipboard(elementId, button) {
+                const textToCopy = document.getElementById(elementId).innerText;
+                const tempTextArea = document.createElement('textarea');
+                tempTextArea.value = textToCopy;
+                document.body.appendChild(tempTextArea);
+                tempTextArea.select();
 
-        // --- Copy to Clipboard Script ---
-        function copyToClipboard(elementId, button) {
-            // Get the text content from the specified element
-            const textToCopy = document.getElementById(elementId).innerText;
-            
-            // Create a temporary textarea element to hold the text
-            const tempTextArea = document.createElement('textarea');
-            tempTextArea.value = textToCopy;
-            document.body.appendChild(tempTextArea);
-            tempTextArea.select();
-
-            // Execute the copy command
-            try {
-                document.execCommand('copy');
-                // Provide user feedback that the copy was successful
-                button.innerText = 'Tersalin!';
-                setTimeout(() => { button.innerText = 'Salin Nomor'; }, 2000); // Reset button text after 2 seconds
-            } catch (err) {
-                console.error('Gagal menyalin teks: ', err);
+                try {
+                    document.execCommand('copy');
+                    button.innerText = 'Tersalin!';
+                    setTimeout(() => { button.innerText = 'Salin Nomor'; }, 2000);
+                } catch (err) {
+                    console.error('Gagal menyalin teks: ', err);
+                }
+                document.body.removeChild(tempTextArea);
             }
-            // Remove the temporary textarea from the DOM
-            document.body.removeChild(tempTextArea);
-        }
+        });
     </script>
-
 </body>
 </html>
