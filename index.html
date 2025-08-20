@@ -57,6 +57,10 @@
             backdrop-filter: blur(5px);
             /* Applying a simple animation to the overlay */
             animation: pulse 2s infinite ease-in-out;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
 
         /* CSS Keyframes for the looping pulse animation */
@@ -174,6 +178,18 @@
             align-items: center;
             text-align: center;
         }
+
+        /* Styles for the new guest display box */
+        #guest-display-box {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            margin-top: 2rem; /* Adjusted margin for new position */
+            backdrop-filter: blur(10px);
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+        }
     </style>
 </head>
 <body>
@@ -233,14 +249,19 @@
             </button>
         </div>
 
-        <div class="cover-overlay">
+        <div class="cover-overlay flex-col space-y-4">
             <p class="text-xl md:text-2xl">Undangan Syukuran Ulang Tahun</p>
-            <!-- New greeting for the guest, initially hidden -->
-            <p id="guest-greeting" class="text-lg md:text-xl mt-4 hidden">Yang terhormat Bpk/Ibu/Sdr/i</p>
             <h1 id="child-name" class="font-great-vibes text-6xl md:text-9xl my-4">Juju Junior</h1>
+            
             <button id="open-button" class="bg-amber-800 text-white px-8 py-3 rounded-full hover:bg-amber-900 transition duration-300 shadow-lg text-lg">
                 Buka Undangan
             </button>
+
+            <!-- New guest greeting box, initially hidden -->
+            <div id="guest-display-box" class="hidden">
+                <p class="text-lg md:text-xl">Yang terhormat Bpk/Ibu/Sdr/i</p>
+                <p id="guest-name" class="font-bold text-2xl md:text-3xl mt-2"></p>
+            </div>
         </div>
     </div>
 
@@ -363,13 +384,14 @@
             const guestNameInput = document.getElementById('guest-name-input');
             const generateLinkBtn = document.getElementById('generate-link-btn');
             const generatedLinkArea = document.getElementById('generated-link-area');
-            const guestGreetingElement = document.getElementById('guest-greeting');
+            const guestDisplayBox = document.getElementById('guest-display-box');
+            const guestNameElement = document.getElementById('guest-name');
 
             // Store current font and color settings
             let currentFont = 'Great Vibes';
             let currentColor = '#4a4a4a';
 
-            // --- URL Parameter Handling ---
+            // --- URL Parameter Handling (New Logic) ---
             const urlParams = new URLSearchParams(window.location.search);
             const guestName = urlParams.get('to');
             const invitedFont = urlParams.get('font');
@@ -378,8 +400,8 @@
             // Check if there's a guest name in the URL
             if (guestName) {
                 // Update the greeting element with the guest's name and show it
-                guestGreetingElement.innerText = `Yang terhormat Bpk/Ibu/Sdr/i ${decodeURIComponent(guestName)}`;
-                guestGreetingElement.classList.remove('hidden');
+                guestNameElement.innerText = decodeURIComponent(guestName);
+                guestDisplayBox.classList.remove('hidden');
                 
                 // Apply font and color from URL parameters, if available
                 if (invitedFont) {
