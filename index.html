@@ -32,12 +32,13 @@
 
         /* Styles for the initial cover page, which acts as a splash screen */
         #cover {
-            position: fixed; /* Mengunci posisi cover agar selalu di atas viewport */
+            position: fixed; /* Lock the cover's position so it's always at the top of the viewport */
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             background-size: cover;
+            background-position: center;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -45,12 +46,13 @@
             z-index: 100; /* Ensures the cover page is on top of everything */
             transition: opacity 0.8s ease-in-out; /* Smooth fade-out effect */
             color: white;
+            position: relative; /* Added relative positioning for balloon container */
         }
 
         /* A semi-transparent overlay to make the text more readable on the background image */
         .cover-overlay {
             background-color: rgba(0, 0, 0, 0.5);
-            padding: 1rem 0; /* Padding vertikal yang lebih kecil */
+            padding: 1rem 0; /* Smaller vertical padding */
             border-radius: 1rem;
             backdrop-filter: blur(5px);
             /* Applying a simple animation to the overlay */
@@ -59,8 +61,9 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            /* Mengurangi jarak vertikal antar elemen */
+            /* Reducing vertical gap between elements */
             gap: 0.5rem;
+            z-index: 100; /* Ensure this is on top of the large balloon */
         }
 
         /* CSS Keyframes for the looping pulse animation */
@@ -88,7 +91,6 @@
             align-items: center;
             padding: 2rem;
             box-sizing: border-box;
-            /* Removed scroll-snap-align since we are now scrolling vertically */
             opacity: 0; /* Initial state for the fade-in animation */
             transform: translateY(20px);
             transition: opacity 1s ease-out, transform 1s ease-out; /* Smooth transition for the fade-in effect */
@@ -161,7 +163,7 @@
 
         /* Styles for the guest link generator box */
         #link-box {
-            position: absolute;
+            position: fixed; /* Using fixed to always be in the center of the screen */
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
@@ -187,12 +189,119 @@
             width: 90%;
             max-width: 400px;
         }
+
+        /* New styles for the copy button */
+        .copy-btn {
+            background-color: #4CAF50; /* Green color */
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            background-color: #45a049;
+        }
+
+        /* Styles for the message box, replacing `alert()` */
+        .message-box {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 20px 40px;
+            border-radius: 10px;
+            z-index: 2000;
+            display: none;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+        
+        /* New styles for the wishes section */
+        .wishes-list {
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 1rem;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 1rem;
+            margin-top: 1rem;
+            display: flex;
+            flex-direction: column-reverse; /* Newest wishes on top */
+        }
+        
+        .wish-item {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 1rem;
+            border-radius: 0.75rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        /* --- CSS for the Large Balloon Animation --- */
+        .large-balloon {
+            position: absolute;
+            bottom: -10%; /* Start just below the viewport */
+            left: -5%; /* Start slightly to the left */
+            width: 500px; /* Adjust size for the large balloon */
+            height: auto;
+            z-index: 90; /* Place it behind the text overlay */
+            pointer-events: none; /* Prevents it from blocking clicks */
+            animation: bounceFloat 20s ease-in-out infinite; /* Apply the new animation */
+        }
+
+        /* New keyframes for the large balloon's unique movement */
+        @keyframes bounceFloat {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(50px, -20px) rotate(5deg);
+            }
+            50% {
+                transform: translate(0, -40px) rotate(0deg);
+            }
+            75% {
+                transform: translate(-50px, -20px) rotate(-5deg);
+            }
+            100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+        }
+
+        /* New: CSS for the Flying Pigeon GIF animation */
+        .flying-pigeon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -100px); /* Position it above the button */
+            width: 150px;
+            height: auto;
+            z-index: 99; /* Below the overlay but above other elements */
+            pointer-events: none;
+        }
+
     </style>
 </head>
 <body>
 
     <!-- Cover Page - The first page the user sees -->
-    <div id="cover">
+    <div id="cover" style="background-image: url('https://raw.githubusercontent.com/qisel/Digitalinvit/main/bg4.jpg');">
+        
+        <!-- Large Balloon Element with the new image URL -->
+        <img src="https://github.com/qisel/Digitalinvit/raw/main/balon.png" alt="Large Balloon" class="large-balloon">
+
+        <!-- New: Flying Pigeon GIF -->
+        <img src="https://cdn.dribbble.com/users/180295/screenshots/1156821/flying-pigeon.gif" alt="Pigeon Flying" class="flying-pigeon">
+
         <!-- New buttons for music, font, link, and background options -->
         <button id="music-btn" class="floating-btn right-2 sm:right-4">
             <!-- Music icon (SVG from Feather Icons) -->
@@ -281,6 +390,11 @@
             </button>
             <div id="generated-link-area" class="mt-4 w-full">
                 <!-- Generated link and copy button will appear here -->
+                <input type="text" id="generated-link-input" class="w-full px-4 py-2 mb-2 border rounded-md text-sm" readonly>
+                <div class="flex flex-row gap-2 justify-center">
+                    <button id="copy-link-btn" class="copy-btn">Salin Link</button>
+                    <button id="copy-wa-btn" class="copy-btn">Salin Teks WhatsApp</button>
+                </div>
             </div>
             <button id="close-link-box" class="absolute top-2 right-2 text-gray-500 hover:text-gray-800 transition">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
@@ -304,6 +418,9 @@
         </div>
     </div>
 
+    <!-- The message box for display messages instead of `alert()` -->
+    <div id="message-box" class="message-box"></div>
+
     <!-- Main Content with Vertical Scrolling -->
     <main id="main-content" class="hidden flex-col">
         <!-- Section 1: Opening Message -->
@@ -324,17 +441,23 @@
             <div class="section-card">
                 <div class="absolute top-4 right-4 text-4xl transform rotate-12">🕯️</div>
                 <div class="absolute bottom-4 left-4 text-4xl transform -rotate-12">🎉</div>
-                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-4 text-amber-800"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline><path d="M12.5 15.5c-1.5-1-1.5-3-0-4 1.5-1 1.5-3 0-4"></path><path d="M8.5 15.5c1.5-1 1.5-3 0-4-1.5-1-1.5-3 0-4"></path></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-4 text-amber-800">
+                    <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <path d="M12.5 15.5c-1.5-1-1.5-3-0-4 1.5-1 1.5-3 0-4"></path>
+                    <path d="M8.5 15.5c1.5-1 1.5-3 0-4-1.5-1-1.5-3 0-4"></path>
+                </svg>
                 <h2 class="text-3xl font-bold mb-4 text-amber-900">Doa & Harapan</h2>
                 <p class="text-md italic">"Ya Allah, panjangkanlah umurnya, sehatkanlah jasadnya, terangilah hatinya, tetapkanlah imannya, baikkanlah amalannya, luaskanlah rezekinya, dan jauhkanlah dari keburukan. Aamiin."</p>
             </div>
         </section>
 
-        <!-- Section 3: The Family -->
+        <!-- Section 3: The hosts of the event -->
         <section class="section-wrapper">
             <div class="section-card">
                 <div class="absolute top-4 left-1/2 -ml-8 text-4xl transform -rotate-12">👨‍👩‍👧‍👦</div>
                 <div class="absolute bottom-4 right-4 text-4xl transform rotate-12">💖</div>
+
                 <h2 class="font-great-vibes text-5xl mb-6 text-amber-800">Kami yang Berbahagia</h2>
                 <p class="text-lg">Keluarga Besar:</p>
                 <p class="text-2xl font-bold mt-2">Bapak Rizky R. Harun</p>
@@ -343,457 +466,203 @@
             </div>
         </section>
 
-        <!-- Section 4: Event Details & Countdown -->
+        <!-- Section 4: Event date and countdown timer -->
         <section class="section-wrapper">
             <div class="section-card">
                 <h2 class="font-great-vibes text-5xl mb-8 text-amber-800">Save The Date</h2>
+                
+                <!-- Date highlight block -->
                 <div class="bg-amber-800 text-white p-6 rounded-xl inline-block shadow-lg">
                     <p class="text-2xl font-bold">Sabtu</p>
                     <p class="text-6xl font-bold border-y-2 border-white my-2 py-2">23</p>
                     <p class="text-2xl font-bold">Agustus 2025</p>
                 </div>
+                
+                <!-- Countdown timer display -->
                 <div id="countdown" class="flex justify-center space-x-2 md:space-x-4 mt-8">
-                    <div class="countdown-box"><span id="days" class="text-3xl font-bold">00</span><span class="text-xs">Hari</span></div>
-                    <div class="countdown-box"><span id="hours" class="text-3xl font-bold">00</span><span class="text-xs">Jam</span></div>
-                    <div class="countdown-box"><span id="minutes" class="text-3xl font-bold">00</span><span class="text-xs">Menit</span></div>
-                    <div class="countdown-box"><span id="seconds" class="text-3xl font-bold">00</span><span class="text-xs">Detik</span></div>
+                    <div class="countdown-box">
+                        <span id="days" class="text-3xl font-bold">00</span>
+                        <span class="text-xs">Hari</span>
+                    </div>
+                    <div class="countdown-box">
+                        <span id="hours" class="text-3xl font-bold">00</span>
+                        <span class="text-xs">Jam</span>
+                    </div>
+                    <div class="countdown-box">
+                        <span id="minutes" class="text-3xl font-bold">00</span>
+                        <span class="text-xs">Menit</span>
+                    </div>
+                    <div class="countdown-box">
+                        <span id="seconds" class="text-3xl font-bold">00</span>
+                        <span class="text-xs">Detik</span>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Section 5: Location Details -->
+        <!-- Section 5: Location details and Google Maps -->
         <section class="section-wrapper">
             <div class="section-card">
                 <h2 class="font-great-vibes text-5xl mb-6 text-amber-800">Lokasi Acara</h2>
                 <p class="text-lg font-semibold">Kediaman Rizky R. Harun bersama Istri</p>
                 <p class="mb-6">Kompleks R.O Taluhu Barakati Kec. Batudaa</p>
-                <!-- An embedded Google Map for easy navigation -->
+                
+                <!-- Embedded Google Maps iframe -->
                 <div class="w-full h-60 rounded-xl overflow-hidden border-4 border-white shadow-lg my-4">
                     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.498077583713!2d124.8422223152643!3d1.484857761406886!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x328774e50889987d%3A0x264d974a6218777!2sManado%2C%20Kota%20Manado%2C%20Sulawesi%20Utara!5e0!3m2!1sid!2sid!4v1661152912345!5m2!1sid!2sid" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
+                
+                <!-- Link to open the location in Google Maps app -->
                 <a href="https://maps.app.goo.gl/UJoYsc5eEwjj43q99" target="_blank" class="inline-block bg-amber-800 text-white px-8 py-3 rounded-full hover:bg-amber-900 transition duration-300 shadow-md">Buka di Google Maps</a>
             </div>
         </section>
 
-        <!-- Section 6: Gift Information -->
+        <!-- Section 6: Gift details -->
         <section class="section-wrapper">
             <div class="section-card">
                 <h2 class="font-great-vibes text-5xl mb-6 text-amber-800">Kirim Hadiah</h2>
                 <p class="mb-6">Doa restu Anda adalah hadiah terindah. Namun, jika ingin memberikan tanda kasih, Anda dapat melakukannya melalui:</p>
+                
+                <!-- E-wallet and bank account details -->
                 <div class="space-y-4 text-left">
                     <div class="bg-gray-100 p-4 rounded-lg flex flex-col items-center">
                         <img src="https://raw.githubusercontent.com/qisel/Digitalinvit/main/ewallet.jpg" alt="E-wallet logos" class="h-16 w-auto mb-2">
-                        <p class="font-bold text-lg">DANA / OVO / GoPay</p>
-                        <p class="text-sm">a.n. Rizky R. Harun</p>
-                        <p id="ewallet-number" class="text-xl my-1">0823-1194-5664</p>
-                        <button onclick="copyToClipboard('ewallet-number', this)" class="bg-amber-700 text-white text-sm px-4 py-1 rounded-md hover:bg-amber-800 mt-2">Salin Nomor</button>
+                        <p class="font-bold text-center">E-Wallet</p>
+                        <p class="text-sm text-center">QRIS (scan barcode di bawah)</p>
+                        <img src="https://raw.githubusercontent.com/qisel/Digitalinvit/main/qris.jpg" alt="QRIS barcode" class="w-48 h-auto my-4 rounded-lg shadow-sm">
+                        <p class="text-xs text-gray-500">a/n Rizky R. Harun</p>
+                    </div>
+                    <div class="bg-gray-100 p-4 rounded-lg flex flex-col items-center">
+                        <img src="https://raw.githubusercontent.com/qisel/Digitalinvit/main/bank.png" alt="Bank logos" class="h-8 w-auto mb-2">
+                        <p class="font-bold text-center">Rekening Bank</p>
+                        <p class="text-sm">BCA: 5410189xxx</p>
+                        <p class="text-xs text-gray-500">a/n Juju Ayman</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Section 7: Closing Message -->
+        <!-- Section 7: Wishes and RSVP -->
         <section class="section-wrapper">
             <div class="section-card">
-                <h2 class="font-great-vibes text-5xl mb-6 text-amber-800">Terima Kasih</h2>
-                <p>Atas kehadiran dan doa restu Bapak/Ibu/Saudara/i, kami ucapkan terima kasih.</p>
-                <p class="text-sm mt-8">Digital Invitation by <a href="https://wa.me/6285299069883" target="_blank" class="text-amber-800 hover:underline">Arkan. Digi Desa Barakati.</a></p>
+                <h2 class="font-great-vibes text-5xl mb-6 text-amber-800">Kirim Ucapan & Doa</h2>
+                <form id="wishes-form" class="flex flex-col items-stretch">
+                    <label for="wisher-name" class="text-left text-sm font-semibold mb-1">Nama Anda:</label>
+                    <input type="text" id="wisher-name" placeholder="Nama" class="w-full px-4 py-2 mb-4 border rounded-md">
+                    <label for="wish-message" class="text-left text-sm font-semibold mb-1">Ucapan:</label>
+                    <textarea id="wish-message" rows="4" placeholder="Ketik ucapan & doa Anda di sini..." class="w-full px-4 py-2 mb-4 border rounded-md resize-none"></textarea>
+                    <button type="submit" class="bg-amber-800 text-white px-6 py-2 rounded-full hover:bg-amber-900 transition duration-300 shadow-md">
+                        Kirim Ucapan
+                    </button>
+                </form>
+                
+                <div id="wishes-list" class="wishes-list">
+                    <!-- Wishes will be appended here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 8: Closing statement and Quranic verse -->
+        <section class="section-wrapper">
+            <div class="section-card">
+                <h2 class="font-great-vibes text-5xl mb-6 text-amber-800">Penutup</h2>
+                <p class="mb-6">Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu.</p>
+                <p class="text-sm italic text-gray-600">"Dan di antara tanda-tanda kebesaran-Nya diciptakan-Nya untukmu pasangan hidup dari jenismu sendiri supaya kamu mendapat ketenangan hati dan dijadikan-Nya di antara kamu rasa kasih dan sayang. Sesungguhnya pada yang demikian itu menjadi tanda-tanda kebesaran-Nya bagi kaum yang berpikir."</p>
+                <p class="text-xs mt-2 font-bold">(QS. Ar-Rum: 21)</p>
+                <p class="font-bold text-xl mt-6 text-amber-900">Wassalamu'alaikum Wr. Wb.</p>
             </div>
         </section>
     </main>
 
-    <!-- Audio element for music playback -->
-    <audio id="background-music" loop></audio>
-
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const openButton = document.getElementById('open-button');
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get all the necessary DOM elements
             const cover = document.getElementById('cover');
             const mainContent = document.getElementById('main-content');
-            const sections = document.querySelectorAll('.section-wrapper');
+            const openButton = document.getElementById('open-button');
+            const music = new Audio('https://www.bensound.com/bensound-music/bensound-happy.mp3'); // Use Audio constructor for better control
+            music.loop = true;
             const musicBtn = document.getElementById('music-btn');
-            const fontBtn = document.getElementById('font-btn');
+            const guestDisplayBox = document.getElementById('guest-display-box');
+            const guestNameDisplay = document.getElementById('guest-name');
+            const apologyText = document.getElementById('apology-text');
+            const messageBox = document.getElementById('message-box');
             const linkGenBtn = document.getElementById('link-gen-btn');
-            const bgBtn = document.getElementById('bg-btn');
-            const fontMenu = document.getElementById('font-menu');
-            const fontOptionsContainer = document.getElementById('font-options');
-            const fontColorInput = document.getElementById('font-color');
-            const childNameElement = document.getElementById('child-name');
-            const audioPlayer = document.getElementById('background-music');
             const linkBox = document.getElementById('link-box');
             const closeLinkBoxBtn = document.getElementById('close-link-box');
-            const guestNameInput = document.getElementById('guest-name-input');
             const generateLinkBtn = document.getElementById('generate-link-btn');
+            const guestNameInput = document.getElementById('guest-name-input');
             const generatedLinkArea = document.getElementById('generated-link-area');
-            const guestDisplayBox = document.getElementById('guest-display-box');
-            const guestNameElement = document.getElementById('guest-name');
-            const bgMenu = document.getElementById('bg-menu');
-            const bgImageOptionsContainer = document.getElementById('bg-image-options');
-            const bgSolidColorInput = document.getElementById('bg-solid-color');
-            const bgGradColor1Input = document.getElementById('bg-grad-color1');
-            const bgGradColor2Input = document.getElementById('bg-grad-color2');
-            const applyBgGradientBtn = document.getElementById('apply-bg-gradient-btn');
-            const apologyTextElement = document.getElementById('apology-text');
-            const coverTitle = document.getElementById('cover-title');
+            const generatedLinkInput = document.getElementById('generated-link-input');
+            const copyLinkBtn = document.getElementById('copy-link-btn');
+            const copyWaBtn = document.getElementById('copy-wa-btn');
 
+            const wishesForm = document.getElementById('wishes-form');
+            const wisherNameInput = document.getElementById('wisher-name');
+            const wishMessageTextarea = document.getElementById('wish-message');
+            const wishesList = document.getElementById('wishes-list');
 
-            // Store current font and color settings
-            let currentFont = 'Great Vibes';
-            let currentColor = '#4a4a4a';
-
-            // --- Function to determine text color based on background luminance ---
-            function getLuminance(hexColor) {
-                // Remove '#' and handle shorthand hex codes
-                hexColor = hexColor.replace('#', '');
-                if (hexColor.length === 3) {
-                    hexColor = hexColor.split('').map(c => c + c).join('');
-                }
-                const r = parseInt(hexColor.substring(0, 2), 16);
-                const g = parseInt(hexColor.substring(2, 4), 16);
-                const b = parseInt(hexColor.substring(4, 6), 16);
-                // Calculate luminance using a standard formula
-                return (0.2126 * r + 0.7152 * g + 0.0722 * b);
+            // Function to get query parameters from the URL
+            function getQueryParam(param) {
+                const urlParams = new URLSearchParams(window.location.search);
+                return urlParams.get(param);
             }
 
-            // Function to update all text color on the cover page for better contrast
-            function updateCoverTextColor() {
-                const computedBg = window.getComputedStyle(cover).getPropertyValue('background-color');
-                const computedGradient = window.getComputedStyle(cover).getPropertyValue('background-image');
-
-                let luminance = 100; // Default luminance for image backgrounds
-                let colorToApply;
-
-                if (computedGradient.startsWith('linear-gradient')) {
-                    // Handle gradient backgrounds
-                    const colors = computedGradient.match(/rgb\((\d+), (\d+), (\d+)\)/g);
-                    if (colors && colors.length === 2) {
-                        const rgb1 = colors[0].match(/\d+/g).map(Number);
-                        const rgb2 = colors[1].match(/\d+/g).map(Number);
-                        const avgR = (rgb1[0] + rgb2[0]) / 2;
-                        const avgG = (rgb1[1] + rgb2[1]) / 2;
-                        const avgB = (rgb2[2] + rgb2[2]) / 2;
-                        luminance = (0.2126 * avgR + 0.7152 * avgG + 0.0722 * avgB);
-                    }
-                } else if (computedBg.startsWith('rgb')) {
-                    // Handle solid color backgrounds
-                    const rgb = computedBg.match(/\d+/g).map(Number);
-                    luminance = (0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2]);
-                }
-                
-                // Determine whether to use black or white text based on luminance
-                colorToApply = luminance > 128 ? '#4a4a4a' : '#ffffff';
-
-                coverTitle.style.color = colorToApply;
-                childNameElement.style.color = colorToApply;
-                guestDisplayBox.style.color = colorToApply;
+            // Function to display a message in the message box
+            function showMessage(message) {
+                messageBox.innerText = message;
+                messageBox.style.display = 'block';
+                setTimeout(() => {
+                    messageBox.style.display = 'none';
+                }, 3000);
             }
 
-            // --- URL Parameter Handling ---
-            const urlParams = new URLSearchParams(window.location.search);
-            const guestName = urlParams.get('to');
-            const invitedFont = urlParams.get('font');
-            const invitedColor = urlParams.get('color');
-
-            // Check if there's a guest name in the URL
-            if (guestName) {
-                // Update the greeting element with the guest's name and show it
-                guestNameElement.innerText = decodeURIComponent(guestName);
-                guestDisplayBox.classList.remove('hidden');
-                
-                // Apply font and color from URL parameters, if available
-                if (invitedFont) {
-                    childNameElement.style.fontFamily = `'${invitedFont}', cursive`;
-                    currentFont = invitedFont;
-                }
-                if (invitedColor) {
-                    childNameElement.style.color = '#' + invitedColor;
-                    currentColor = '#' + invitedColor;
-                }
-            }
-
-
-            // --- Music Playlist and Player Logic ---
-            const playlist = [
-                'https://dn721908.ca.archive.org/0/items/man-ana_202211/MAN%20ANA.mp3', // Set Man Ana as the default song
-                'https://files.catbox.moe/18l2h9.mp3',
-                'https://files.catbox.moe/51rfqh.mp3',
-                'https://ia902806.us.archive.org/28/items/SABYAN-DEENASSALAM/SABYAN%20-%20DEEN%20ASSALAM.mp3'
-            ];
-            let currentSongIndex = 0;
-            let isMusicPlaying = false;
-
-            // Set the default song as the source
-            audioPlayer.src = playlist[currentSongIndex];
-
-            // Function to toggle play/pause and update button icon
-            const toggleMusic = () => {
-                if (isMusicPlaying) {
-                    audioPlayer.pause();
-                    isMusicPlaying = false;
-                    musicBtn.innerHTML = `
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M9 18V5l12-2v13"></path>
-                            <circle cx="6" cy="18" r="3"></circle>
-                            <circle cx="18" cy="16" r="3"></circle>
-                        </svg>`;
-                } else {
-                    audioPlayer.play().catch(e => console.error("Playback failed:", e));
-                    isMusicPlaying = true;
-                    musicBtn.innerHTML = `
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <polygon points="10 8 16 12 10 16 10 8"></polygon>
-                        </svg>`;
-                }
-            };
-            
-            // Event listener for the music button
-            musicBtn.addEventListener('click', toggleMusic);
-
-            // Play the next song when the current one ends
-            audioPlayer.addEventListener('ended', () => {
-                currentSongIndex = (currentSongIndex + 1) % playlist.length;
-                audioPlayer.src = playlist[currentSongIndex];
-                audioPlayer.play().catch(e => console.error("Playback failed:", e));
-            });
-
-            // --- Open Invitation Button Logic ---
-            openButton.addEventListener('click', () => {
-                // Fades out the cover page by setting its opacity to 0
+            // Event listener for the "Buka Undangan" button
+            openButton.addEventListener('click', function() {
+                // Fade out the cover and show the main content
                 cover.style.opacity = '0';
-                
-                // After the fade-out transition, hide the cover and show the main content
                 setTimeout(() => {
                     cover.style.display = 'none';
-                    mainContent.classList.remove('hidden');
-                    // Start playing music automatically when the invitation is opened
-                    if (!isMusicPlaying) {
-                        toggleMusic();
-                    }
-                }, 800); // Matches the 0.8s CSS transition duration
+                    mainContent.style.display = 'flex';
+                    // Allow vertical scrolling on the body
+                    document.body.style.overflowY = 'scroll';
+                    // Start playing the background music, handling potential autoplay block
+                    music.play().catch(e => {
+                        console.error("Autoplay was prevented:", e);
+                        showMessage('Autoplay musik diblokir oleh browser Anda. Silakan klik tombol musik di pojok kanan atas untuk memutar.');
+                    });
+                }, 800); // Wait for the fade-out transition to complete
             });
 
-            // --- Font Selector Logic ---
-            const fontFamilies = [
-                'Great Vibes', 'Poppins', 'Dancing Script', 'Lobster', 
-                'Pacifico', 'Caveat', 'Satisfy', 'Courgette', 
-                'Permanent Marker', 'Roboto Slab'
-            ];
-
-            // Toggle the font menu visibility
-            fontBtn.addEventListener('click', (e) => {
-                e.stopPropagation(); // Prevents the click from propagating to the document
-                fontMenu.style.display = fontMenu.style.display === 'flex' ? 'none' : 'flex';
-                linkBox.style.display = 'none'; // Hide other menus
-                bgMenu.style.display = 'none';
-            });
-            
-            // Close the font menu when clicking outside
-            document.addEventListener('click', (e) => {
-                if (!fontMenu.contains(e.target) && e.target !== fontBtn) {
-                    fontMenu.style.display = 'none';
+            // Set up the music button to toggle play/pause
+            let isPlaying = false;
+            musicBtn.addEventListener('click', function() {
+                if (isPlaying) {
+                    music.pause();
+                } else {
+                    music.play();
                 }
+                isPlaying = !isPlaying;
             });
 
-            // Generate font buttons dynamically
-            fontFamilies.forEach(font => {
-                const button = document.createElement('button');
-                button.textContent = font;
-                button.classList.add('px-4', 'py-2', 'rounded-full', 'bg-white', 'hover:bg-gray-200', 'transition', 'duration-200', 'text-sm');
-                button.style.fontFamily = `'${font}', sans-serif`;
-                
-                // Add click listener to change the font
-                button.addEventListener('click', () => {
-                    childNameElement.style.fontFamily = `'${font}', cursive`;
-                    currentFont = font;
-                    fontMenu.style.display = 'none'; // Hide menu after selection
-                });
-                fontOptionsContainer.appendChild(button);
-            });
+            // Get the guest name from the URL and display it
+            const guestName = getQueryParam('to');
+            if (guestName) {
+                guestNameDisplay.textContent = decodeURIComponent(guestName).replace(/\+/g, ' ');
+                guestDisplayBox.classList.remove('hidden');
+            } else {
+                guestDisplayBox.classList.add('hidden');
+            }
 
-            // Event listener for color input change
-            fontColorInput.addEventListener('input', (e) => {
-                childNameElement.style.color = e.target.value;
-                currentColor = e.target.value;
-            });
-
-            // --- Guest Link Generator Logic ---
-            linkGenBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                fontMenu.style.display = 'none'; // Hide other menus
-                bgMenu.style.display = 'none';
-                linkBox.style.display = 'flex';
-                generatedLinkArea.innerHTML = ''; // Clear previous link
-                guestNameInput.value = ''; // Clear input field
-            });
-
-            closeLinkBoxBtn.addEventListener('click', () => {
-                linkBox.style.display = 'none';
-            });
-            
-            // Generate link when the button is clicked
-            generateLinkBtn.addEventListener('click', () => {
-                const name = guestNameInput.value.trim();
-                if (name === "") {
-                    // Show a message if the name is empty
-                    generatedLinkArea.innerHTML = `<p class="text-red-500 text-sm">Nama tamu tidak boleh kosong.</p>`;
-                    return;
-                }
-
-                // Construct the URL with parameters
-                const params = new URLSearchParams();
-                params.set('to', name);
-                params.set('font', currentFont);
-                params.set('color', currentColor.substring(1)); // Remove '#' for the URL
-
-                const generatedLink = window.location.origin + window.location.pathname + '?' + params.toString();
-
-                // Generate the full WhatsApp message
-                const whatsappMessage = `
-بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ
-Bismillahirrahmanirrahim
-
-Assalamu'alaikum Wr. Wb.
-
-🌟 *Undangan Syukuran Ulang Tahun* 🌟
-
-Yang terhormat Bpk/Ibu/Sdr/i,
-*${name}*
-
-Tanpa mengurangi rasa hormat, perkenankanlah kami mengundang Anda untuk hadir dalam acara syukuran ulang tahun putra kami tercinta, *Juju Ayman*.
-
-Untuk detail lengkap dan lokasi acara, silakan kunjungi undangan digital khusus untuk Anda:
-${generatedLink}
-
-Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Sdr/i berkenan hadir untuk memberikan doa restu.
-Semoga Allah SWT senantiasa melimpahkan berkah-Nya kepada kita semua. Aamiin yaa Rabbal 'Alamin.
-
-Wassalamu'alaikum Wr. Wb.
-`.trim(); // .trim() removes leading/trailing whitespace
-
-                // Display the generated link and message with a copy button
-                generatedLinkArea.innerHTML = `
-                    <div class="space-y-4">
-                        <div>
-                            <p class="text-sm font-semibold mb-2">Link Undangan:</p>
-                            <div class="flex items-center space-x-2">
-                                <input type="text" id="generated-link-input" value="${generatedLink}" readonly class="flex-grow px-2 py-1 border rounded-md text-sm">
-                                <button id="copy-link-btn" class="bg-amber-700 text-white text-sm px-4 py-1 rounded-md hover:bg-amber-800">
-                                    Salin Link
-                                </button>
-                            </div>
-                        </div>
-                        <div>
-                            <p class="text-sm font-semibold mb-2">Teks WhatsApp:</p>
-                            <div class="flex items-center space-x-2">
-                                <textarea id="generated-wa-text" readonly rows="8" class="flex-grow p-2 border rounded-md text-sm resize-none">${whatsappMessage}</textarea>
-                                <button id="copy-wa-btn" class="bg-green-600 text-white text-sm px-4 py-1 rounded-md hover:bg-green-700">
-                                    Salin Teks
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-
-                // Add event listeners for the new copy buttons
-                document.getElementById('copy-link-btn').addEventListener('click', () => {
-                    copyToClipboard('generated-link-input', document.getElementById('copy-link-btn'));
-                });
-                document.getElementById('copy-wa-btn').addEventListener('click', () => {
-                    copyToClipboard('generated-wa-text', document.getElementById('copy-wa-btn'));
-                });
-            });
-
-            // --- Background Options Logic ---
-            const recommendedImages = [
-                'https://raw.githubusercontent.com/qisel/Digitalinvit/main/bg1.jpg',
-                'https://raw.githubusercontent.com/qisel/Digitalinvit/main/bg2.jpg',
-                'https://raw.githubusercontent.com/qisel/Digitalinvit/main/bg3.jpg',
-                'https://raw.githubusercontent.com/qisel/Digitalinvit/main/bg4.jpg',
-                'https://raw.githubusercontent.com/qisel/Digitalinvit/main/bg5.jpg'
-            ];
-
-            // Function to apply background image
-            const applyBackgroundImage = (url) => {
-                cover.style.background = `url('${url}') no-repeat center center`;
-                cover.style.backgroundSize = 'cover';
-                updateCoverTextColor();
-            };
-
-            // Set default background image
-            applyBackgroundImage(recommendedImages[0]);
-
-            // Generate image option buttons
-            recommendedImages.forEach(url => {
-                const btn = document.createElement('button');
-                btn.classList.add('w-full', 'h-24', 'rounded-lg', 'overflow-hidden', 'border-2', 'border-transparent', 'hover:border-amber-500', 'transition-colors', 'duration-200');
-                btn.style.backgroundImage = `url('${url}')`;
-                btn.style.backgroundSize = 'cover';
-                btn.style.backgroundPosition = 'center';
-                btn.addEventListener('click', () => {
-                    applyBackgroundImage(url);
-                    bgMenu.style.display = 'none';
-                });
-                bgImageOptionsContainer.appendChild(btn);
-            });
-
-            bgBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                fontMenu.style.display = 'none';
-                linkBox.style.display = 'none';
-                bgMenu.style.display = bgMenu.style.display === 'flex' ? 'none' : 'flex';
-            });
-            
-            document.addEventListener('click', (e) => {
-                if (!bgMenu.contains(e.target) && e.target !== bgBtn) {
-                    bgMenu.style.display = 'none';
-                }
-            });
-
-            // Apply solid color background
-            bgSolidColorInput.addEventListener('input', (e) => {
-                const color = e.target.value;
-                cover.style.background = color;
-                cover.style.backgroundSize = 'cover';
-                updateCoverTextColor();
-            });
-
-            // Apply gradient background
-            applyBgGradientBtn.addEventListener('click', () => {
-                const color1 = bgGradColor1Input.value;
-                const color2 = bgGradColor2Input.value;
-                const gradient = `linear-gradient(to bottom, ${color1}, ${color2})`;
-                cover.style.background = gradient;
-                bgMenu.style.display = 'none';
-                updateCoverTextColor();
-            });
-
-
-            // --- Intersection Observer for Fade-in Effect on Scroll ---
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('is-visible');
-                    }
-                });
-            }, {
-                root: mainContent,
-                threshold: 0.5
-            });
-
-            sections.forEach(section => {
-                observer.observe(section);
-            });
-
-            // --- Countdown Timer Script ---
-            const countdownDate = new Date("Aug 23, 2025 08:00:00").getTime();
-            const countdownFunction = setInterval(() => {
+            // Countdown timer to the event date (August 23, 2025)
+            const countdownDate = new Date("Aug 23, 2025 00:00:00").getTime();
+            const countdownInterval = setInterval(function() {
                 const now = new Date().getTime();
                 const distance = countdownDate - now;
 
                 if (distance < 0) {
-                    clearInterval(countdownFunction);
-                    document.getElementById("countdown").innerHTML = "<div class='text-center w-full text-xl font-bold'>Acara Telah Berlangsung!</div>";
+                    clearInterval(countdownInterval);
+                    document.getElementById("countdown").innerHTML = "Acara telah berlangsung!";
                     return;
                 }
 
@@ -808,9 +677,30 @@ Wassalamu'alaikum Wr. Wb.
                 document.getElementById("seconds").innerText = seconds.toString().padStart(2, '0');
             }, 1000);
 
+            // Open/close the link generator box
+            linkGenBtn.addEventListener('click', () => linkBox.style.display = 'flex');
+            closeLinkBoxBtn.addEventListener('click', () => {
+                linkBox.style.display = 'none';
+                generatedLinkArea.style.display = 'none';
+            });
+
+            // Generate the guest link
+            generateLinkBtn.addEventListener('click', function() {
+                const name = guestNameInput.value.trim();
+                if (name) {
+                    const encodedName = encodeURIComponent(name);
+                    const currentUrl = window.location.href.split('?')[0]; // Get base URL
+                    const newUrl = `${currentUrl}?to=${encodedName}`;
+                    
+                    generatedLinkInput.value = newUrl;
+                    generatedLinkArea.style.display = 'block';
+                } else {
+                    showMessage('Mohon masukkan nama tamu terlebih dahulu.');
+                }
+            });
+
             // --- Copy to Clipboard Script ---
-            function copyToClipboard(elementId, button) {
-                const textToCopy = document.getElementById(elementId).value;
+            function copyToClipboard(textToCopy, button) {
                 const tempTextArea = document.createElement('textarea');
                 tempTextArea.value = textToCopy;
                 document.body.appendChild(tempTextArea);
@@ -823,14 +713,77 @@ Wassalamu'alaikum Wr. Wb.
                         if (button.id === 'copy-link-btn') {
                             button.innerText = 'Salin Link'; 
                         } else if (button.id === 'copy-wa-btn') {
-                            button.innerText = 'Salin Teks';
+                            button.innerText = 'Salin Teks WhatsApp';
                         }
                     }, 2000);
+                    showMessage('Teks berhasil disalin!');
                 } catch (err) {
                     console.error('Gagal menyalin teks: ', err);
+                    showMessage('Gagal menyalin teks. Silakan coba manual.');
                 }
                 document.body.removeChild(tempTextArea);
             }
+
+            // Hook up the copy buttons
+            copyLinkBtn.addEventListener('click', () => {
+                const text = generatedLinkInput.value;
+                copyToClipboard(text, copyLinkBtn);
+            });
+
+            copyWaBtn.addEventListener('click', () => {
+                const guestName = guestNameInput.value.trim();
+                const link = generatedLinkInput.value;
+                const message = `Halo ${guestName},\n\nAnda diundang untuk menghadiri acara ulang tahun Juju Ayman. Berikut link undangannya:\n\n${link}\n\nTerima kasih.`;
+                copyToClipboard(message, copyWaBtn);
+            });
+            
+            // Handle wishes form submission
+            wishesForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const name = wisherNameInput.value.trim();
+                const message = wishMessageTextarea.value.trim();
+
+                if (name && message) {
+                    // Create a new wish element
+                    const newWish = document.createElement('div');
+                    newWish.className = 'wish-item';
+                    newWish.innerHTML = `<p class="font-bold text-amber-800">${name}</p><p class="mt-1 text-sm">${message}</p>`;
+                    
+                    // Append the new wish to the list
+                    wishesList.prepend(newWish); // Use prepend to add new wish on top
+                    
+                    // Clear the form fields
+                    wisherNameInput.value = '';
+                    wishMessageTextarea.value = '';
+                    
+                    showMessage('Ucapan Anda berhasil dikirim!');
+                    
+                    // In a real application, you would send this data to a database here
+                    // For example, using Firestore:
+                    // db.collection('wishes').add({ name, message, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
+                } else {
+                    showMessage('Nama dan ucapan tidak boleh kosong.');
+                }
+            });
+
+            // Intersection Observer for scroll animations (fade-in effect)
+            const sections = document.querySelectorAll('.section-wrapper');
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.2 // Trigger when 20% of the element is visible
+            });
+
+            // Start observing all sections
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
         });
     </script>
 </body>
