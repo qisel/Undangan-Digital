@@ -39,13 +39,19 @@
 
     <!-- Music Player -->
     <audio id="background-music" loop></audio>
-    <button id="music-toggle" class="fixed bottom-5 right-4 z-40 bg-white/70 backdrop-blur-sm p-3 rounded-full shadow-lg">
+    <button id="music-toggle" class="fixed top-5 left-4 z-[60] bg-white/70 backdrop-blur-sm p-3 rounded-full shadow-lg">
         <svg id="music-on-icon" class="text-stone-700" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
         <svg id="music-off-icon" class="hidden text-stone-700" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="1" y1="1" x2="23" y2="23"></line><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"></path><path d="M17 16.95A7 7 0 0 1 5 12v-2m14 0v-2a3 3 0 0 0-5.94-.6"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
     </button>
     
     <!-- Splash Screen (FIXED ONE SCREEN) -->
     <div id="splash-screen" class="fixed inset-0 bg-hero z-50 flex flex-col items-center justify-center text-white text-center p-8 transition-opacity duration-1000 h-screen overflow-y-auto">
+        
+        <!-- Admin Panel Button -->
+         <button id="open-admin-panel-btn" class="hidden absolute top-5 right-5 z-50 text-white/80 hover:text-white transition-opacity">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+        </button>
+
         <div class="flex flex-col items-center justify-center">
             <h2 class="text-xl font-light tracking-widest">Walimatul 'Ursy</h2>
             <h1 class="font-great-vibes text-7xl my-4">Desmita & Ahmad</h1>
@@ -62,14 +68,11 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block mr-2 -mt-1"><path d="M21.73 18a2.64 2.64 0 0 0-3.76 0l-1.83 1.83a2.64 2.64 0 0 1-3.76 0l-1.83-1.83a2.64 2.64 0 0 0-3.76 0l-1.83 1.83a2.64 2.64 0 0 1-3.76 0l-1.83-1.83a2.64 2.64 0 0 0-3.76 0"></path><path d="m22 12-2.17-2.17a2.64 2.64 0 0 0-3.76 0l-1.83 1.83a2.64 2.64 0 0 1-3.76 0l-1.83-1.83a2.64 2.64 0 0 0-3.76 0L2 12"></path><path d="M6.24 6.24a2.64 2.64 0 0 0 0 3.76l1.83 1.83a2.64 2.64 0 0 0 3.76 0l1.83-1.83a2.64 2.64 0 0 0 0-3.76l-1.83-1.83a2.64 2.64 0 0 0-3.76 0z"></path></svg>
                 Buka Undangan
             </button>
-            <button id="open-admin-panel-btn" class="hidden mt-4 text-white/80 underline text-sm hover:text-white">
-                Buka Panel Admin
-            </button>
         </div>
     </div>
 
     <!-- Admin Panel -->
-    <div id="admin-panel" class="invisible opacity-0 fixed bottom-4 right-4 bg-gray-900/80 backdrop-blur-md p-3 shadow-2xl z-[60] transform translate-y-full w-[95%] max-w-sm rounded-xl">
+    <div id="admin-panel" class="invisible opacity-0 fixed top-4 right-4 bg-gray-900/80 backdrop-blur-md p-3 shadow-2xl z-[60] transform -translate-y-full w-72 rounded-xl">
         <button id="close-admin-panel" class="absolute -top-2 -right-2 bg-white text-gray-800 rounded-full w-7 h-7 flex items-center justify-center shadow-lg">&times;</button>
         <h3 class="font-bold text-center text-sm mb-3 text-white">Panel Admin</h3>
         <div class="space-y-3 text-xs max-h-[70vh] overflow-y-auto pr-2">
@@ -324,17 +327,21 @@
             }
 
             // --- Admin Panel Functions ---
-            openAdminBtn.addEventListener('click', () => {
-                adminPanel.classList.remove('invisible');
-                setTimeout(() => {
-                    adminPanel.classList.remove('opacity-0', 'translate-y-full');
-                }, 10); 
-            });
+            if (openAdminBtn) {
+                openAdminBtn.addEventListener('click', () => {
+                    adminPanel.classList.remove('invisible');
+                    setTimeout(() => {
+                        adminPanel.classList.remove('opacity-0', '-translate-y-full');
+                    }, 10); 
+                });
+            }
 
-            closeAdminBtn.addEventListener('click', () => {
-                adminPanel.classList.add('opacity-0', 'translate-y-full');
-                adminPanel.addEventListener('transitionend', () => adminPanel.classList.add('invisible'), { once: true });
-            });
+            if (closeAdminBtn) {
+                closeAdminBtn.addEventListener('click', () => {
+                    adminPanel.classList.add('opacity-0', '-translate-y-full');
+                    adminPanel.addEventListener('transitionend', () => adminPanel.classList.add('invisible'), { once: true });
+                });
+            }
 
             // --- Generate & Copy Link Logic ---
             function generateMessage(guest) {
@@ -357,45 +364,50 @@ Wassalamu'alaikum Warahmatullahi Wabarakatuh
 `.trim();
             }
 
-            generateBtn.addEventListener('click', () => {
-                const guest = adminGuestNameInput.value.trim();
-                if (!guest) {
-                    alert('Silakan masukkan nama tamu terlebih dahulu.');
-                    return;
-                }
-                whatsappMessageTextarea.value = generateMessage(guest);
-                whatsappMessageTextarea.classList.remove('hidden');
-                copyMessageBtn.classList.remove('hidden');
-                copyMessageBtn.textContent = 'Salin Pesan';
-            });
+            if(generateBtn) {
+                generateBtn.addEventListener('click', () => {
+                    const guest = adminGuestNameInput.value.trim();
+                    if (!guest) {
+                        alert('Silakan masukkan nama tamu terlebih dahulu.');
+                        return;
+                    }
+                    whatsappMessageTextarea.value = generateMessage(guest);
+                    whatsappMessageTextarea.classList.remove('hidden');
+                    copyMessageBtn.classList.remove('hidden');
+                    copyMessageBtn.textContent = 'Salin Pesan';
+                });
+            }
             
-            whatsappMessageTextarea.addEventListener('input', () => {
-                copyMessageBtn.textContent = 'Salin Perubahan';
-            });
+            if(whatsappMessageTextarea) {
+                whatsappMessageTextarea.addEventListener('input', () => {
+                    copyMessageBtn.textContent = 'Salin Perubahan';
+                });
+            }
 
-            copyMessageBtn.addEventListener('click', () => {
-                const message = whatsappMessageTextarea.value;
-                const textArea = document.createElement("textarea");
-                textArea.value = message;
-                textArea.style.position = 'fixed';
-                textArea.style.top = '-9999px';
-                document.body.appendChild(textArea);
-                textArea.select();
-                try {
-                    document.execCommand('copy');
-                    copyMessageBtn.textContent = 'Tersalin!';
-                    setTimeout(() => {
-                        // Reset button text based on whether it was edited
-                        const originalMessage = generateMessage(adminGuestNameInput.value.trim());
-                        copyMessageBtn.textContent = (whatsappMessageTextarea.value === originalMessage) ? 'Salin Pesan' : 'Salin Perubahan';
-                    }, 2000);
-                } catch (err)
- {
-                    alert('Gagal menyalin pesan.');
-                } finally {
-                    document.body.removeChild(textArea);
-                }
-            });
+            if(copyMessageBtn) {
+                copyMessageBtn.addEventListener('click', () => {
+                    const message = whatsappMessageTextarea.value;
+                    const textArea = document.createElement("textarea");
+                    textArea.value = message;
+                    textArea.style.position = 'fixed';
+                    textArea.style.top = '-9999px';
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    try {
+                        document.execCommand('copy');
+                        copyMessageBtn.textContent = 'Tersalin!';
+                        setTimeout(() => {
+                            // Reset button text based on whether it was edited
+                            const originalMessage = generateMessage(adminGuestNameInput.value.trim());
+                            copyMessageBtn.textContent = (whatsappMessageTextarea.value === originalMessage) ? 'Salin Pesan' : 'Salin Perubahan';
+                        }, 2000);
+                    } catch (err) {
+                        alert('Gagal menyalin pesan.');
+                    } finally {
+                        document.body.removeChild(textArea);
+                    }
+                });
+            }
             
             // --- Settings Management ---
             document.querySelectorAll('.edit-toggle-btn').forEach(button => {
@@ -416,33 +428,40 @@ Wassalamu'alaikum Warahmatullahi Wabarakatuh
                     }
                 });
             });
+            
+            if(addSongBtn) {
+                addSongBtn.addEventListener('click', () => {
+                    addSongForm.classList.remove('hidden');
+                    addSongBtn.classList.add('hidden');
+                });
+            }
 
-            addSongBtn.addEventListener('click', () => {
-                addSongForm.classList.remove('hidden');
-                addSongBtn.classList.add('hidden');
-            });
-
-            cancelAddSongBtn.addEventListener('click', () => {
-                addSongForm.classList.add('hidden');
-                addSongBtn.classList.remove('hidden');
-                newSongTitleInput.value = '';
-                newSongUrlInput.value = '';
-            });
-
-            saveNewSongBtn.addEventListener('click', () => {
-                const title = newSongTitleInput.value.trim();
-                const url = newSongUrlInput.value.trim();
-                if (!title || !url) {
-                    alert('Judul dan URL lagu tidak boleh kosong.');
-                    return;
-                }
-                playlist.push({ title, url });
-                renderPlaylist();
-                // Reset and hide form
-                cancelAddSongBtn.click();
-            });
+            if(cancelAddSongBtn) {
+                cancelAddSongBtn.addEventListener('click', () => {
+                    addSongForm.classList.add('hidden');
+                    addSongBtn.classList.remove('hidden');
+                    newSongTitleInput.value = '';
+                    newSongUrlInput.value = '';
+                });
+            }
+            
+            if(saveNewSongBtn){
+                saveNewSongBtn.addEventListener('click', () => {
+                    const title = newSongTitleInput.value.trim();
+                    const url = newSongUrlInput.value.trim();
+                    if (!title || !url) {
+                        alert('Judul dan URL lagu tidak boleh kosong.');
+                        return;
+                    }
+                    playlist.push({ title, url });
+                    renderPlaylist();
+                    // Reset and hide form
+                    cancelAddSongBtn.click();
+                });
+            }
             
             function renderPlaylist() {
+                if(!playlistContainer) return;
                 playlistContainer.innerHTML = '';
                 if (playlist.length === 0) {
                     playlistContainer.appendChild(noSongText);
@@ -462,13 +481,15 @@ Wassalamu'alaikum Warahmatullahi Wabarakatuh
                 musicPlaylistInput.value = JSON.stringify(playlist); // Update hidden input for form submission
             }
             
-            playlistContainer.addEventListener('click', (e) => {
-                if(e.target.classList.contains('remove-song-btn')) {
-                    const index = parseInt(e.target.dataset.index, 10);
-                    playlist.splice(index, 1);
-                    renderPlaylist();
-                }
-            });
+            if(playlistContainer) {
+                playlistContainer.addEventListener('click', (e) => {
+                    if(e.target.classList.contains('remove-song-btn')) {
+                        const index = parseInt(e.target.dataset.index, 10);
+                        playlist.splice(index, 1);
+                        renderPlaylist();
+                    }
+                });
+            }
 
             // --- Fetch All Data (Settings & Comments) from Google Sheets ---
             async function fetchAllData() {
@@ -493,13 +514,18 @@ Wassalamu'alaikum Warahmatullahi Wabarakatuh
                 document.querySelectorAll('.bg-hero').forEach(el => {
                     el.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('${coverUrl}')`;
                 });
-                document.getElementById('cover_photo_url_input').value = settings.cover_photo_url || '';
+                const coverPhotoInput = document.getElementById('cover_photo_url_input');
+                if(coverPhotoInput) coverPhotoInput.value = settings.cover_photo_url || '';
                 
                 // Apply Map Links
-                document.getElementById('map-link-akad').href = settings.maps_link_akad || '#';
-                document.getElementById('map-link-resepsi').href = settings.maps_link_resepsi || '#';
-                document.getElementById('maps_link_akad_input').value = settings.maps_link_akad || '';
-                document.getElementById('maps_link_resepsi_input').value = settings.maps_link_resepsi || '';
+                const mapLinkAkad = document.getElementById('map-link-akad');
+                if(mapLinkAkad) mapLinkAkad.href = settings.maps_link_akad || '#';
+                const mapLinkResepsi = document.getElementById('map-link-resepsi');
+                if(mapLinkResepsi) mapLinkResepsi.href = settings.maps_link_resepsi || '#';
+                const mapsLinkAkadInput = document.getElementById('maps_link_akad_input');
+                if(mapsLinkAkadInput) mapsLinkAkadInput.value = settings.maps_link_akad || '';
+                const mapsLinkResepsiInput = document.getElementById('maps_link_resepsi_input');
+                if(mapsLinkResepsiInput) mapsLinkResepsiInput.value = settings.maps_link_resepsi || '';
 
                 // Apply Music Playlist
                 try {
@@ -514,6 +540,7 @@ Wassalamu'alaikum Warahmatullahi Wabarakatuh
 
             function displayComments(comments) {
                 const commentsContainer = document.getElementById('comments-container');
+                if(!commentsContainer) return;
                 commentsContainer.innerHTML = ''; // Clear previous content, including the loading message
 
                 if (comments.length > 0) {
@@ -561,6 +588,7 @@ Wassalamu'alaikum Warahmatullahi Wabarakatuh
 
             function displaySplashComments(comments) {
                 const splashCommentsContainer = document.getElementById('splash-comments');
+                if(!splashCommentsContainer) return;
                 splashCommentsContainer.innerHTML = ''; 
                 if (commentInterval) clearInterval(commentInterval);
 
@@ -573,15 +601,23 @@ Wassalamu'alaikum Warahmatullahi Wabarakatuh
                         const name = comment.name;
                         const message = `berkomentar : "${comment.message}"`;
 
-                        splashCommentsContainer.innerHTML = `
-                            <div class="flex items-start justify-center text-sm opacity-0 transition-opacity duration-700 ease-in-out w-full">
-                                <span class="bg-blue-600/70 text-white font-semibold px-3 py-1 rounded-full text-xs whitespace-nowrap mr-2">- ${name} -</span>
-                                <div class="text-white text-left ml-1" style="text-shadow: 0 1px 5px rgba(0,0,0,0.8);"></div>
-                            </div>
-                        `;
+                        // Build elements programmatically to avoid rendering issues
+                        const lineContainer = document.createElement('div');
+                        lineContainer.className = 'flex items-start justify-center text-sm opacity-0 transition-opacity duration-700 ease-in-out w-full';
+
+                        const nameSpan = document.createElement('span');
+                        nameSpan.className = 'bg-blue-600/70 text-white font-semibold px-3 py-1 rounded-full text-xs whitespace-nowrap mr-2';
+                        nameSpan.textContent = `- ${name} -`;
+
+                        const textContainer = document.createElement('div');
+                        textContainer.className = 'text-white text-left ml-1';
+                        textContainer.style.textShadow = '0 1px 5px rgba(0,0,0,0.8)';
+
+                        lineContainer.appendChild(nameSpan);
+                        lineContainer.appendChild(textContainer);
                         
-                        const lineContainer = splashCommentsContainer.querySelector('div');
-                        const textContainer = splashCommentsContainer.querySelector('div:last-child');
+                        splashCommentsContainer.innerHTML = ''; // Clear previous before adding new
+                        splashCommentsContainer.appendChild(lineContainer);
                         
                         setTimeout(() => lineContainer.classList.remove('opacity-0'), 100);
                         
@@ -604,18 +640,21 @@ Wassalamu'alaikum Warahmatullahi Wabarakatuh
             fetchAllData();
 
             // --- Event Listeners & Main Logic ---
-            openButton.addEventListener('click', () => {
-                splashScreen.style.opacity = '0';
-                setTimeout(() => {
-                    splashScreen.style.display = 'none';
-                    mainContent.style.opacity = '1';
-                    document.body.classList.remove('splash-active'); // Izinkan vertical scroll
-                    if (playlist.length > 0) {
-                       document.getElementById('background-music').play().catch(e => console.log("Autoplay musik dicegah."));
-                    }
-                    AOS.refresh();
-                }, 1000);
-            });
+            if(openButton) {
+                openButton.addEventListener('click', () => {
+                    splashScreen.style.opacity = '0';
+                    setTimeout(() => {
+                        splashScreen.style.display = 'none';
+                        mainContent.style.opacity = '1';
+                        document.body.classList.remove('splash-active'); // Izinkan vertical scroll
+                        if (playlist.length > 0) {
+                            const musicPlayer = document.getElementById('background-music');
+                           if(musicPlayer) musicPlayer.play().catch(e => console.log("Autoplay musik dicegah."));
+                        }
+                        AOS.refresh();
+                    }, 1000);
+                });
+            }
             
             // --- Music Player Logic ---
             const musicPlayer = document.getElementById('background-music');
@@ -625,46 +664,71 @@ Wassalamu'alaikum Warahmatullahi Wabarakatuh
 
             function setupMusicPlayer() {
                 if (playlist.length > 0) {
-                    musicToggle.style.display = 'flex';
-                    musicPlayer.src = playlist[currentTrackIndex].url;
-                    musicPlayer.load();
+                    if(musicToggle) musicToggle.style.display = 'flex';
+                    if(musicPlayer) {
+                        musicPlayer.src = playlist[currentTrackIndex].url;
+                        musicPlayer.load();
+                    }
                 } else {
-                    musicToggle.style.display = 'none';
+                    if(musicToggle) musicToggle.style.display = 'none';
                 }
             }
             
-            musicToggle.addEventListener('click', () => {
-                if (musicPlayer.paused) {
-                    musicPlayer.play();
-                    musicOnIcon.classList.remove('hidden');
-                    musicOffIcon.classList.add('hidden');
-                } else {
-                    musicPlayer.pause();
-                    musicOnIcon.classList.add('hidden');
-                    musicOffIcon.classList.remove('hidden');
-                }
-            });
+            if (musicToggle && musicPlayer && musicOnIcon && musicOffIcon) {
+                musicToggle.addEventListener('click', () => {
+                    if (musicPlayer.paused) {
+                        musicPlayer.play();
+                        musicOnIcon.classList.remove('hidden');
+                        musicOffIcon.classList.add('hidden');
+                    } else {
+                        musicPlayer.pause();
+                        musicOnIcon.classList.add('hidden');
+                        musicOffIcon.classList.remove('hidden');
+                    }
+                });
 
-            musicPlayer.addEventListener('ended', () => {
-                currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
-                setupMusicPlayer();
-                musicPlayer.play();
-            });
+                musicPlayer.addEventListener('ended', () => {
+                    currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+                    setupMusicPlayer();
+                    musicPlayer.play();
+                });
+            }
+
 
             // Countdown Timer
             const countDownDate = new Date("Sep 28, 2025 10:00:00").getTime();
-            setInterval(() => {
+            const countdownInterval = setInterval(() => {
                 const distance = countDownDate - new Date().getTime();
-                document.getElementById("days").innerText = String(Math.floor(distance/(1000*60*60*24))).padStart(2,'0');
-                document.getElementById("hours").innerText = String(Math.floor((distance%(1000*60*60*24))/(1000*60*60))).padStart(2,'0');
-                document.getElementById("minutes").innerText = String(Math.floor((distance%(1000*60*60))/(1000*60))).padStart(2,'0');
-                document.getElementById("seconds").innerText = String(Math.floor((distance%(1000*60))/1000)).padStart(2,'0');
-                if (distance < 0) document.getElementById("countdown").innerHTML = "<div class='text-2xl'>Acara Telah Berlangsung</div>";
+                const daysEl = document.getElementById("days");
+                const hoursEl = document.getElementById("hours");
+                const minutesEl = document.getElementById("minutes");
+                const secondsEl = document.getElementById("seconds");
+
+                if(daysEl && hoursEl && minutesEl && secondsEl) {
+                    daysEl.innerText = String(Math.floor(distance/(1000*60*60*24))).padStart(2,'0');
+                    hoursEl.innerText = String(Math.floor((distance%(1000*60*60*24))/(1000*60*60))).padStart(2,'0');
+                    minutesEl.innerText = String(Math.floor((distance%(1000*60*60))/(1000*60))).padStart(2,'0');
+                    secondsEl.innerText = String(Math.floor((distance%(1000*60))/1000)).padStart(2,'0');
+                }
+
+                if (distance < 0) {
+                    clearInterval(countdownInterval);
+                    const countdownEl = document.getElementById("countdown");
+                    if(countdownEl) countdownEl.innerHTML = "<div class='text-2xl'>Acara Telah Berlangsung</div>";
+                }
             }, 1000);
 
             // Form Submissions (Comments & Settings)
-            document.getElementById('guestbook-form').addEventListener('submit', handleFormSubmit);
-            document.getElementById('settings-form').addEventListener('submit', handleFormSubmit);
+            const guestbookForm = document.getElementById('guestbook-form');
+            if (guestbookForm) {
+                guestbookForm.addEventListener('submit', handleFormSubmit);
+            }
+
+            const settingsForm = document.getElementById('settings-form');
+            if (settingsForm) {
+                settingsForm.addEventListener('submit', handleFormSubmit);
+            }
+
 
             function handleFormSubmit(e) {
                 e.preventDefault();
@@ -677,7 +741,8 @@ Wassalamu'alaikum Warahmatullahi Wabarakatuh
 
                 // Ensure playlist data is up-to-date before submitting settings
                 if (form.id === 'settings-form') {
-                    musicPlaylistInput.value = JSON.stringify(playlist);
+                    const musicPlaylistInput = document.getElementById('music_playlist_input');
+                    if(musicPlaylistInput) musicPlaylistInput.value = JSON.stringify(playlist);
                 }
 
                 fetch(scriptURL, { method: 'POST', body: new FormData(form)})
@@ -686,9 +751,13 @@ Wassalamu'alaikum Warahmatullahi Wabarakatuh
                         if (data.result === 'success') {
                             submitButton.textContent = 'Tersimpan!';
                             if (form.id === 'guestbook-form') {
-                                document.getElementById('form-status').textContent = 'Terima kasih, ucapan Anda telah tersimpan!';
+                                const formStatus = document.getElementById('form-status');
+                                if(formStatus) formStatus.textContent = 'Terima kasih, ucapan Anda telah tersimpan!';
                                 form.reset();
-                                if(isGuest) nameInput.value = guestName;
+                                if(isGuest) {
+                                    const nameInput = document.getElementById('name');
+                                    if(nameInput) nameInput.value = guestName;
+                                }
                                 fetchAllData();
                             } else {
                                 // Reload settings to confirm changes
@@ -708,7 +777,8 @@ Wassalamu'alaikum Warahmatullahi Wabarakatuh
                             submitButton.disabled = false;
                             submitButton.textContent = originalButtonText;
                             if (form.id === 'guestbook-form') {
-                                document.getElementById('form-status').textContent = '';
+                                const formStatus = document.getElementById('form-status');
+                                if(formStatus) formStatus.textContent = '';
                             }
                         }, 2000);
                     });
