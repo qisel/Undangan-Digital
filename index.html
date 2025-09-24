@@ -33,17 +33,6 @@
         #admin-panel {
             transition: transform 0.3s ease-out, opacity 0.3s ease-out;
         }
-        /* Animasi untuk komentar di sampul */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .comment-fade-in {
-            /* State awal sebelum animasi */
-            opacity: 0; 
-            /* Menjalankan animasi */
-            animation: fadeIn 1s ease-out forwards;
-        }
     </style>
 </head>
 <body class="bg-stone-100 max-w-lg mx-auto overflow-x-hidden splash-active">
@@ -65,9 +54,8 @@
                 <p id="guest-name" class="text-2xl font-semibold mt-2 bg-black/30 backdrop-blur-sm px-4 py-2 rounded-lg">Admin View</p>
             </div>
             
-            <!-- Last Comments Preview (No Background) -->
-            <div id="splash-comments" class="mt-8 text-sm w-full max-w-xs text-center space-y-3">
-                <!-- Comments will be injected here by JavaScript -->
+            <!-- Rotating comments with typing effect will be injected here -->
+            <div id="splash-comments" class="mt-8 w-full max-w-md min-h-[48px] flex items-center justify-center px-4">
             </div>
     
             <button id="open-invitation" class="mt-8 bg-stone-700/80 hover:bg-stone-600/80 text-white font-semibold py-3 px-8 rounded-full shadow-lg transition-transform transform hover:scale-105 backdrop-blur-md">
@@ -107,7 +95,7 @@
                     <label class="font-semibold text-white/90">Foto Sampul</label>
                     <div class="flex items-center space-x-2 mt-1">
                         <input type="url" name="cover_photo_url" id="cover_photo_url_input" placeholder="Belum ada URL foto" class="w-full px-3 py-2 bg-white/10 border border-white/20 text-white placeholder-white/50 rounded-md text-xs" readonly>
-                        <button type="button" id="change-cover-btn" data-target="cover_photo_url_input" class="edit-toggle-btn bg-gray-600 hover:bg-gray-500 text-white px-3 py-2 rounded-md whitespace-nowrap">Ganti</button>
+                        <button type="button" data-target="cover_photo_url_input" class="edit-toggle-btn bg-gray-600 hover:bg-gray-500 text-white px-3 py-2 rounded-md whitespace-nowrap">Ganti</button>
                     </div>
                 </div>
 
@@ -268,7 +256,7 @@
                     <p id="form-status" class="text-center mt-4 text-sm"></p>
                 </form>
             </div>
-            <div id="comments-container" class="max-w-md mx-auto mt-12 text-left space-y-4">
+            <div id="comments-container" class="max-w-md mx-auto mt-12 text-left space-y-3">
                 <p id="loading-comments" class="text-center text-stone-600 animate-pulse">Memuat komentar...</p>
             </div>
         </section>
@@ -548,28 +536,63 @@ Wassalamu'alaikum Warahmatullahi Wabarakatuh
                 }
             }
 
+            let commentInterval; 
+
+            function typeWordsEffect(element, text, speed = 250) {
+                const words = text.split(' ');
+                let i = 0;
+                element.textContent = '';
+                element.style.borderRight = '2px solid white';
+                element.style.paddingRight = '3px';
+
+                function typing() {
+                    if (i < words.length) {
+                        element.textContent += words[i] + ' ';
+                        i++;
+                        setTimeout(typing, speed);
+                    } else {
+                        element.textContent = element.textContent.trim();
+                        element.style.borderRight = 'none';
+                        element.style.paddingRight = '0';
+                    }
+                }
+                typing();
+            }
+
             function displaySplashComments(comments) {
                 const splashCommentsContainer = document.getElementById('splash-comments');
-                splashCommentsContainer.innerHTML = ''; // Hapus isi sebelumnya
-
-                const heading = document.createElement('h3');
-                heading.className = 'text-sm font-semibold tracking-wider text-white/90 mb-2 opacity-80';
-                heading.textContent = 'Doa & Ucapan Para Tamu';
-                splashCommentsContainer.appendChild(heading);
+                splashCommentsContainer.innerHTML = ''; 
+                if (commentInterval) clearInterval(commentInterval);
 
                 if (comments.length > 0) {
-                    const latestComments = comments.slice(0, 3); // Ambil 3 komentar terbaru
-                    latestComments.forEach((comment, index) => {
-                        const p = document.createElement('p');
-                        // Terapkan class animasi dan style
-                        p.className = 'text-white comment-fade-in';
-                        p.style.textShadow = '0 1px 5px rgba(0,0,0,0.8)';
-                        // Atur delay animasi agar muncul satu per satu
-                        p.style.animationDelay = `${index * 1.2}s`;
+                    let currentIndex = 0;
+                    const latestComments = comments.slice(0, 5);
+
+                    const showNextComment = () => {
+                        const comment = latestComments[currentIndex];
+                        const name = comment.name;
+                        const message = `berkomentar : "${comment.message}"`;
+
+                        splashCommentsContainer.innerHTML = `
+                            <div class="flex items-start justify-center text-sm opacity-0 transition-opacity duration-700 ease-in-out w-full">
+                                <span class="bg-blue-600/70 text-white font-semibold px-3 py-1 rounded-full text-xs whitespace-nowrap mr-2">- ${name} -</span>
+                                <div class="text-white text-left ml-1" style="text-shadow: 0 1px 5px rgba(0,0,0,0.8);"></div>
+                            </div>
+                        `;
                         
-                        p.innerHTML = `<span class="italic">"${comment.message}"</span><br><span class="font-semibold text-xs not-italic">- ${comment.name} -</span>`;
-                        splashCommentsContainer.appendChild(p);
-                    });
+                        const lineContainer = splashCommentsContainer.querySelector('div');
+                        const textContainer = splashCommentsContainer.querySelector('div:last-child');
+                        
+                        setTimeout(() => lineContainer.classList.remove('opacity-0'), 100);
+                        
+                        typeWordsEffect(textContainer, message);
+                        
+                        currentIndex = (currentIndex + 1) % latestComments.length;
+                    };
+                    
+                    showNextComment();
+                    commentInterval = setInterval(showNextComment, 8000); 
+
                 } else {
                     const p = document.createElement('p');
                     p.className = 'text-white/80 italic';
