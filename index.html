@@ -39,6 +39,7 @@
 
     <!-- Music Player -->
     <audio id="background-music" loop></audio>
+    <audio id="preview-music"></audio> <!-- Audio element for previews -->
     <button id="music-toggle" class="fixed top-5 left-4 z-[60] bg-white/70 backdrop-blur-sm p-3 rounded-full shadow-lg">
         <svg id="music-on-icon" class="text-stone-700" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
         <svg id="music-off-icon" class="hidden text-stone-700" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="1" y1="1" x2="23" y2="23"></line><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"></path><path d="M17 16.95A7 7 0 0 1 5 12v-2m14 0v-2a3 3 0 0 0-5.94-.6"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
@@ -97,7 +98,7 @@
                 <div>
                     <label class="font-semibold text-white/90">Foto Sampul</label>
                     <div class="flex items-center space-x-2 mt-1">
-                        <input type="url" name="cover_photo_url" id="cover_photo_url_input" placeholder="Belum ada URL foto" class="w-full px-3 py-2 bg-white/10 border border-white/20 text-white placeholder-white/50 rounded-md text-xs" readonly>
+                        <input type="url" name="cover_photo_url" id="cover_photo_url_input" placeholder="URL Foto Sampul..." class="w-full px-3 py-2 bg-white/10 border border-white/20 text-white placeholder-white/50 rounded-md text-xs" readonly>
                         <button type="button" data-target="cover_photo_url_input" class="edit-toggle-btn bg-gray-600 hover:bg-gray-500 text-white px-3 py-2 rounded-md whitespace-nowrap">Ganti</button>
                     </div>
                 </div>
@@ -106,7 +107,7 @@
                 <div>
                     <label class="font-semibold text-white/90">Link Peta Akad</label>
                     <div class="flex items-center space-x-2 mt-1">
-                        <input type="url" name="maps_link_akad" id="maps_link_akad_input" placeholder="Belum ada URL peta" class="w-full px-3 py-2 bg-white/10 border border-white/20 text-white placeholder-white/50 rounded-md text-xs" readonly>
+                        <input type="url" name="maps_link_akad" id="maps_link_akad_input" placeholder="Contoh: https://maps.app.goo.gl/..." class="w-full px-3 py-2 bg-white/10 border border-white/20 text-white placeholder-white/50 rounded-md text-xs" readonly>
                         <button type="button" data-target="maps_link_akad_input" class="edit-toggle-btn bg-gray-600 hover:bg-gray-500 text-white px-3 py-2 rounded-md whitespace-nowrap">Ganti</button>
                     </div>
                 </div>
@@ -115,7 +116,7 @@
                 <div>
                     <label class="font-semibold text-white/90">Link Peta Resepsi</label>
                     <div class="flex items-center space-x-2 mt-1">
-                        <input type="url" name="maps_link_resepsi" id="maps_link_resepsi_input" placeholder="Belum ada URL peta" class="w-full px-3 py-2 bg-white/10 border border-white/20 text-white placeholder-white/50 rounded-md text-xs" readonly>
+                        <input type="url" name="maps_link_resepsi" id="maps_link_resepsi_input" placeholder="Contoh: https://maps.app.goo.gl/..." class="w-full px-3 py-2 bg-white/10 border border-white/20 text-white placeholder-white/50 rounded-md text-xs" readonly>
                         <button type="button" data-target="maps_link_resepsi_input" class="edit-toggle-btn bg-gray-600 hover:bg-gray-500 text-white px-3 py-2 rounded-md whitespace-nowrap">Ganti</button>
                     </div>
                 </div>
@@ -330,6 +331,7 @@
             // Global State
             let playlist = [];
             let currentTrackIndex = 0;
+            let currentPreview = null;
 
             // URL & Guest Info
             const urlParams = new URLSearchParams(window.location.search);
@@ -362,13 +364,12 @@
             const newSongTitleInput = document.getElementById('new-song-title');
             const newSongUrlInput = document.getElementById('new-song-url');
 
-
             // --- Guest vs Admin Logic ---
-            guestNameEl.textContent = guestName;
+            if(guestNameEl) guestNameEl.textContent = guestName;
             if (isGuest) {
-                nameInput.value = guestName;
+                if(nameInput) nameInput.value = guestName;
             } else { // Admin View
-                openAdminBtn.classList.remove('hidden');
+                if(openAdminBtn) openAdminBtn.classList.remove('hidden');
             }
 
             // --- Admin Panel Functions ---
@@ -425,7 +426,7 @@ Wassalamu'alaikum Warahmatullahi Wabarakatuh
             
             if(whatsappMessageTextarea) {
                 whatsappMessageTextarea.addEventListener('input', () => {
-                    copyMessageBtn.textContent = 'Salin Perubahan';
+                    if(copyMessageBtn) copyMessageBtn.textContent = 'Salin Perubahan';
                 });
             }
 
@@ -442,7 +443,6 @@ Wassalamu'alaikum Warahmatullahi Wabarakatuh
                         document.execCommand('copy');
                         copyMessageBtn.textContent = 'Tersalin!';
                         setTimeout(() => {
-                            // Reset button text based on whether it was edited
                             const originalMessage = generateMessage(adminGuestNameInput.value.trim());
                             copyMessageBtn.textContent = (whatsappMessageTextarea.value === originalMessage) ? 'Salin Pesan' : 'Salin Perubahan';
                         }, 2000);
@@ -485,8 +485,8 @@ Wassalamu'alaikum Warahmatullahi Wabarakatuh
                 cancelAddSongBtn.addEventListener('click', () => {
                     addSongForm.classList.add('hidden');
                     addSongBtn.classList.remove('hidden');
-                    newSongTitleInput.value = '';
-                    newSongUrlInput.value = '';
+                    if(newSongTitleInput) newSongTitleInput.value = '';
+                    if(newSongUrlInput) newSongUrlInput.value = '';
                 });
             }
             
@@ -506,41 +506,82 @@ Wassalamu'alaikum Warahmatullahi Wabarakatuh
             }
             
             function renderPlaylist() {
-                if(!playlistContainer) return;
+                if(!playlistContainer || !noSongText) return;
                 playlistContainer.innerHTML = '';
                 if (playlist.length === 0) {
                     playlistContainer.appendChild(noSongText);
                     noSongText.classList.remove('hidden');
                 } else {
-                    noSongText.classList.add('hidden');
+                    if(!noSongText.classList.contains('hidden')) noSongText.classList.add('hidden');
                     playlist.forEach((song, index) => {
                         const songEl = document.createElement('div');
-                        songEl.className = 'flex items-center justify-between bg-white/10 p-2 rounded-md';
+                        songEl.className = 'flex items-center justify-between bg-white/10 p-1.5 rounded-md';
                         songEl.innerHTML = `
-                            <span class="truncate text-white/90">${song.title}</span>
-                            <button type="button" data-index="${index}" class="remove-song-btn text-red-400 hover:text-red-300 font-bold text-lg">&times;</button>
+                            <div class="flex items-center space-x-2 truncate w-full">
+                                <button type="button" data-url="${song.url}" class="preview-song-btn text-cyan-400 hover:text-cyan-300 text-lg">▶</button>
+                                <span class="truncate text-white/90">${song.title}</span>
+                            </div>
+                            <div class="flex items-center space-x-2 flex-shrink-0">
+                                <button type="button" title="Jadikan Default" data-index="${index}" class="default-song-btn text-yellow-400 hover:text-yellow-300 text-lg">${index === 0 ? '★' : '☆'}</button>
+                                <button type="button" title="Hapus" data-index="${index}" class="remove-song-btn text-red-400 hover:text-red-300 font-bold text-lg">&times;</button>
+                            </div>
                         `;
                         playlistContainer.appendChild(songEl);
                     });
                 }
-                musicPlaylistInput.value = JSON.stringify(playlist); // Update hidden input for form submission
+                if(musicPlaylistInput) musicPlaylistInput.value = JSON.stringify(playlist);
             }
             
             if(playlistContainer) {
+                const previewPlayer = document.getElementById('preview-music');
+                
                 playlistContainer.addEventListener('click', (e) => {
-                    if(e.target.classList.contains('remove-song-btn')) {
-                        const index = parseInt(e.target.dataset.index, 10);
+                    const target = e.target.closest('button');
+                    if(!target) return;
+
+                    if(target.classList.contains('remove-song-btn')) {
+                        const index = parseInt(target.dataset.index, 10);
                         playlist.splice(index, 1);
                         renderPlaylist();
+                    } else if(target.classList.contains('default-song-btn')) {
+                        const index = parseInt(target.dataset.index, 10);
+                        if (index > 0) {
+                            const [item] = playlist.splice(index, 1);
+                            playlist.unshift(item);
+                            renderPlaylist();
+                        }
+                    } else if(target.classList.contains('preview-song-btn')) {
+                        const url = target.dataset.url;
+                        if (previewPlayer.src === url && !previewPlayer.paused) {
+                            previewPlayer.pause();
+                            target.textContent = '▶';
+                        } else {
+                            document.querySelectorAll('.preview-song-btn').forEach(btn => btn.textContent = '▶');
+                            previewPlayer.src = url;
+                            previewPlayer.play();
+                            target.textContent = '❚❚';
+                        }
                     }
                 });
+
+                if(previewPlayer) {
+                    previewPlayer.addEventListener('pause', () => {
+                        document.querySelectorAll('.preview-song-btn').forEach(btn => btn.textContent = '▶');
+                    });
+                     previewPlayer.addEventListener('ended', () => {
+                        document.querySelectorAll('.preview-song-btn').forEach(btn => btn.textContent = '▶');
+                    });
+                }
             }
 
-            // --- Fetch All Data (Settings & Comments) from Google Sheets ---
+            // --- Fetch All Data ---
             async function fetchAllData() {
                 try {
                     if (scriptURL.includes('GANTI_DENGAN')) throw new Error('URL Google Apps Script belum diatur.');
                     const response = await fetch(scriptURL);
+                    if (!response.ok) {
+                        throw new Error(`Network response was not ok, status: ${response.status}`);
+                    }
                     const data = await response.json();
                     if (data.error) throw new Error(data.error);
 
@@ -549,7 +590,13 @@ Wassalamu'alaikum Warahmatullahi Wabarakatuh
                     displaySplashComments(data.comments || []);
                 } catch (error) {
                     console.error('Error fetching data:', error);
-                    alert('Gagal memuat data undangan. \n\nDetail Error: ' + error.message);
+                    let userFriendlyMessage = 'Gagal memuat data undangan. Pastikan koneksi internet Anda stabil.';
+                    if (error.message.includes('openById')) {
+                        userFriendlyMessage = 'Gagal terhubung ke database.\n\nPastikan ID Google Sheet sudah benar di dalam file Google Apps Script (Code.gs) dan script sudah di-Deploy ulang.';
+                    } else if (error.message.includes('Network response')) {
+                         userFriendlyMessage = 'Gagal terhubung ke server. Periksa kembali URL Google Apps Script Anda dan pastikan sudah di-Deploy dengan benar (dengan akses "Anyone").';
+                    }
+                    alert(userFriendlyMessage);
                 }
             }
 
@@ -565,10 +612,11 @@ Wassalamu'alaikum Warahmatullahi Wabarakatuh
                 // Apply Map Links
                 const mapLinkAkad = document.getElementById('map-link-akad');
                 if(mapLinkAkad) mapLinkAkad.href = settings.maps_link_akad || '#';
-                const mapLinkResepsi = document.getElementById('map-link-resepsi');
-                if(mapLinkResepsi) mapLinkResepsi.href = settings.maps_link_resepsi || '#';
                 const mapsLinkAkadInput = document.getElementById('maps_link_akad_input');
                 if(mapsLinkAkadInput) mapsLinkAkadInput.value = settings.maps_link_akad || '';
+
+                const mapLinkResepsi = document.getElementById('map-link-resepsi');
+                if(mapLinkResepsi) mapLinkResepsi.href = settings.maps_link_resepsi || '#';
                 const mapsLinkResepsiInput = document.getElementById('maps_link_resepsi_input');
                 if(mapsLinkResepsiInput) mapsLinkResepsiInput.value = settings.maps_link_resepsi || '';
 
@@ -577,7 +625,6 @@ Wassalamu'alaikum Warahmatullahi Wabarakatuh
                     playlist = JSON.parse(settings.music_playlist || '[]');
                 } catch(e) {
                     playlist = [];
-                    console.error("Gagal mem-parsing playlist dari Google Sheets.", e);
                 }
                 renderPlaylist();
                 setupMusicPlayer();
@@ -586,7 +633,7 @@ Wassalamu'alaikum Warahmatullahi Wabarakatuh
             function displayComments(comments) {
                 const commentsContainer = document.getElementById('comments-container');
                 if(!commentsContainer) return;
-                commentsContainer.innerHTML = ''; // Clear previous content, including the loading message
+                commentsContainer.innerHTML = ''; 
 
                 if (comments.length > 0) {
                     comments.forEach(comment => {
@@ -603,7 +650,6 @@ Wassalamu'alaikum Warahmatullahi Wabarakatuh
                         commentsContainer.appendChild(commentDiv);
                     });
                 } else {
-                   // If no comments, add the message directly
                    commentsContainer.innerHTML = '<p class="text-center text-stone-600">Jadilah yang pertama memberi ucapan!</p>';
                 }
             }
@@ -645,8 +691,7 @@ Wassalamu'alaikum Warahmatullahi Wabarakatuh
                         const comment = latestComments[currentIndex];
                         const name = comment.name;
                         const message = `berkomentar : "${comment.message}"`;
-
-                        // Build elements programmatically to avoid rendering issues
+                        
                         const lineContainer = document.createElement('div');
                         lineContainer.className = 'flex items-start justify-center text-sm opacity-0 transition-opacity duration-700 ease-in-out w-full';
 
@@ -661,7 +706,7 @@ Wassalamu'alaikum Warahmatullahi Wabarakatuh
                         lineContainer.appendChild(nameSpan);
                         lineContainer.appendChild(textContainer);
                         
-                        splashCommentsContainer.innerHTML = ''; // Clear previous before adding new
+                        splashCommentsContainer.innerHTML = ''; 
                         splashCommentsContainer.appendChild(lineContainer);
                         
                         setTimeout(() => lineContainer.classList.remove('opacity-0'), 100);
@@ -691,10 +736,9 @@ Wassalamu'alaikum Warahmatullahi Wabarakatuh
                     setTimeout(() => {
                         splashScreen.style.display = 'none';
                         mainContent.style.opacity = '1';
-                        document.body.classList.remove('splash-active'); // Izinkan vertical scroll
+                        document.body.classList.remove('splash-active');
                         navButtons.classList.remove('hidden');
                         if (playlist.length > 0) {
-                            const musicPlayer = document.getElementById('background-music');
                            if(musicPlayer) musicPlayer.play().catch(e => console.log("Autoplay musik dicegah."));
                         }
                         AOS.refresh();
@@ -722,13 +766,10 @@ Wassalamu'alaikum Warahmatullahi Wabarakatuh
                 }, 10);
                 document.body.classList.add('splash-active');
                 navButtons.classList.add('hidden');
-                const musicPlayer = document.getElementById('background-music');
-                const musicOnIcon = document.getElementById('music-on-icon');
-                const musicOffIcon = document.getElementById('music-off-icon');
                 if (musicPlayer && !musicPlayer.paused) {
                     musicPlayer.pause();
-                    musicOnIcon.classList.add('hidden');
-                    musicOffIcon.classList.remove('hidden');
+                    if(musicOnIcon) musicOnIcon.classList.add('hidden');
+                    if(musicOffIcon) musicOffIcon.classList.remove('hidden');
                 }
             });
             
@@ -742,6 +783,7 @@ Wassalamu'alaikum Warahmatullahi Wabarakatuh
                 if (playlist.length > 0) {
                     if(musicToggle) musicToggle.style.display = 'flex';
                     if(musicPlayer) {
+                        currentTrackIndex = 0; // Always start from the default track
                         musicPlayer.src = playlist[currentTrackIndex].url;
                         musicPlayer.load();
                     }
@@ -765,7 +807,7 @@ Wassalamu'alaikum Warahmatullahi Wabarakatuh
 
                 musicPlayer.addEventListener('ended', () => {
                     currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
-                    setupMusicPlayer();
+                    musicPlayer.src = playlist[currentTrackIndex].url;
                     musicPlayer.play();
                 });
             }
@@ -794,18 +836,7 @@ Wassalamu'alaikum Warahmatullahi Wabarakatuh
                 }
             }, 1000);
 
-            // Form Submissions (Comments & Settings)
-            const guestbookForm = document.getElementById('guestbook-form');
-            if (guestbookForm) {
-                guestbookForm.addEventListener('submit', handleFormSubmit);
-            }
-
-            const settingsForm = document.getElementById('settings-form');
-            if (settingsForm) {
-                settingsForm.addEventListener('submit', handleFormSubmit);
-            }
-
-
+            // Form Submissions
             function handleFormSubmit(e) {
                 e.preventDefault();
                 const form = e.target;
@@ -815,9 +846,7 @@ Wassalamu'alaikum Warahmatullahi Wabarakatuh
                 submitButton.disabled = true;
                 submitButton.textContent = 'Menyimpan...';
 
-                // Ensure playlist data is up-to-date before submitting settings
                 if (form.id === 'settings-form') {
-                    const musicPlaylistInput = document.getElementById('music_playlist_input');
                     if(musicPlaylistInput) musicPlaylistInput.value = JSON.stringify(playlist);
                 }
 
@@ -830,15 +859,11 @@ Wassalamu'alaikum Warahmatullahi Wabarakatuh
                                 const formStatus = document.getElementById('form-status');
                                 if(formStatus) formStatus.textContent = 'Terima kasih, ucapan Anda telah tersimpan!';
                                 form.reset();
-                                if(isGuest) {
-                                    const nameInput = document.getElementById('name');
-                                    if(nameInput) nameInput.value = guestName;
-                                }
+                                if(isGuest && nameInput) nameInput.value = guestName;
                                 fetchAllData();
                             } else {
-                                // Reload settings to confirm changes
                                 alert('Pengaturan berhasil disimpan!');
-                                fetchAllData();
+                                fetchAllData(); // Refresh data to show changes
                             }
                         } else {
                             throw new Error(data.message || 'Unknown error');
@@ -859,6 +884,9 @@ Wassalamu'alaikum Warahmatullahi Wabarakatuh
                         }, 2000);
                     });
             }
+
+            document.getElementById('guestbook-form')?.addEventListener('submit', handleFormSubmit);
+            document.getElementById('settings-form')?.addEventListener('submit', handleFormSubmit);
         });
     </script>
 </body>
