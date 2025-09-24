@@ -3,516 +3,608 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Undangan Ulang Tahun - Aulia Putri</title>
-
-    <!-- Meta Tags untuk WhatsApp & Social Media Preview -->
-    <meta property="og:title" content="Undangan Ulang Tahun - Aulia Putri">
-    <meta property="og:description" content="Dengan penuh rasa syukur, kami mengundang Anda untuk hadir dan merayakan hari ulang tahun putri kami.">
-    <meta property="og:image" content="https://images.unsplash.com/photo-1565533169529-6e537f403e3b?q=80&w=1887&auto=format&fit=crop">
-    <meta property="og:type" content="website">
-    
-    <!-- Tailwind CSS for styling -->
+    <title>Undangan Pernikahan Desmita & Ahmad</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:wght@300;400;600&family=Great+Vibes&display=swap" rel="stylesheet">
-    
-    <!-- AOS (Animate On Scroll) for animations -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
-
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     <style>
-        /* Custom styles and fonts */
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #fdfbf8; /* Creamy background */
-            overflow: hidden; 
+            -webkit-tap-highlight-color: transparent;
         }
-        .font-serif {
-            font-family: 'Playfair Display', serif;
-        }
-        .font-script {
+        .font-great-vibes {
             font-family: 'Great Vibes', cursive;
         }
-        #cover {
-            background-image: url('https://images.unsplash.com/photo-1565533169529-6e537f403e3b?q=80&w=1887&auto=format&fit=crop');
+        .bg-hero {
+            background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://placehold.co/800x1200/a89078/ffffff?text=Memuat+Foto+Sampul...');
             background-size: cover;
             background-position: center;
+            transition: background-image 1s ease-in-out;
         }
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+        .custom-shadow {
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
         }
-        .animate-pulse-slow {
-            animation: pulse 2s infinite;
+        #admin-panel {
+            transition: transform 0.3s ease-out, opacity 0.3s ease-out;
         }
-        .animate-letters .letter {
-            display: inline-block;
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        #effect-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 5;
-            pointer-events: none;
-        }
-        .comment-enter-active {
-            animation: fadeIn 0.5s ease-out;
-        }
+        /* Animasi untuk komentar di sampul */
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        /* Styling untuk Horizontal Scroll */
-        #main-content {
-            background-color: #fdfbf8;
-            background-image: url('https://www.toptal.com/designers/subtlepatterns/uploads/paper-fibers.png');
-            height: 100vh;
-            width: 100vw;
-            overflow: hidden;
-        }
-        #scroll-container {
-            scroll-snap-type: x mandatory;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-        }
-        #scroll-container::-webkit-scrollbar {
-            display: none;
-        }
-        .slide {
-            scroll-snap-align: start;
-            scroll-snap-stop: always;
-            position: relative;
-        }
-        .nav-dot {
-            position: relative;
-            transition: color 0.3s;
-            color: rgba(60, 60, 60, 0.4);
-        }
-        .nav-dot svg {
-            transition: transform 0.3s;
-        }
-        .nav-dot-label {
-            position: absolute;
-            bottom: 120%;
-            left: 50%;
-            transform: translateX(-50%);
-            opacity: 0;
-            transition: opacity 0.3s;
-            font-size: 10px;
-            font-weight: 600;
-            white-space: nowrap;
-            color: #856a5d;
-        }
-        .nav-dot.active {
-            color: #856a5d; /* Brown color */
-        }
-        .nav-dot.active svg {
-            transform: translateY(-4px) scale(1.1);
-        }
-        .nav-dot.active .nav-dot-label {
-            opacity: 1;
-        }
-        .floral-corner {
-            position: absolute;
-            width: 150px;
-            height: 150px;
-            pointer-events: none;
-            opacity: 0.8;
+        .comment-fade-in {
+            /* State awal sebelum animasi */
+            opacity: 0; 
+            /* Menjalankan animasi */
+            animation: fadeIn 1s ease-out forwards;
         }
     </style>
 </head>
-<body class="bg-gray-900 text-slate-800">
-    <canvas id="effect-canvas"></canvas>
+<body class="bg-stone-100 max-w-lg mx-auto overflow-x-hidden">
 
-    <!-- Cover Section -->
-    <div id="cover" class="fixed top-0 left-0 w-full h-full z-50 flex flex-col items-center justify-center text-white text-center p-8">
-        <div class="absolute inset-0 bg-black bg-opacity-40"></div>
-        <div class="relative z-10" data-aos="fade-up">
-            <p class="text-lg mb-2 text-gray-200">Undangan Ulang Tahun</p>
-            <h1 class="font-script text-7xl md:text-9xl my-4" style="text-shadow: 1px 1px 5px rgba(0,0,0,0.5);">Aulia Putri</h1>
-            <div id="guest-info" class="border-t border-b border-white/30 py-4 my-8 hidden">
-                <p class="text-md text-gray-200">Dengan Hormat, kami mengundang:</p>
-                <h2 id="guest-name" class="text-2xl font-bold mt-2 tracking-wider"></h2>
-            </div>
-            <button id="open-invitation" class="border-2 border-white hover:bg-white text-white hover:text-black font-bold py-3 px-12 rounded-full shadow-lg transition-all duration-300 animate-pulse-slow mt-8">
-                Buka Undangan
-            </button>
+    <!-- Music Player -->
+    <audio id="background-music" loop></audio>
+    <button id="music-toggle" class="fixed bottom-5 right-4 z-40 bg-white/70 backdrop-blur-sm p-3 rounded-full shadow-lg">
+        <svg id="music-on-icon" class="text-stone-700" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+        <svg id="music-off-icon" class="hidden text-stone-700" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="1" y1="1" x2="23" y2="23"></line><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"></path><path d="M17 16.95A7 7 0 0 1 5 12v-2m14 0v-2a3 3 0 0 0-5.94-.6"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+    </button>
+    
+    <!-- Splash Screen -->
+    <div id="splash-screen" class="fixed inset-0 bg-hero z-50 flex flex-col items-center justify-center text-white text-center p-8 transition-opacity duration-1000">
+        <h2 class="text-xl font-light tracking-widest">Walimatul 'Ursy</h2>
+        <h1 class="font-great-vibes text-7xl my-4">Desmita & Ahmad</h1>
+        <div class="mt-4">
+            <p>Kepada Yth. Bapak/Ibu/Saudara/i</p>
+            <p id="guest-name" class="text-2xl font-semibold mt-2 bg-black/30 backdrop-blur-sm px-4 py-2 rounded-lg">Admin View</p>
         </div>
+        
+        <!-- Last Comments Preview (No Background) -->
+        <div id="splash-comments" class="mt-8 text-sm w-full max-w-xs text-center space-y-3">
+            <!-- Comments will be injected here by JavaScript -->
+        </div>
+
+        <button id="open-invitation" class="mt-8 bg-stone-700/80 hover:bg-stone-600/80 text-white font-semibold py-3 px-8 rounded-full shadow-lg transition-transform transform hover:scale-105 backdrop-blur-md">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block mr-2 -mt-1"><path d="M21.73 18a2.64 2.64 0 0 0-3.76 0l-1.83 1.83a2.64 2.64 0 0 1-3.76 0l-1.83-1.83a2.64 2.64 0 0 0-3.76 0l-1.83 1.83a2.64 2.64 0 0 1-3.76 0l-1.83-1.83a2.64 2.64 0 0 0-3.76 0"></path><path d="m22 12-2.17-2.17a2.64 2.64 0 0 0-3.76 0l-1.83 1.83a2.64 2.64 0 0 1-3.76 0l-1.83-1.83a2.64 2.64 0 0 0-3.76 0L2 12"></path><path d="M6.24 6.24a2.64 2.64 0 0 0 0 3.76l1.83 1.83a2.64 2.64 0 0 0 3.76 0l1.83-1.83a2.64 2.64 0 0 0 0-3.76l-1.83-1.83a2.64 2.64 0 0 0-3.76 0z"></path></svg>
+            Buka Undangan
+        </button>
+        <button id="open-admin-panel-btn" class="hidden mt-4 text-white/80 underline text-sm hover:text-white">
+            Buka Panel Admin
+        </button>
     </div>
 
-    <!-- Main Content -->
-    <main id="main-content" class="hidden max-w-full shadow-2xl relative z-20 text-gray-800">
-        <div class="fixed bottom-5 right-5 z-40 flex flex-col gap-3">
-            <button id="fullscreen-toggle" title="Layar Penuh" class="bg-stone-700/50 text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg"></button>
-            <button id="music-toggle" title="Musik" class="bg-stone-700/50 text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg"></button>
-        </div>
-        
-        <div id="scroll-container" class="flex w-full h-full overflow-x-auto scroll-smooth">
-            <!-- Slide 1: Header -->
-            <section class="slide w-full h-full flex-shrink-0 flex flex-col items-center justify-center p-8 text-center">
-                <img src="https://storage.googleapis.com/gemini-prod/images/watercolor_flower_top_left.png" class="floral-corner top-0 left-0 transform rotate-0" alt="floral decoration">
-                <img src="https://storage.googleapis.com/gemini-prod/images/watercolor_flower_bottom_right.png" class="floral-corner bottom-0 right-0 transform rotate-180" alt="floral decoration">
-                <div data-aos="fade-in">
-                    <p class="text-lg text-stone-600" data-aos="fade-down" data-aos-delay="200">Dengan penuh rasa syukur</p>
-                    <h1 class="font-script text-7xl md:text-8xl mt-4 text-stone-800" data-aos="zoom-in" data-aos-delay="400">Aulia Putri</h1>
-                    <p class="mt-6 max-w-xl mx-auto text-stone-700" data-aos="fade-up" data-aos-delay="600">
-                        Merayakan hari ulang tahunnya yang ke-17. Merupakan suatu kehormatan bagi kami apabila Anda berkenan hadir untuk memberikan doa dan merayakan momen spesial ini bersama kami.
-                    </p>
+    <!-- Admin Panel -->
+    <div id="admin-panel" class="invisible opacity-0 fixed bottom-4 right-4 bg-gray-900/80 backdrop-blur-md p-3 shadow-2xl z-[60] transform translate-y-full w-[95%] max-w-sm rounded-xl">
+        <button id="close-admin-panel" class="absolute -top-2 -right-2 bg-white text-gray-800 rounded-full w-7 h-7 flex items-center justify-center shadow-lg">&times;</button>
+        <h3 class="font-bold text-center text-sm mb-3 text-white">Panel Admin</h3>
+        <div class="space-y-3 text-xs max-h-[70vh] overflow-y-auto pr-2">
+            <!-- Generate Link Section -->
+            <div>
+                <label class="font-semibold text-white/90">Pesan Undangan Tamu</label>
+                <div class="flex items-center space-x-2 mt-1">
+                    <input type="text" id="admin-guest-name" placeholder="Nama Tamu..." class="w-full px-3 py-2 bg-white/10 border border-white/20 text-white placeholder-white/50 rounded-md text-xs">
+                    <button id="generate-link-btn" class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-2 rounded-md whitespace-nowrap">Buat</button>
                 </div>
-            </section>
-
-            <!-- Slide 2: Details -->
-            <section class="slide w-full h-full flex-shrink-0 flex flex-col items-center justify-center p-8">
-                <img src="https://storage.googleapis.com/gemini-prod/images/watercolor_flower_top_right.png" class="floral-corner top-0 right-0 transform scale-x-[-1]" alt="floral decoration">
-                <div class="max-w-md w-full bg-white/50 backdrop-blur-sm p-8 rounded-lg shadow-lg border border-stone-300/50" data-aos="fade-up">
-                    <div class="text-center mb-8">
-                        <h2 class="font-serif text-4xl text-stone-800">Detail Acara</h2>
-                    </div>
-                    <div class="flex items-start mb-6">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-stone-600 mr-4 mt-1 flex-shrink-0"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                        <div>
-                            <p class="font-bold text-lg">Sabtu, 27 September 2025</p>
-                            <p class="text-stone-600">Pukul 19:00 WIB - Selesai</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-stone-600 mr-4 mt-1 flex-shrink-0"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                        <div>
-                            <p class="font-bold text-lg">The Grand Ballroom, Hotel Indonesia Kempinski</p>
-                            <p class="text-stone-600">Jakarta Pusat</p>
-                        </div>
-                    </div>
-                </div>
-                 <div id="countdown" class="mt-12 flex justify-center space-x-2 md:space-x-4 text-center"></div>
-            </section>
-
-            <!-- Slide 3: Location -->
-            <section id="location" class="slide w-full h-full flex-shrink-0 flex flex-col items-center justify-center p-8 text-center">
-                <div class="w-full max-w-2xl">
-                    <h2 class="font-serif text-4xl mb-8 animate-letters text-stone-800">Lokasi Acara</h2>
-                    <div class="w-full h-80 rounded-lg overflow-hidden shadow-lg border-2 border-stone-200" data-aos="fade-up">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.529019853634!2d106.8219833747843!3d-6.19367286068213!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f42195555555%3A0x2472c9584155161!2sHotel%20Indonesia%20Kempinski%20Jakarta!5e0!3m2!1sid!2sid!4v1724399738743!5m2!1sid!2sid" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                    </div>
-                    <a href="https://maps.app.goo.gl/yQY1j9x7j8Z9aBc7A" target="_blank" class="mt-8 inline-block bg-stone-700 hover:bg-stone-800 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-transform duration-300" data-aos="fade-up">Buka Peta Navigasi</a>
-                </div>
-            </section>
+                <textarea id="whatsapp-message" rows="6" class="hidden w-full px-3 py-2 bg-white/10 border border-white/20 text-white placeholder-white/50 rounded-md mt-2 text-xs" placeholder="Pesan akan muncul di sini..."></textarea>
+                <button id="copy-message-btn" class="hidden w-full bg-cyan-600 hover:bg-cyan-500 text-white mt-2 py-2 rounded-md font-bold">Salin Pesan</button>
+            </div>
             
-            <!-- Slide 4: Guestbook -->
-            <section id="guestbook" class="slide w-full h-full flex-shrink-0 flex flex-col items-center justify-center p-8 text-center">
-                 <div class="w-full max-w-md">
-                    <h2 class="font-serif text-4xl mb-2 animate-letters text-stone-800">Buku Harapan</h2>
-                    <p class="text-stone-600 max-w-xl mx-auto mb-8" data-aos="fade-up">Tinggalkan doa dan harapan terbaik Anda untuk Aulia.</p>
-                    <div class="bg-white/50 backdrop-blur-sm p-6 rounded-lg shadow-lg border border-stone-300/50" data-aos="fade-up">
-                        <form id="comment-form">
-                            <input type="text" id="comment-name" class="w-full p-3 border border-stone-300 rounded-lg mb-3 bg-stone-50 text-stone-800 font-medium" readonly required>
-                            <textarea id="comment-message" rows="4" placeholder="Tuliskan harapan Anda di sini..." class="w-full p-3 border border-stone-300 rounded-lg mb-3 bg-stone-50 text-stone-800 focus:ring-2 focus:ring-stone-500" required></textarea>
-                            <button type="submit" id="comment-submit-btn" class="w-full bg-stone-700 hover:bg-stone-800 text-white font-bold py-3 px-4 rounded-full transition-colors disabled:bg-slate-400">Kirim Harapan</button>
-                        </form>
-                    </div>
-                    <div id="comments-list" class="max-w-md mx-auto mt-8 text-left space-y-4 h-64 overflow-y-auto"></div>
-                 </div>
-            </section>
+            <hr class="border-white/20">
 
-            <!-- Slide 5: Gift -->
-            <section id="gift" class="slide w-full h-full flex-shrink-0 flex flex-col items-center justify-center p-8 text-center">
-                <div class="w-full max-w-md">
-                    <h2 class="font-serif text-4xl mb-2 animate-letters text-stone-800">Tanda Kasih</h2>
-                    <p class="text-stone-600 max-w-xl mx-auto mb-8" data-aos="fade-up">Kehadiran Anda adalah hadiah terindah. Namun jika ingin memberikan tanda kasih, Anda dapat melakukannya secara cashless.</p>
-                    <div class="bg-white/50 backdrop-blur-sm p-6 rounded-lg shadow-lg border border-stone-300/50" data-aos="zoom-in">
-                        <p class="font-semibold text-lg text-stone-800">Scan QRIS</p>
-                        <p class="text-sm text-stone-500">Mendukung semua E-Wallet & M-Banking</p>
-                        <img src="https://storage.googleapis.com/gemini-prod/images/1000153012.jpg-6671a6b1-a943-423e-8c53-36a5a9694eb4" alt="QRIS Code" class="w-48 h-48 mx-auto my-4 rounded-lg">
-                        <div class="my-6 border-t border-stone-200"></div>
-                        <p class="font-semibold text-lg text-stone-800">Atau ke Nomor E-Wallet</p>
-                        <p class="text-md mt-2 text-stone-700">DANA / OVO / GoPay</p>
-                        <p class="text-xl font-bold mt-1 text-stone-800">0812-3456-7890</p>
-                        <p class="text-md mt-1 text-stone-700">a.n. Aulia Putri</p>
-                        <button onclick="copyToClipboard('081234567890', this)" class="mt-4 bg-stone-700 hover:bg-stone-800 text-white text-sm font-bold py-2 px-4 rounded-full transition-colors">
-                            Salin Nomor
-                        </button>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <div id="horizontal-nav" class="absolute bottom-24 left-1/2 -translate-x-1/2 z-30 flex items-center gap-4">
-            <button id="prev-slide" class="w-10 h-10 rounded-full bg-black/10 text-black hover:bg-black/20 transition-colors disabled:opacity-50">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-auto"><path d="m15 18-6-6 6-6"/></svg>
-            </button>
-            <div id="nav-dots" class="flex gap-6 items-end"></div>
-            <button id="next-slide" class="w-10 h-10 rounded-full bg-black/10 text-black hover:bg-black/20 transition-colors disabled:opacity-50">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-auto"><path d="m9 18 6-6-6-6"/></svg>
-            </button>
-        </div>
-    </main>
-
-    <audio id="bg-music" src="https://ia800909.us.archive.org/24/items/NeverGonnaGiveYouUp/01%20-%20Never%20Gonna%20Give%20You%20Up.mp3"></audio>
-    
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, onSnapshot, query, serverTimestamp, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-        
-        const userFirebaseConfig = {
-          apiKey: "AIzaSyBcHvkLmeQRx1b_z8YPxqXA4MwBCPFtZvE",
-          authDomain: "undangan-digital-saya-b970e.firebaseapp.com",
-          projectId: "undangan-digital-saya-b970e",
-          storageBucket: "undangan-digital-saya-b970e.appspot.com",
-          messagingSenderId: "776870269876",
-          appId: "1:776870269876:web:760c755c643ab95bbe58e1"
-        };
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : userFirebaseConfig;
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'rustic-birthday-' + firebaseConfig.projectId;
-
-        try {
-            const app = initializeApp(firebaseConfig);
-            const auth = getAuth(app);
-            const db = getFirestore(app);
-
-            function setupGuestbook() {
-                const commentForm = document.getElementById('comment-form');
-                const commentsCollection = collection(db, `artifacts/${appId}/public/data/comments`);
+            <!-- Settings Form -->
+            <form id="settings-form">
+                <input type="hidden" name="action" value="saveSettings">
                 
-                onSnapshot(query(commentsCollection), (snapshot) => {
-                    const allComments = [];
-                    snapshot.forEach(doc => allComments.push({ id: doc.id, ...doc.data() }));
-                    allComments.sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
-                    
-                    const commentsList = document.getElementById('comments-list');
-                    if (commentsList) {
-                        commentsList.innerHTML = '';
-                        allComments.forEach(comment => {
-                             const commentElement = document.createElement('div');
-                            commentElement.className = 'bg-stone-100/50 p-4 rounded-lg border-l-4 border-stone-300 comment-enter-active';
-                            commentElement.innerHTML = `
-                                <p class="font-semibold text-stone-800">${escapeHTML(comment.name)}</p>
-                                <p class="text-stone-600 mt-1">${escapeHTML(comment.message)}</p>
-                            `;
-                            commentsList.appendChild(commentElement);
-                        });
-                    }
-                });
+                <!-- Cover Photo -->
+                <div>
+                    <label class="font-semibold text-white/90">Foto Sampul</label>
+                    <div class="flex items-center space-x-2 mt-1">
+                        <input type="url" name="cover_photo_url" id="cover_photo_url_input" placeholder="Belum ada URL foto" class="w-full px-3 py-2 bg-white/10 border border-white/20 text-white placeholder-white/50 rounded-md text-xs" readonly>
+                        <button type="button" id="change-cover-btn" class="bg-gray-600 hover:bg-gray-500 text-white px-3 py-2 rounded-md whitespace-nowrap">Ganti</button>
+                    </div>
+                </div>
+                
+                <!-- Music Playlist -->
+                <div>
+                    <label class="font-semibold text-white/90">Playlist Lagu</label>
+                    <input type="hidden" name="music_playlist" id="music_playlist_input">
+                    <div id="playlist-container" class="mt-1 space-y-1">
+                        <!-- Songs will be listed here -->
+                        <p id="no-song-text" class="text-white/50 text-center py-2">Belum ada lagu.</p>
+                    </div>
+                    <button type="button" id="add-song-btn" class="w-full bg-purple-600 hover:bg-purple-500 text-white mt-2 py-2 rounded-md font-bold">Tambah Lagu</button>
+                </div>
 
-                commentForm?.addEventListener('submit', async (e) => {
-                    e.preventDefault();
-                    const name = document.getElementById('comment-name').value.trim();
-                    const messageInput = document.getElementById('comment-message');
-                    const message = messageInput.value.trim();
-                    const submitBtn = document.getElementById('comment-submit-btn');
-                    if (name && message) {
-                        submitBtn.disabled = true;
-                        submitBtn.textContent = 'Mengirim...';
-                        try {
-                            await addDoc(commentsCollection, { name: name, message: message, timestamp: serverTimestamp() });
-                            messageInput.value = '';
-                            confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: ['#a3a3a3', '#d6d3d1', '#e7e5e4'] });
-                        } catch (error) {
-                            console.error("Error adding document: ", error);
-                        } finally {
-                            submitBtn.disabled = false;
-                            submitBtn.textContent = 'Kirim Harapan';
-                        }
-                    }
-                });
-            }
-            
-            async function initializeAppAndAuth() {
-                try {
-                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                        await signInWithCustomToken(auth, __initial_auth_token);
-                    } else {
-                        await signInAnonymously(auth);
-                    }
-                    setupGuestbook();
-                } catch (error) {
-                    console.error("Authentication failed:", error);
-                }
-            }
+                <button type="submit" id="save-settings-btn" class="w-full bg-green-600 hover:bg-green-500 text-white mt-3 py-2 rounded-md font-bold">Simpan Pengaturan</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <main id="main-content" class="opacity-0 transition-opacity duration-1000">
+        <!-- Header -->
+        <header class="bg-hero h-screen flex flex-col items-center justify-center text-white text-center p-4">
+            <h2 data-aos="fade-down" class="text-xl tracking-widest">WE ARE GETTING MARRIED</h2>
+            <h1 data-aos="zoom-in" data-aos-delay="200" class="font-great-vibes text-8xl my-4">Desmita & Ahmad</h1>
+            <p data-aos="fade-up" data-aos-delay="400" class="text-xl font-semibold">28 September 2025</p>
+        </header>
 
-            initializeAppAndAuth();
+        <!-- Bismillah -->
+        <section class="py-16 px-6 text-center bg-gradient-to-b from-stone-100 to-amber-50">
+            <p data-aos="fade-up" class="italic text-stone-600">"Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu isteri-isteri dari jenismu sendiri, supaya kamu cenderung dan merasa tenteram kepadanya, dan dijadikan-Nya diantaramu rasa kasih dan sayang. Sesungguhnya pada yang demikian itu benar-benar terdapat tanda-tanda bagi kaum yang berfikir."</p>
+            <p data-aos="fade-up" data-aos-delay="100" class="font-semibold mt-4 text-stone-800">(QS. Ar-Rum: 21)</p>
+        </section>
 
-        } catch (e) {
-            console.error("Error initializing Firebase:", e);
-        }
+        <!-- Bride & Groom -->
+        <section class="py-20 px-6 text-center bg-amber-50">
+            <h2 data-aos="fade-up" class="font-great-vibes text-5xl text-stone-800 mb-12">Assalamu'alaikum Wr. Wb.</h2>
+            <p data-aos="fade-up" class="max-w-xl mx-auto text-stone-700 mb-12">Maha suci Allah SWT yang telah menciptakan makhluk-Nya berpasang-pasangan. Dengan memohon rahmat dan ridho-Nya, kami bermaksud menyelenggarakan pernikahan putra-putri kami:</p>
+            <div class="flex flex-col md:flex-row items-center justify-center gap-12">
+                <div data-aos="fade-right" class="w-full">
+                    <img src="https://placehold.co/300x300/e2d6c9/333333?text=Desmita" alt="Desmita" class="w-48 h-48 rounded-full mx-auto object-cover border-4 border-white custom-shadow">
+                    <h3 class="font-great-vibes text-4xl mt-6 text-stone-700">Desmita Indriani Ahmad</h3>
+                    <p class="mt-2 text-stone-600">Putri dari Bapak Andri Ahmad & Ibu Sri Liyan Kutey</p>
+                </div>
+                <p data-aos="zoom-in" data-aos-delay="200" class="font-great-vibes text-7xl text-stone-400">&</p>
+                <div data-aos="fade-left" class="w-full">
+                    <img src="https://placehold.co/300x300/d1c3b6/333333?text=Ahmad" alt="Ahmad" class="w-48 h-48 rounded-full mx-auto object-cover border-4 border-white custom-shadow">
+                    <h3 class="font-great-vibes text-4xl mt-6 text-stone-700">Ahmad Mopangga</h3>
+                    <p class="mt-2 text-stone-600">Putra dari Bapak Ramli Mopangga & Ibu Ratna Yasin</p>
+                </div>
+            </div>
+        </section>
         
-        function escapeHTML(str) {
-            if (!str) return "";
-            return str.replace(/[&<>"']/g, match => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[match]));
-        }
-    </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            AOS.init({ duration: 1000, once: false, offset: 120 });
+        <!-- Save The Date -->
+        <section class="py-20 px-6 bg-stone-100 text-center">
+            <h2 data-aos="fade-up" class="font-great-vibes text-5xl text-stone-800 mb-12">Save The Date</h2>
+            <div class="space-y-8 max-w-md mx-auto">
+                <div data-aos="fade-up" class="bg-white p-8 rounded-2xl custom-shadow text-stone-700">
+                    <h3 class="font-great-vibes text-4xl mb-4">Akad Nikah</h3>
+                    <p class="font-semibold text-lg">Minggu, 28 September 2025</p>
+                    <p>Pukul 10.00 WITA - Selesai</p>
+                    <hr class="my-4 border-stone-200">
+                    <p class="font-semibold">Lokasi:</p>
+                    <p>Kediaman Mempelai Wanita<br>Jl. Imam Bonjol, 79, Kota Gorontalo</p>
+                    <a href="https://maps.google.com/?q=-3.7022,121.0543" target="_blank" class="mt-6 inline-block bg-stone-700 hover:bg-stone-600 text-white font-semibold py-2 px-6 rounded-full shadow-md transition-transform transform hover:scale-105">Lihat Peta</a>
+                </div>
+                <div data-aos="fade-up" data-aos-delay="100" class="bg-white p-8 rounded-2xl custom-shadow text-stone-700">
+                    <h3 class="font-great-vibes text-4xl mb-4">Resepsi Pernikahan</h3>
+                    <p class="font-semibold text-lg">Minggu, 28 September 2025</p>
+                    <p>Pukul 19.00 WITA - Selesai</p>
+                    <hr class="my-4 border-stone-200">
+                    <p class="font-semibold">Lokasi:</p>
+                    <p>Kediaman Mempelai Wanita<br>Jl. Imam Bonjol, 79, Kota Gorontalo</p>
+                    <a href="https://maps.google.com/?q=-3.7022,121.0543" target="_blank" class="mt-6 inline-block bg-stone-700 hover:bg-stone-600 text-white font-semibold py-2 px-6 rounded-full shadow-md transition-transform transform hover:scale-105">Lihat Peta</a>
+                </div>
+            </div>
+            <p data-aos="fade-up" class="max-w-md mx-auto mt-12 text-stone-600">
+                Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu kepada kedua mempelai.
+            </p>
+        </section>
 
-            const cover = document.getElementById('cover');
+        <!-- Countdown -->
+        <section class="py-20 px-6 bg-hero text-white text-center">
+            <h2 data-aos="fade-up" class="font-great-vibes text-5xl mb-8">Menuju Hari Bahagia</h2>
+            <div id="countdown" data-aos="zoom-in" class="flex justify-center space-x-2 md:space-x-4 text-center">
+                <div><div id="days" class="text-4xl font-bold bg-white/20 backdrop-blur-sm p-4 rounded-lg">00</div><div class="text-sm mt-2">Hari</div></div>
+                <div><div id="hours" class="text-4xl font-bold bg-white/20 backdrop-blur-sm p-4 rounded-lg">00</div><div class="text-sm mt-2">Jam</div></div>
+                <div><div id="minutes" class="text-4xl font-bold bg-white/20 backdrop-blur-sm p-4 rounded-lg">00</div><div class="text-sm mt-2">Menit</div></div>
+                <div><div id="seconds" class="text-4xl font-bold bg-white/20 backdrop-blur-sm p-4 rounded-lg">00</div><div class="text-sm mt-2">Detik</div></div>
+            </div>
+        </section>
+        
+        <!-- Guestbook / Wishes -->
+        <section class="py-20 px-6 bg-stone-100 text-center">
+            <h2 data-aos="fade-up" class="font-great-vibes text-5xl text-stone-800 mb-12">Buku Tamu & Ucapan</h2>
+            <div data-aos="fade-up" class="max-w-md mx-auto bg-white p-8 rounded-2xl custom-shadow text-left">
+                <form id="guestbook-form">
+                    <input type="hidden" name="action" value="saveComment">
+                    <div class="mb-4">
+                        <label for="name" class="block text-stone-700 font-semibold mb-2">Nama</label>
+                        <input type="text" id="name" name="name" class="w-full px-4 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-stone-700 font-semibold mb-2">Konfirmasi Kehadiran</label>
+                        <select id="attendance" name="attendance" class="w-full px-4 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" required>
+                            <option value="Insya Allah Hadir">Insya Allah Hadir</option>
+                            <option value="Berhalangan">Berhalangan</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label for="message" class="block text-stone-700 font-semibold mb-2">Ucapan & Doa</label>
+                        <textarea id="message" name="message" rows="4" class="w-full px-4 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" required></textarea>
+                    </div>
+                    <button type="submit" id="submit-button" class="w-full bg-stone-700 hover:bg-stone-600 text-white font-bold py-3 px-4 rounded-lg transition duration-300">Kirim Ucapan</button>
+                    <p id="form-status" class="text-center mt-4 text-sm"></p>
+                </form>
+            </div>
+            <div id="comments-container" class="max-w-md mx-auto mt-12 text-left space-y-4">
+                <p id="loading-comments" class="text-center text-stone-600 animate-pulse">Memuat komentar...</p>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="py-12 px-6 text-center text-stone-600 bg-stone-200">
+            <p class="font-great-vibes text-4xl my-6">Desmita & Ahmad</p>
+            <p class="text-sm">&copy; 2025 Undangan Digital.</p>
+            <hr class="my-6 border-stone-300 max-w-[100px] mx-auto">
+            <p class="text-xs text-stone-500">Undangan Digital oleh <span class="font-semibold">arkandigital barakati</span></p>
+        </footer>
+
+    </main>
+    
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        // --- URL SUDAH TERHUBUNG ---
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzuss5LM6cPrb7dRHV_qbM7BSnTWqTLrcK7GlQYB2bokDKUn_L2lrThbkNgWvCuv7o_/exec';
+        // ------------------------------------
+
+        document.addEventListener('DOMContentLoaded', function () {
+            AOS.init({ duration: 1000, once: true });
+
+            // Global State
+            let playlist = [];
+            let currentTrackIndex = 0;
+
+            // URL & Guest Info
+            const urlParams = new URLSearchParams(window.location.search);
+            const isGuest = urlParams.has('to');
+            let guestName = urlParams.get('to')?.replace(/_/g, " ") || "Admin View";
+
+            // Element Selectors
+            const splashScreen = document.getElementById('splash-screen');
             const mainContent = document.getElementById('main-content');
-            const openInvitationButton = document.getElementById('open-invitation');
-            const audio = document.getElementById('bg-music');
+            const openButton = document.getElementById('open-invitation');
+            const guestNameEl = document.getElementById('guest-name');
+            const nameInput = document.getElementById('name');
             
-            const myCanvas = document.getElementById('effect-canvas');
-            const myConfetti = confetti.create(myCanvas, {
-                resize: true,
-                useWorker: true
+            // Admin Panel Elements
+            const adminPanel = document.getElementById('admin-panel');
+            const openAdminBtn = document.getElementById('open-admin-panel-btn');
+            const closeAdminBtn = document.getElementById('close-admin-panel');
+            const adminGuestNameInput = document.getElementById('admin-guest-name');
+            const generateBtn = document.getElementById('generate-link-btn');
+            const whatsappMessageTextarea = document.getElementById('whatsapp-message');
+            const copyMessageBtn = document.getElementById('copy-message-btn');
+            const changeCoverBtn = document.getElementById('change-cover-btn');
+            const coverPhotoUrlInput = document.getElementById('cover_photo_url_input');
+            const addSongBtn = document.getElementById('add-song-btn');
+            const playlistContainer = document.getElementById('playlist-container');
+            const musicPlaylistInput = document.getElementById('music_playlist_input');
+            const noSongText = document.getElementById('no-song-text');
+
+            // --- Guest vs Admin Logic ---
+            guestNameEl.textContent = guestName;
+            if (isGuest) {
+                nameInput.value = guestName;
+            } else { // Admin View
+                openAdminBtn.classList.remove('hidden');
+            }
+
+            // --- Admin Panel Functions ---
+            openAdminBtn.addEventListener('click', () => {
+                adminPanel.classList.remove('invisible');
+                setTimeout(() => {
+                    adminPanel.classList.remove('opacity-0', 'translate-y-full');
+                }, 10); 
             });
-            let effectInterval = setInterval(() => {
-                if(window.getComputedStyle(cover).display !== 'none') {
-                    myConfetti({
-                        particleCount: 2,
-                        startVelocity: 0,
-                        ticks: 200,
-                        origin: { x: Math.random(), y: Math.random() - 0.2 },
-                        colors: ['#FFFFFF'],
-                        shapes: ['circle'],
-                        gravity: 0.1,
-                        scalar: Math.random() * 0.3 + 0.3,
-                        drift: Math.random() * 0.2 - 0.1
+
+            closeAdminBtn.addEventListener('click', () => {
+                adminPanel.classList.add('opacity-0', 'translate-y-full');
+                adminPanel.addEventListener('transitionend', () => adminPanel.classList.add('invisible'), { once: true });
+            });
+
+            // --- Generate & Copy Link Logic ---
+            function generateMessage(guest) {
+                const guestForUrl = guest.replace(/ /g, "_");
+                const invitationLink = `${window.location.origin}${window.location.pathname}?to=${guestForUrl}`;
+                return `
+Assalamu'alaikum Warahmatullahi Wabarakatuh
+
+Tanpa mengurangi rasa hormat, kami mengundang Bapak/Ibu/Saudara/i ${guest} untuk hadir di acara pernikahan kami:
+
+*Desmita & Ahmad*
+
+Untuk informasi lengkap mengenai acara, silakan kunjungi tautan undangan kami:
+${invitationLink}
+
+Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu.
+
+Terima kasih.
+Wassalamu'alaikum Warahmatullahi Wabarakatuh
+`.trim();
+            }
+
+            generateBtn.addEventListener('click', () => {
+                const guest = adminGuestNameInput.value.trim();
+                if (!guest) {
+                    alert('Silakan masukkan nama tamu terlebih dahulu.');
+                    return;
+                }
+                whatsappMessageTextarea.value = generateMessage(guest);
+                whatsappMessageTextarea.classList.remove('hidden');
+                copyMessageBtn.classList.remove('hidden');
+                copyMessageBtn.textContent = 'Salin Pesan';
+            });
+            
+            whatsappMessageTextarea.addEventListener('input', () => {
+                copyMessageBtn.textContent = 'Salin Perubahan';
+            });
+
+            copyMessageBtn.addEventListener('click', () => {
+                const message = whatsappMessageTextarea.value;
+                const textArea = document.createElement("textarea");
+                textArea.value = message;
+                textArea.style.position = 'fixed';
+                textArea.style.top = '-9999px';
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    copyMessageBtn.textContent = 'Tersalin!';
+                    setTimeout(() => {
+                        // Reset button text based on whether it was edited
+                        const originalMessage = generateMessage(adminGuestNameInput.value.trim());
+                        copyMessageBtn.textContent = (whatsappMessageTextarea.value === originalMessage) ? 'Salin Pesan' : 'Salin Perubahan';
+                    }, 2000);
+                } catch (err) {
+                    alert('Gagal menyalin pesan.');
+                } finally {
+                    document.body.removeChild(textArea);
+                }
+            });
+
+            // --- Settings Management ---
+            changeCoverBtn.addEventListener('click', () => {
+                const newUrl = prompt('Masukkan URL foto sampul yang baru:', coverPhotoUrlInput.value);
+                if (newUrl) {
+                    coverPhotoUrlInput.value = newUrl.trim();
+                }
+            });
+
+            addSongBtn.addEventListener('click', () => {
+                const title = prompt('Masukkan Judul Lagu:');
+                if (!title) return;
+                const url = prompt('Masukkan URL file MP3 untuk lagu "' + title + '":');
+                if (!url) return;
+                
+                playlist.push({ title: title.trim(), url: url.trim() });
+                renderPlaylist();
+            });
+            
+            function renderPlaylist() {
+                playlistContainer.innerHTML = '';
+                if (playlist.length === 0) {
+                    playlistContainer.appendChild(noSongText);
+                    noSongText.classList.remove('hidden');
+                } else {
+                    noSongText.classList.add('hidden');
+                    playlist.forEach((song, index) => {
+                        const songEl = document.createElement('div');
+                        songEl.className = 'flex items-center justify-between bg-white/10 p-2 rounded-md';
+                        songEl.innerHTML = `
+                            <span class="truncate text-white/90">${song.title}</span>
+                            <button type="button" data-index="${index}" class="remove-song-btn text-red-400 hover:text-red-300 font-bold text-lg">&times;</button>
+                        `;
+                        playlistContainer.appendChild(songEl);
                     });
                 }
-            }, 500);
-
-            function showInvitation() {
-                clearInterval(effectInterval);
-                cover.style.transition = 'opacity 1.5s ease-out';
-                cover.style.opacity = '0';
-                setTimeout(() => {
-                    cover.style.display = 'none';
-                    mainContent.classList.remove('hidden');
-                    document.body.style.overflow = 'hidden';
-                    audio.play().catch(error => console.log("Autoplay was prevented.", error));
-                    AOS.refresh();
-                }, 1500);
-            }
-
-            if(openInvitationButton) {
-                openInvitationButton.addEventListener('click', showInvitation);
+                musicPlaylistInput.value = JSON.stringify(playlist); // Update hidden input for form submission
             }
             
-            const urlParams = new URLSearchParams(window.location.search);
-            const guestName = urlParams.get('to');
-            if (guestName) {
-                document.getElementById('guest-info').classList.remove('hidden');
-                document.getElementById('guest-name').textContent = guestName.replace(/\+/g, ' ');
-            }
-            document.getElementById('comment-name').value = guestName ? guestName.replace(/\+/g, ' ') : "Tamu Undangan";
-
-            const eventDate = "2025-09-27T19:00:00";
-            let countdownInterval = setInterval(() => {
-                const targetDate = new Date(eventDate).getTime();
-                const now = new Date().getTime();
-                const distanceToStart = targetDate - now;
-                const countdownEl = document.getElementById('countdown');
-                if (distanceToStart > 0) {
-                    countdownEl.innerHTML = `
-                        <div class="text-stone-800"><div class="text-4xl font-serif">${String(Math.floor(distanceToStart / 86400000)).padStart(2, '0')}</div><div class="text-xs">Hari</div></div>
-                        <div class="text-4xl font-serif text-stone-400">:</div>
-                        <div class="text-stone-800"><div class="text-4xl font-serif">${String(Math.floor((distanceToStart % 86400000) / 3600000)).padStart(2, '0')}</div><div class="text-xs">Jam</div></div>
-                        <div class="text-4xl font-serif text-stone-400">:</div>
-                        <div class="text-stone-800"><div class="text-4xl font-serif">${String(Math.floor((distanceToStart % 3600000) / 60000)).padStart(2, '0')}</div><div class="text-xs">Menit</div></div>
-                        <div class="text-4xl font-serif text-stone-400">:</div>
-                        <div class="text-stone-800"><div class="text-4xl font-serif">${String(Math.floor((distanceToStart % 60000) / 1000)).padStart(2, '0')}</div><div class="text-xs">Detik</div></div>
-                    `;
-                } else {
-                    countdownEl.innerHTML = '<div class="text-center w-full text-2xl font-serif text-stone-800">The Celebration Has Begun</div>';
-                    clearInterval(countdownInterval); 
+            playlistContainer.addEventListener('click', (e) => {
+                if(e.target.classList.contains('remove-song-btn')) {
+                    const index = parseInt(e.target.dataset.index, 10);
+                    playlist.splice(index, 1);
+                    renderPlaylist();
                 }
+            });
+
+            // --- Fetch All Data (Settings & Comments) from Google Sheets ---
+            async function fetchAllData() {
+                try {
+                    if (scriptURL.includes('GANTI_DENGAN')) throw new Error('URL Google Apps Script belum diatur.');
+                    const response = await fetch(scriptURL);
+                    const data = await response.json();
+                    if (data.error) throw new Error(data.error);
+
+                    applySettings(data.settings || {});
+                    displayComments(data.comments || []);
+                    displaySplashComments(data.comments || []);
+                } catch (error) {
+                    console.error('Error fetching data:', error);
+                    alert('Gagal memuat data undangan. \n\nDetail Error: ' + error.message);
+                }
+            }
+
+            function applySettings(settings) {
+                // Apply Cover Photo
+                const coverUrl = settings.cover_photo_url || 'https://placehold.co/800x1200/a89078/ffffff?text=Atur+Foto+di+Admin';
+                document.querySelectorAll('.bg-hero').forEach(el => {
+                    el.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('${coverUrl}')`;
+                });
+                coverPhotoUrlInput.value = settings.cover_photo_url || '';
+                
+                // Apply Music Playlist
+                try {
+                    playlist = JSON.parse(settings.music_playlist || '[]');
+                } catch(e) {
+                    playlist = [];
+                    console.error("Gagal mem-parsing playlist dari Google Sheets.", e);
+                }
+                renderPlaylist();
+                setupMusicPlayer();
+            }
+
+            function displayComments(comments) {
+                const commentsContainer = document.getElementById('comments-container');
+                commentsContainer.innerHTML = ''; // Clear previous content, including the loading message
+
+                if (comments.length > 0) {
+                    comments.forEach(comment => {
+                        const commentDiv = document.createElement('div');
+                        commentDiv.className = 'bg-white p-4 rounded-lg shadow-sm';
+                        commentDiv.innerHTML = `
+                            <div class="flex items-center justify-between">
+                              <p class="font-semibold text-stone-800">${comment.name}</p>
+                              <span class="text-xs px-2 py-1 rounded-full ${comment.attendance === 'Insya Allah Hadir' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">${comment.attendance}</span>
+                            </div>
+                            <p class="text-stone-600 mt-2 italic">"${comment.message}"</p>
+                            <p class="text-right text-xs text-stone-400 mt-3">${new Date(comment.timestamp).toLocaleString('id-ID')}</p>
+                        `;
+                        commentsContainer.appendChild(commentDiv);
+                    });
+                } else {
+                   // If no comments, add the message directly
+                   commentsContainer.innerHTML = '<p class="text-center text-stone-600">Jadilah yang pertama memberi ucapan!</p>';
+                }
+            }
+
+            function displaySplashComments(comments) {
+                const splashCommentsContainer = document.getElementById('splash-comments');
+                splashCommentsContainer.innerHTML = ''; // Hapus isi sebelumnya
+
+                const heading = document.createElement('h3');
+                heading.className = 'text-sm font-semibold tracking-wider text-white/90 mb-2 opacity-80';
+                heading.textContent = 'Doa & Ucapan Para Tamu';
+                splashCommentsContainer.appendChild(heading);
+
+                if (comments.length > 0) {
+                    const latestComments = comments.slice(0, 3); // Ambil 3 komentar terbaru
+                    latestComments.forEach((comment, index) => {
+                        const p = document.createElement('p');
+                        // Terapkan class animasi dan style
+                        p.className = 'text-white comment-fade-in';
+                        p.style.textShadow = '0 1px 5px rgba(0,0,0,0.8)';
+                        // Atur delay animasi agar muncul satu per satu
+                        p.style.animationDelay = `${index * 1.2}s`;
+                        
+                        p.innerHTML = `<span class="italic">"${comment.message}"</span><br><span class="font-semibold text-xs not-italic">- ${comment.name} -</span>`;
+                        splashCommentsContainer.appendChild(p);
+                    });
+                } else {
+                    const p = document.createElement('p');
+                    p.className = 'text-white/80 italic';
+                    p.textContent = 'Jadilah yang pertama memberi ucapan...';
+                    splashCommentsContainer.appendChild(p);
+                }
+            }
+            
+            fetchAllData();
+
+            // --- Event Listeners & Main Logic ---
+            openButton.addEventListener('click', () => {
+                splashScreen.style.opacity = '0';
+                setTimeout(() => {
+                    splashScreen.style.display = 'none';
+                    mainContent.style.opacity = '1';
+                    document.body.style.overflow = 'auto';
+                    if (playlist.length > 0) {
+                       document.getElementById('background-music').play().catch(e => console.log("Autoplay musik dicegah."));
+                    }
+                    AOS.refresh();
+                }, 1000);
+            });
+            
+            // --- Music Player Logic ---
+            const musicPlayer = document.getElementById('background-music');
+            const musicToggle = document.getElementById('music-toggle');
+            const musicOnIcon = document.getElementById('music-on-icon');
+            const musicOffIcon = document.getElementById('music-off-icon');
+
+            function setupMusicPlayer() {
+                if (playlist.length > 0) {
+                    musicToggle.style.display = 'flex';
+                    musicPlayer.src = playlist[currentTrackIndex].url;
+                    musicPlayer.load();
+                } else {
+                    musicToggle.style.display = 'none';
+                }
+            }
+            
+            musicToggle.addEventListener('click', () => {
+                if (musicPlayer.paused) {
+                    musicPlayer.play();
+                    musicOnIcon.classList.remove('hidden');
+                    musicOffIcon.classList.add('hidden');
+                } else {
+                    musicPlayer.pause();
+                    musicOnIcon.classList.add('hidden');
+                    musicOffIcon.classList.remove('hidden');
+                }
+            });
+
+            musicPlayer.addEventListener('ended', () => {
+                currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+                setupMusicPlayer();
+                musicPlayer.play();
+            });
+
+            // Countdown Timer
+            const countDownDate = new Date("Sep 28, 2025 10:00:00").getTime();
+            setInterval(() => {
+                const distance = countDownDate - new Date().getTime();
+                document.getElementById("days").innerText = String(Math.floor(distance/(1000*60*60*24))).padStart(2,'0');
+                document.getElementById("hours").innerText = String(Math.floor((distance%(1000*60*60*24))/(1000*60*60))).padStart(2,'0');
+                document.getElementById("minutes").innerText = String(Math.floor((distance%(1000*60*60))/(1000*60))).padStart(2,'0');
+                document.getElementById("seconds").innerText = String(Math.floor((distance%(1000*60))/1000)).padStart(2,'0');
+                if (distance < 0) document.getElementById("countdown").innerHTML = "<div class='text-2xl'>Acara Telah Berlangsung</div>";
             }, 1000);
 
-            const scrollContainer = document.getElementById('scroll-container');
-            const slides = document.querySelectorAll('.slide');
-            const navDotsContainer = document.getElementById('nav-dots');
-            const prevBtn = document.getElementById('prev-slide');
-            const nextBtn = document.getElementById('next-slide');
-            let dots = [];
-            
-            const icons = [
-                '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>',
-                '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>',
-                '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path><circle cx="12" cy="10" r="3"></circle></svg>',
-                '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>',
-                '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8"/><path d="M20 8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v4h16V8Z"/><path d="M12 22V8"/><path d="M12 8H8a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-4Z"/></svg>'
-            ];
-            const labels = ['Beranda', 'Detail', 'Lokasi', 'Ucapan', 'Kado'];
+            // Form Submissions (Comments & Settings)
+            document.getElementById('guestbook-form').addEventListener('submit', handleFormSubmit);
+            document.getElementById('settings-form').addEventListener('submit', handleFormSubmit);
 
-            slides.forEach((slide, index) => {
-                const dot = document.createElement('button');
-                dot.className = 'nav-dot';
-                dot.innerHTML = `
-                    <span class="nav-dot-label">${labels[index] || ''}</span>
-                    ${icons[index] || ''}
-                `;
-                dot.addEventListener('click', () => {
-                    scrollContainer.scrollTo({
-                        left: index * window.innerWidth,
-                        behavior: 'smooth'
+            function handleFormSubmit(e) {
+                e.preventDefault();
+                const form = e.target;
+                const submitButton = form.querySelector('button[type="submit"]');
+                const originalButtonText = submitButton.textContent;
+                
+                submitButton.disabled = true;
+                submitButton.textContent = 'Menyimpan...';
+
+                // Ensure playlist data is up-to-date before submitting settings
+                if (form.id === 'settings-form') {
+                    musicPlaylistInput.value = JSON.stringify(playlist);
+                }
+
+                fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.result === 'success') {
+                            submitButton.textContent = 'Tersimpan!';
+                            if (form.id === 'guestbook-form') {
+                                document.getElementById('form-status').textContent = 'Terima kasih, ucapan Anda telah tersimpan!';
+                                form.reset();
+                                if(isGuest) nameInput.value = guestName;
+                                fetchAllData();
+                            } else {
+                                // Reload settings to confirm changes
+                                alert('Pengaturan berhasil disimpan!');
+                                fetchAllData();
+                            }
+                        } else {
+                            throw new Error(data.message || 'Unknown error');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error!', error.message);
+                        alert(`Gagal menyimpan: ${error.message}`);
+                    })
+                    .finally(() => {
+                         setTimeout(() => {
+                            submitButton.disabled = false;
+                            submitButton.textContent = originalButtonText;
+                            if (form.id === 'guestbook-form') {
+                                document.getElementById('form-status').textContent = '';
+                            }
+                        }, 2000);
                     });
-                });
-                navDotsContainer.appendChild(dot);
-                dots.push(dot);
-            });
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const index = Array.from(slides).indexOf(entry.target);
-                        dots.forEach((dot, i) => {
-                            dot.classList.toggle('active', i === index);
-                        });
-                        prevBtn.disabled = index === 0;
-                        nextBtn.disabled = index === slides.length - 1;
-                        const aosElements = entry.target.querySelectorAll('[data-aos]');
-                        aosElements.forEach(el => {
-                            el.classList.remove('aos-animate');
-                            setTimeout(() => el.classList.add('aos-animate'), 100);
-                        });
-                    }
-                });
-            }, { threshold: 0.5 });
-
-            slides.forEach(slide => observer.observe(slide));
-            
-            prevBtn.addEventListener('click', () => {
-                scrollContainer.scrollBy({ left: -window.innerWidth, behavior: 'smooth' });
-            });
-            nextBtn.addEventListener('click', () => {
-                scrollContainer.scrollBy({ left: window.innerWidth, behavior: 'smooth' });
-            });
-        });
-
-        function copyToClipboard(text, button) {
-            const textArea = document.createElement("textarea");
-            textArea.value = text.replace(/\\n/g, '\n');
-            document.body.appendChild(textArea);
-            textArea.select();
-            try {
-                document.execCommand('copy');
-                const originalText = button.textContent;
-                button.textContent = 'Disalin!';
-                button.classList.add('bg-green-600');
-                setTimeout(() => {
-                    button.textContent = originalText;
-                    button.classList.remove('bg-green-600');
-                }, 1500);
-            } catch (err) {
-                console.error('Gagal menyalin:', err);
             }
-            document.body.removeChild(textArea);
-        }
+        });
     </script>
 </body>
 </html>
+
