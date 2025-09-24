@@ -331,7 +331,7 @@
             // Global State
             let playlist = [];
             let currentTrackIndex = 0;
-            let currentPreview = null;
+            let musicStarted = false;
 
             // URL & Guest Info
             const urlParams = new URLSearchParams(window.location.search);
@@ -363,12 +363,23 @@
             const cancelAddSongBtn = document.getElementById('cancel-add-song-btn');
             const newSongTitleInput = document.getElementById('new-song-title');
             const newSongUrlInput = document.getElementById('new-song-url');
+            
+            // Music Player Elements
+            const musicPlayer = document.getElementById('background-music');
+            const previewPlayer = document.getElementById('preview-music');
+            const musicToggle = document.getElementById('music-toggle');
+            const musicOnIcon = document.getElementById('music-on-icon');
+            const musicOffIcon = document.getElementById('music-off-icon');
 
             // --- Guest vs Admin Logic ---
             if(guestNameEl) guestNameEl.textContent = guestName;
             if (isGuest) {
-                if(nameInput) nameInput.value = guestName;
-            } else { // Admin View
+                if(nameInput) {
+                    nameInput.value = guestName;
+                    nameInput.readOnly = true;
+                    nameInput.classList.add('bg-stone-100', 'cursor-not-allowed');
+                }
+            } else { 
                 if(openAdminBtn) openAdminBtn.classList.remove('hidden');
             }
 
@@ -381,13 +392,25 @@
                     }, 10); 
                 });
             }
-
-            if (closeAdminBtn) {
-                closeAdminBtn.addEventListener('click', () => {
+            
+            function closeAdminPanel() {
+                if (adminPanel && !adminPanel.classList.contains('invisible')) {
                     adminPanel.classList.add('opacity-0', '-translate-y-full');
                     adminPanel.addEventListener('transitionend', () => adminPanel.classList.add('invisible'), { once: true });
-                });
+                    if (previewPlayer && !previewPlayer.paused) {
+                        previewPlayer.pause();
+                    }
+                }
             }
+            
+            if (closeAdminBtn) closeAdminBtn.addEventListener('click', closeAdminPanel);
+            
+            // Close admin panel when clicking outside
+            window.addEventListener('click', (e) => {
+                if (adminPanel && !adminPanel.classList.contains('invisible') && !adminPanel.contains(e.target) && e.target !== openAdminBtn && !openAdminBtn.contains(e.target)) {
+                    closeAdminPanel();
+                }
+            });
 
             // --- Generate & Copy Link Logic ---
             function generateMessage(guest) {
@@ -533,8 +556,6 @@ Wassalamu'alaikum Warahmatullahi Wabarakatuh
             }
             
             if(playlistContainer) {
-                const previewPlayer = document.getElementById('preview-music');
-                
                 playlistContainer.addEventListener('click', (e) => {
                     const target = e.target.closest('button');
                     if(!target) return;
@@ -552,6 +573,8 @@ Wassalamu'alaikum Warahmatullahi Wabarakatuh
                         }
                     } else if(target.classList.contains('preview-song-btn')) {
                         const url = target.dataset.url;
+                        if(musicPlayer && !musicPlayer.paused) musicPlayer.pause();
+
                         if (previewPlayer.src === url && !previewPlayer.paused) {
                             previewPlayer.pause();
                             target.textContent = '▶';
@@ -738,8 +761,10 @@ Wassalamu'alaikum Warahmatullahi Wabarakatuh
                         mainContent.style.opacity = '1';
                         document.body.classList.remove('splash-active');
                         navButtons.classList.remove('hidden');
-                        if (playlist.length > 0) {
-                           if(musicPlayer) musicPlayer.play().catch(e => console.log("Autoplay musik dicegah."));
+                        
+                        if (!musicStarted) {
+                            playMusicFromStart();
+                            musicStarted = true;
                         }
                         AOS.refresh();
                     }, 1000);
@@ -774,18 +799,24 @@ Wassalamu'alaikum Warahmatullahi Wabarakatuh
             });
             
             // --- Music Player Logic ---
-            const musicPlayer = document.getElementById('background-music');
-            const musicToggle = document.getElementById('music-toggle');
-            const musicOnIcon = document.getElementById('music-on-icon');
-            const musicOffIcon = document.getElementById('music-off-icon');
+            function playMusicFromStart() {
+                if (playlist.length > 0 && musicPlayer) {
+                    musicPlayer.currentTime = 0;
+                    musicPlayer.play().catch(e => {
+                         console.log("Autoplay musik dicegah oleh browser.");
+                    });
+                }
+            }
 
             function setupMusicPlayer() {
                 if (playlist.length > 0) {
                     if(musicToggle) musicToggle.style.display = 'flex';
                     if(musicPlayer) {
-                        currentTrackIndex = 0; // Always start from the default track
+                        currentTrackIndex = 0;
                         musicPlayer.src = playlist[currentTrackIndex].url;
                         musicPlayer.load();
+                        // Attempt to play on splash screen
+                        musicPlayer.play().catch(e => console.log("Autoplay di awal gagal, menunggu interaksi pengguna."));
                     }
                 } else {
                     if(musicToggle) musicToggle.style.display = 'none';
@@ -793,15 +824,20 @@ Wassalamu'alaikum Warahmatullahi Wabarakatuh
             }
             
             if (musicToggle && musicPlayer && musicOnIcon && musicOffIcon) {
+                musicPlayer.addEventListener('play', () => {
+                    musicOnIcon.classList.remove('hidden');
+                    musicOffIcon.classList.add('hidden');
+                });
+                musicPlayer.addEventListener('pause', () => {
+                    musicOnIcon.classList.add('hidden');
+                    musicOffIcon.classList.remove('hidden');
+                });
+
                 musicToggle.addEventListener('click', () => {
                     if (musicPlayer.paused) {
                         musicPlayer.play();
-                        musicOnIcon.classList.remove('hidden');
-                        musicOffIcon.classList.add('hidden');
                     } else {
                         musicPlayer.pause();
-                        musicOnIcon.classList.add('hidden');
-                        musicOffIcon.classList.remove('hidden');
                     }
                 });
 
