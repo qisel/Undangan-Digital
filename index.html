@@ -42,7 +42,7 @@
         }
     </style>
 </head>
-<body class="bg-stone-100 max-w-lg mx-auto overflow-x-hidden">
+<body class="bg-stone-100 max-w-lg mx-auto overflow-hidden">
 
     <!-- Music Player -->
     <audio id="background-music" loop></audio>
@@ -51,27 +51,29 @@
         <svg id="music-off-icon" class="hidden text-stone-700" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="1" y1="1" x2="23" y2="23"></line><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"></path><path d="M17 16.95A7 7 0 0 1 5 12v-2m14 0v-2a3 3 0 0 0-5.94-.6"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
     </button>
     
-    <!-- Splash Screen -->
-    <div id="splash-screen" class="fixed inset-0 bg-hero z-50 flex flex-col items-center justify-center text-white text-center p-8 transition-opacity duration-1000">
-        <h2 class="text-xl font-light tracking-widest">Walimatul 'Ursy</h2>
-        <h1 class="font-great-vibes text-7xl my-4">Desmita & Ahmad</h1>
-        <div class="mt-4">
-            <p>Kepada Yth. Bapak/Ibu/Saudara/i</p>
-            <p id="guest-name" class="text-2xl font-semibold mt-2 bg-black/30 backdrop-blur-sm px-4 py-2 rounded-lg">Admin View</p>
+    <!-- Splash Screen (FIXED ONE SCREEN) -->
+    <div id="splash-screen" class="fixed inset-0 bg-hero z-50 flex flex-col items-center justify-center text-white text-center p-8 transition-opacity duration-1000 h-screen overflow-y-auto">
+        <div class="flex flex-col items-center justify-center">
+            <h2 class="text-xl font-light tracking-widest">Walimatul 'Ursy</h2>
+            <h1 class="font-great-vibes text-7xl my-4">Desmita & Ahmad</h1>
+            <div class="mt-4">
+                <p>Kepada Yth. Bapak/Ibu/Saudara/i</p>
+                <p id="guest-name" class="text-2xl font-semibold mt-2 bg-black/30 backdrop-blur-sm px-4 py-2 rounded-lg">Admin View</p>
+            </div>
+            
+            <!-- Last Comments Preview (No Background) -->
+            <div id="splash-comments" class="mt-8 text-sm w-full max-w-xs text-center space-y-3">
+                <!-- Comments will be injected here by JavaScript -->
+            </div>
+    
+            <button id="open-invitation" class="mt-8 bg-stone-700/80 hover:bg-stone-600/80 text-white font-semibold py-3 px-8 rounded-full shadow-lg transition-transform transform hover:scale-105 backdrop-blur-md">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block mr-2 -mt-1"><path d="M21.73 18a2.64 2.64 0 0 0-3.76 0l-1.83 1.83a2.64 2.64 0 0 1-3.76 0l-1.83-1.83a2.64 2.64 0 0 0-3.76 0l-1.83 1.83a2.64 2.64 0 0 1-3.76 0l-1.83-1.83a2.64 2.64 0 0 0-3.76 0"></path><path d="m22 12-2.17-2.17a2.64 2.64 0 0 0-3.76 0l-1.83 1.83a2.64 2.64 0 0 1-3.76 0l-1.83-1.83a2.64 2.64 0 0 0-3.76 0L2 12"></path><path d="M6.24 6.24a2.64 2.64 0 0 0 0 3.76l1.83 1.83a2.64 2.64 0 0 0 3.76 0l1.83-1.83a2.64 2.64 0 0 0 0-3.76l-1.83-1.83a2.64 2.64 0 0 0-3.76 0z"></path></svg>
+                Buka Undangan
+            </button>
+            <button id="open-admin-panel-btn" class="hidden mt-4 text-white/80 underline text-sm hover:text-white">
+                Buka Panel Admin
+            </button>
         </div>
-        
-        <!-- Last Comments Preview (No Background) -->
-        <div id="splash-comments" class="mt-8 text-sm w-full max-w-xs text-center space-y-3">
-            <!-- Comments will be injected here by JavaScript -->
-        </div>
-
-        <button id="open-invitation" class="mt-8 bg-stone-700/80 hover:bg-stone-600/80 text-white font-semibold py-3 px-8 rounded-full shadow-lg transition-transform transform hover:scale-105 backdrop-blur-md">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block mr-2 -mt-1"><path d="M21.73 18a2.64 2.64 0 0 0-3.76 0l-1.83 1.83a2.64 2.64 0 0 1-3.76 0l-1.83-1.83a2.64 2.64 0 0 0-3.76 0l-1.83 1.83a2.64 2.64 0 0 1-3.76 0l-1.83-1.83a2.64 2.64 0 0 0-3.76 0"></path><path d="m22 12-2.17-2.17a2.64 2.64 0 0 0-3.76 0l-1.83 1.83a2.64 2.64 0 0 1-3.76 0l-1.83-1.83a2.64 2.64 0 0 0-3.76 0L2 12"></path><path d="M6.24 6.24a2.64 2.64 0 0 0 0 3.76l1.83 1.83a2.64 2.64 0 0 0 3.76 0l1.83-1.83a2.64 2.64 0 0 0 0-3.76l-1.83-1.83a2.64 2.64 0 0 0-3.76 0z"></path></svg>
-            Buka Undangan
-        </button>
-        <button id="open-admin-panel-btn" class="hidden mt-4 text-white/80 underline text-sm hover:text-white">
-            Buka Panel Admin
-        </button>
     </div>
 
     <!-- Admin Panel -->
@@ -348,7 +350,8 @@ Wassalamu'alaikum Warahmatullahi Wabarakatuh
                         const originalMessage = generateMessage(adminGuestNameInput.value.trim());
                         copyMessageBtn.textContent = (whatsappMessageTextarea.value === originalMessage) ? 'Salin Pesan' : 'Salin Perubahan';
                     }, 2000);
-                } catch (err) {
+                } catch (err)
+ {
                     alert('Gagal menyalin pesan.');
                 } finally {
                     document.body.removeChild(textArea);
