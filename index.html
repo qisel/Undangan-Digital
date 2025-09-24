@@ -2,7 +2,7 @@
 <html lang="id" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Undangan Pernikahan Desmita & Ahmad</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,9 +14,9 @@
             font-family: 'Poppins', sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
-        /* State awal saat splash screen aktif, vertical scroll dimatikan */
+        /* State awal saat splash screen aktif, semua jenis scroll dimatikan */
         body.splash-active {
-            overflow-y: hidden;
+            overflow: hidden;
         }
         .font-great-vibes {
             font-family: 'Great Vibes', cursive;
@@ -45,7 +45,7 @@
     </button>
     
     <!-- Splash Screen (FIXED ONE SCREEN) -->
-    <div id="splash-screen" class="fixed inset-0 bg-hero z-50 flex flex-col items-center justify-center text-white text-center p-8 transition-opacity duration-1000 h-[100svh] overflow-y-hidden">
+    <div id="splash-screen" class="fixed inset-0 bg-hero z-50 flex flex-col items-center justify-center text-white text-center p-8 transition-opacity duration-1000 h-[100svh] overflow-hidden">
         
         <!-- Admin Panel Button -->
          <button id="open-admin-panel-btn" class="hidden absolute top-5 right-5 z-50 text-white/80 hover:text-white transition-opacity">
