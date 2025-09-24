@@ -147,6 +147,12 @@
     
     <!-- Main Content -->
     <main id="main-content" class="opacity-0 transition-opacity duration-1000">
+        
+        <!-- Back to Cover Button -->
+        <button id="back-to-cover-btn" class="hidden fixed top-1/2 -translate-y-1/2 right-4 z-40 bg-white/70 backdrop-blur-sm p-3 rounded-full shadow-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-stone-700"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        </button>
+
         <!-- Header -->
         <header class="bg-hero h-screen flex flex-col items-center justify-center text-white text-center p-4">
             <h2 data-aos="fade-down" class="text-xl tracking-widest">WE ARE GETTING MARRIED</h2>
@@ -298,6 +304,7 @@
             const openButton = document.getElementById('open-invitation');
             const guestNameEl = document.getElementById('guest-name');
             const nameInput = document.getElementById('name');
+            const backToCoverBtn = document.getElementById('back-to-cover-btn');
             
             // Admin Panel Elements
             const adminPanel = document.getElementById('admin-panel');
@@ -647,12 +654,33 @@ Wassalamu'alaikum Warahmatullahi Wabarakatuh
                         splashScreen.style.display = 'none';
                         mainContent.style.opacity = '1';
                         document.body.classList.remove('splash-active'); // Izinkan vertical scroll
+                        backToCoverBtn.classList.remove('hidden');
                         if (playlist.length > 0) {
                             const musicPlayer = document.getElementById('background-music');
                            if(musicPlayer) musicPlayer.play().catch(e => console.log("Autoplay musik dicegah."));
                         }
                         AOS.refresh();
                     }, 1000);
+                });
+            }
+
+            if(backToCoverBtn) {
+                backToCoverBtn.addEventListener('click', () => {
+                    mainContent.style.opacity = '0';
+                    splashScreen.style.display = 'flex';
+                    setTimeout(() => {
+                        splashScreen.style.opacity = '1';
+                    }, 10);
+                    document.body.classList.add('splash-active');
+                    backToCoverBtn.classList.add('hidden');
+                    const musicPlayer = document.getElementById('background-music');
+                    const musicOnIcon = document.getElementById('music-on-icon');
+                    const musicOffIcon = document.getElementById('music-off-icon');
+                    if (musicPlayer && !musicPlayer.paused) {
+                        musicPlayer.pause();
+                        musicOnIcon.classList.add('hidden');
+                        musicOffIcon.classList.remove('hidden');
+                    }
                 });
             }
             
