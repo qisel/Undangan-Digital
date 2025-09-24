@@ -14,6 +14,10 @@
             font-family: 'Poppins', sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
+        /* State awal saat splash screen aktif, vertical scroll dimatikan */
+        body.splash-active {
+            overflow-y: hidden;
+        }
         .font-great-vibes {
             font-family: 'Great Vibes', cursive;
         }
@@ -42,7 +46,7 @@
         }
     </style>
 </head>
-<body class="bg-stone-100 max-w-lg mx-auto overflow-hidden">
+<body class="bg-stone-100 max-w-lg mx-auto overflow-x-hidden splash-active">
 
     <!-- Music Player -->
     <audio id="background-music" loop></audio>
@@ -114,6 +118,15 @@
                     <div id="playlist-container" class="mt-1 space-y-1">
                         <!-- Songs will be listed here -->
                         <p id="no-song-text" class="text-white/50 text-center py-2">Belum ada lagu.</p>
+                    </div>
+                     <!-- Form for adding a new song (initially hidden) -->
+                    <div id="add-song-form" class="hidden space-y-2 mt-2 p-2 bg-white/10 rounded-md">
+                        <input type="text" id="new-song-title" placeholder="Judul Lagu..." class="w-full px-3 py-2 bg-white/10 border border-white/20 text-white placeholder-white/50 rounded-md text-xs">
+                        <input type="url" id="new-song-url" placeholder="URL MP3 Lagu..." class="w-full px-3 py-2 bg-white/10 border border-white/20 text-white placeholder-white/50 rounded-md text-xs">
+                        <div class="flex space-x-2">
+                             <button type="button" id="save-new-song-btn" class="w-full bg-green-600 hover:bg-green-500 text-white py-1 rounded-md">Simpan Lagu</button>
+                             <button type="button" id="cancel-add-song-btn" class="w-full bg-gray-600 hover:bg-gray-500 text-white py-1 rounded-md">Batal</button>
+                        </div>
                     </div>
                     <button type="button" id="add-song-btn" class="w-full bg-purple-600 hover:bg-purple-500 text-white mt-2 py-2 rounded-md font-bold">Tambah Lagu</button>
                 </div>
@@ -275,6 +288,12 @@
             const playlistContainer = document.getElementById('playlist-container');
             const musicPlaylistInput = document.getElementById('music_playlist_input');
             const noSongText = document.getElementById('no-song-text');
+            const addSongForm = document.getElementById('add-song-form');
+            const saveNewSongBtn = document.getElementById('save-new-song-btn');
+            const cancelAddSongBtn = document.getElementById('cancel-add-song-btn');
+            const newSongTitleInput = document.getElementById('new-song-title');
+            const newSongUrlInput = document.getElementById('new-song-url');
+
 
             // --- Guest vs Admin Logic ---
             guestNameEl.textContent = guestName;
@@ -358,22 +377,46 @@ Wassalamu'alaikum Warahmatullahi Wabarakatuh
                 }
             });
 
-            // --- Settings Management ---
+            // --- Settings Management (FIXED) ---
             changeCoverBtn.addEventListener('click', () => {
-                const newUrl = prompt('Masukkan URL foto sampul yang baru:', coverPhotoUrlInput.value);
-                if (newUrl) {
-                    coverPhotoUrlInput.value = newUrl.trim();
+                if (coverPhotoUrlInput.hasAttribute('readonly')) {
+                    coverPhotoUrlInput.removeAttribute('readonly');
+                    coverPhotoUrlInput.focus();
+                    coverPhotoUrlInput.select();
+                    changeCoverBtn.textContent = 'OK';
+                    changeCoverBtn.classList.remove('bg-gray-600', 'hover:bg-gray-500');
+                    changeCoverBtn.classList.add('bg-blue-600', 'hover:bg-blue-500');
+                } else {
+                    coverPhotoUrlInput.setAttribute('readonly', true);
+                    changeCoverBtn.textContent = 'Ganti';
+                    changeCoverBtn.classList.add('bg-gray-600', 'hover:bg-gray-500');
+                    changeCoverBtn.classList.remove('bg-blue-600', 'hover:bg-blue-500');
                 }
             });
 
             addSongBtn.addEventListener('click', () => {
-                const title = prompt('Masukkan Judul Lagu:');
-                if (!title) return;
-                const url = prompt('Masukkan URL file MP3 untuk lagu "' + title + '":');
-                if (!url) return;
-                
-                playlist.push({ title: title.trim(), url: url.trim() });
+                addSongForm.classList.remove('hidden');
+                addSongBtn.classList.add('hidden');
+            });
+
+            cancelAddSongBtn.addEventListener('click', () => {
+                addSongForm.classList.add('hidden');
+                addSongBtn.classList.remove('hidden');
+                newSongTitleInput.value = '';
+                newSongUrlInput.value = '';
+            });
+
+            saveNewSongBtn.addEventListener('click', () => {
+                const title = newSongTitleInput.value.trim();
+                const url = newSongUrlInput.value.trim();
+                if (!title || !url) {
+                    alert('Judul dan URL lagu tidak boleh kosong.');
+                    return;
+                }
+                playlist.push({ title, url });
                 renderPlaylist();
+                // Reset and hide form
+                cancelAddSongBtn.click();
             });
             
             function renderPlaylist() {
@@ -502,7 +545,7 @@ Wassalamu'alaikum Warahmatullahi Wabarakatuh
                 setTimeout(() => {
                     splashScreen.style.display = 'none';
                     mainContent.style.opacity = '1';
-                    document.body.style.overflow = 'auto';
+                    document.body.classList.remove('splash-active'); // Izinkan vertical scroll
                     if (playlist.length > 0) {
                        document.getElementById('background-music').play().catch(e => console.log("Autoplay musik dicegah."));
                     }
