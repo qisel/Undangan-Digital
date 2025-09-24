@@ -107,7 +107,25 @@
                     <label class="font-semibold text-white/90">Foto Sampul</label>
                     <div class="flex items-center space-x-2 mt-1">
                         <input type="url" name="cover_photo_url" id="cover_photo_url_input" placeholder="Belum ada URL foto" class="w-full px-3 py-2 bg-white/10 border border-white/20 text-white placeholder-white/50 rounded-md text-xs" readonly>
-                        <button type="button" id="change-cover-btn" class="bg-gray-600 hover:bg-gray-500 text-white px-3 py-2 rounded-md whitespace-nowrap">Ganti</button>
+                        <button type="button" id="change-cover-btn" data-target="cover_photo_url_input" class="edit-toggle-btn bg-gray-600 hover:bg-gray-500 text-white px-3 py-2 rounded-md whitespace-nowrap">Ganti</button>
+                    </div>
+                </div>
+
+                <!-- Map Link Akad -->
+                <div>
+                    <label class="font-semibold text-white/90">Link Peta Akad</label>
+                    <div class="flex items-center space-x-2 mt-1">
+                        <input type="url" name="maps_link_akad" id="maps_link_akad_input" placeholder="Belum ada URL peta" class="w-full px-3 py-2 bg-white/10 border border-white/20 text-white placeholder-white/50 rounded-md text-xs" readonly>
+                        <button type="button" data-target="maps_link_akad_input" class="edit-toggle-btn bg-gray-600 hover:bg-gray-500 text-white px-3 py-2 rounded-md whitespace-nowrap">Ganti</button>
+                    </div>
+                </div>
+
+                <!-- Map Link Resepsi -->
+                <div>
+                    <label class="font-semibold text-white/90">Link Peta Resepsi</label>
+                    <div class="flex items-center space-x-2 mt-1">
+                        <input type="url" name="maps_link_resepsi" id="maps_link_resepsi_input" placeholder="Belum ada URL peta" class="w-full px-3 py-2 bg-white/10 border border-white/20 text-white placeholder-white/50 rounded-md text-xs" readonly>
+                        <button type="button" data-target="maps_link_resepsi_input" class="edit-toggle-btn bg-gray-600 hover:bg-gray-500 text-white px-3 py-2 rounded-md whitespace-nowrap">Ganti</button>
                     </div>
                 </div>
                 
@@ -181,7 +199,7 @@
                     <hr class="my-4 border-stone-200">
                     <p class="font-semibold">Lokasi:</p>
                     <p>Kediaman Mempelai Wanita<br>Jl. Imam Bonjol, 79, Kota Gorontalo</p>
-                    <a href="https://maps.google.com/?q=-3.7022,121.0543" target="_blank" class="mt-6 inline-block bg-stone-700 hover:bg-stone-600 text-white font-semibold py-2 px-6 rounded-full shadow-md transition-transform transform hover:scale-105">Lihat Peta</a>
+                    <a id="map-link-akad" href="#" target="_blank" class="mt-6 inline-block bg-stone-700 hover:bg-stone-600 text-white font-semibold py-2 px-6 rounded-full shadow-md transition-transform transform hover:scale-105">Lihat Peta</a>
                 </div>
                 <div data-aos="fade-up" data-aos-delay="100" class="bg-white p-8 rounded-2xl custom-shadow text-stone-700">
                     <h3 class="font-great-vibes text-4xl mb-4">Resepsi Pernikahan</h3>
@@ -190,12 +208,28 @@
                     <hr class="my-4 border-stone-200">
                     <p class="font-semibold">Lokasi:</p>
                     <p>Kediaman Mempelai Wanita<br>Jl. Imam Bonjol, 79, Kota Gorontalo</p>
-                    <a href="https://maps.google.com/?q=-3.7022,121.0543" target="_blank" class="mt-6 inline-block bg-stone-700 hover:bg-stone-600 text-white font-semibold py-2 px-6 rounded-full shadow-md transition-transform transform hover:scale-105">Lihat Peta</a>
+                    <a id="map-link-resepsi" href="#" target="_blank" class="mt-6 inline-block bg-stone-700 hover:bg-stone-600 text-white font-semibold py-2 px-6 rounded-full shadow-md transition-transform transform hover:scale-105">Lihat Peta</a>
                 </div>
             </div>
             <p data-aos="fade-up" class="max-w-md mx-auto mt-12 text-stone-600">
                 Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu kepada kedua mempelai.
             </p>
+        </section>
+
+        <!-- Kirim Hadiah -->
+        <section class="py-20 px-6 bg-amber-50 text-center">
+            <h2 data-aos="fade-up" class="font-great-vibes text-5xl text-stone-800 mb-4">Kirim Hadiah</h2>
+            <p data-aos="fade-up" data-aos-delay="100" class="max-w-md mx-auto text-stone-600 mb-8">Doa restu Anda merupakan karunia yang sangat berarti bagi kami. Namun jika memberi adalah ungkapan tanda kasih, Anda dapat memberi kado secara digital.</p>
+            <div data-aos="zoom-in" data-aos-delay="200" class="max-w-xs mx-auto bg-white p-6 rounded-2xl custom-shadow">
+                <img src="https://raw.githubusercontent.com/qisel/Desmita-Ahmad/main/ewallet.jpg" alt="E-Wallet QR Code" class="w-full rounded-lg" onerror="this.onerror=null;this.src='https://placehold.co/400x400?text=Gagal+Memuat+QR';">
+                <div class="text-left mt-4 text-stone-700 text-sm">
+                    <p class="font-semibold">Bank Mandiri</p>
+                    <p>1500012345678 a/n Desmita Indriani Ahmad</p>
+                    <hr class="my-2 border-stone-200">
+                    <p class="font-semibold">BRI</p>
+                    <p>098701234567890 a/n Ahmad Mopangga</p>
+                </div>
+            </div>
         </section>
 
         <!-- Countdown -->
@@ -282,8 +316,6 @@
             const generateBtn = document.getElementById('generate-link-btn');
             const whatsappMessageTextarea = document.getElementById('whatsapp-message');
             const copyMessageBtn = document.getElementById('copy-message-btn');
-            const changeCoverBtn = document.getElementById('change-cover-btn');
-            const coverPhotoUrlInput = document.getElementById('cover_photo_url_input');
             const addSongBtn = document.getElementById('add-song-btn');
             const playlistContainer = document.getElementById('playlist-container');
             const musicPlaylistInput = document.getElementById('music_playlist_input');
@@ -376,22 +408,25 @@ Wassalamu'alaikum Warahmatullahi Wabarakatuh
                     document.body.removeChild(textArea);
                 }
             });
-
-            // --- Settings Management (FIXED) ---
-            changeCoverBtn.addEventListener('click', () => {
-                if (coverPhotoUrlInput.hasAttribute('readonly')) {
-                    coverPhotoUrlInput.removeAttribute('readonly');
-                    coverPhotoUrlInput.focus();
-                    coverPhotoUrlInput.select();
-                    changeCoverBtn.textContent = 'OK';
-                    changeCoverBtn.classList.remove('bg-gray-600', 'hover:bg-gray-500');
-                    changeCoverBtn.classList.add('bg-blue-600', 'hover:bg-blue-500');
-                } else {
-                    coverPhotoUrlInput.setAttribute('readonly', true);
-                    changeCoverBtn.textContent = 'Ganti';
-                    changeCoverBtn.classList.add('bg-gray-600', 'hover:bg-gray-500');
-                    changeCoverBtn.classList.remove('bg-blue-600', 'hover:bg-blue-500');
-                }
+            
+            // --- Settings Management ---
+            document.querySelectorAll('.edit-toggle-btn').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const targetInput = document.getElementById(e.target.dataset.target);
+                    if (targetInput.hasAttribute('readonly')) {
+                        targetInput.removeAttribute('readonly');
+                        targetInput.focus();
+                        targetInput.select();
+                        e.target.textContent = 'OK';
+                        e.target.classList.replace('bg-gray-600', 'bg-blue-600');
+                        e.target.classList.replace('hover:bg-gray-500', 'hover:bg-blue-500');
+                    } else {
+                        targetInput.setAttribute('readonly', true);
+                        e.target.textContent = 'Ganti';
+                        e.target.classList.replace('bg-blue-600', 'bg-gray-600');
+                        e.target.classList.replace('hover:bg-blue-500', 'hover:bg-gray-500');
+                    }
+                });
             });
 
             addSongBtn.addEventListener('click', () => {
@@ -470,8 +505,14 @@ Wassalamu'alaikum Warahmatullahi Wabarakatuh
                 document.querySelectorAll('.bg-hero').forEach(el => {
                     el.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('${coverUrl}')`;
                 });
-                coverPhotoUrlInput.value = settings.cover_photo_url || '';
+                document.getElementById('cover_photo_url_input').value = settings.cover_photo_url || '';
                 
+                // Apply Map Links
+                document.getElementById('map-link-akad').href = settings.maps_link_akad || '#';
+                document.getElementById('map-link-resepsi').href = settings.maps_link_resepsi || '#';
+                document.getElementById('maps_link_akad_input').value = settings.maps_link_akad || '';
+                document.getElementById('maps_link_resepsi_input').value = settings.maps_link_resepsi || '';
+
                 // Apply Music Playlist
                 try {
                     playlist = JSON.parse(settings.music_playlist || '[]');
