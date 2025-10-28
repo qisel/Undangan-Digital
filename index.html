@@ -1,841 +1,744 @@
 <!DOCTYPE html>
 <html lang="id" class="scroll-smooth">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
-    <title>Undangan Digital — Wedding & Khitan</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
-    <style>
-        body { font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
-        .font-great-vibes { font-family: 'Great Vibes', cursive; }
-        .bg-hero { background-size: cover; background-position: center; transition: background-image 1s ease-in-out; }
-        .custom-shadow { box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04); }
-        body.splash-active { overflow: hidden; }
-        /* select screen */
-        #select-screen { background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,255,255,0.95)); backdrop-filter: blur(6px); }
-        /* hide/show */
-        .hidden-el { display: none !important; }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <title>Undangan Digital — Wedding & Khitan</title>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+  <style>
+    :root{
+      --rose-50: #fff6f6;
+      --rose-100: #ffeef0;
+      --rose-300: #f7c6c9;
+      --rose-500: #e29aa0;
+      --rose-700: #b86a6f;
+      --accent-gold: #f2c777;
+      --muted: #6b6b6b;
+    }
+    html,body{height:100%}
+    body{
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(180deg, var(--rose-50), #fff);
+      color: #333;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+    .font-great-vibes{ font-family:'Great Vibes', cursive; }
+    .hero-bg { background-size: cover; background-position: center; transition: background-image .9s ease-in-out; }
+    .card-shadow { box-shadow: 0 10px 30px rgba(16,16,16,0.08); border-radius: 18px; }
+    /* admin panel visible style */
+    #admin-panel {
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,0.06);
+      transition: transform .36s cubic-bezier(.2,.9,.2,1), opacity .36s ease;
+    }
+    #admin-panel.hidden { transform: translateY(20px) scale(.98); opacity:0; pointer-events:none; }
+    #admin-panel.visible { transform: translateY(0) scale(1); opacity:1; pointer-events:auto; }
+    /* animations */
+    .fade-in { animation: fadeIn .7s ease both; }
+    @keyframes fadeIn { from { opacity:0; transform: translateY(14px); } to { opacity:1; transform: translateY(0); } }
+    .fade-out { animation: fadeOut .6s ease both; }
+    @keyframes fadeOut { from { opacity:1; transform: scale(1); } to { opacity:0; transform: scale(.98); } }
+    .zoom-in { animation: zoomIn .9s cubic-bezier(.2,.9,.2,1) both; }
+    @keyframes zoomIn { from { opacity:0; transform: scale(.94); } to { opacity:1; transform: scale(1); } }
+
+    /* subtle rose-gold borders, inputs */
+    input, textarea, select {
+      border: 1px solid rgba(155,105,105,0.12);
+      background: rgba(255,255,255,0.95);
+      border-radius: 8px;
+      padding: .5rem .75rem;
+    }
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      box-shadow: 0 6px 18px rgba(226,154,160,0.12);
+      border-color: var(--rose-500);
+    }
+
+    /* responsive tweaks */
+    .max-w-invite { max-width: 820px; }
+    .cover-title-shadow { text-shadow: 0 4px 18px rgba(0,0,0,0.28); }
+
+    /* small decorative flourish */
+    .flourish {
+      width: 96px;
+      height: 6px;
+      background: linear-gradient(90deg, rgba(242,199,119,1), rgba(226,154,160,1));
+      border-radius: 999px;
+      margin: 6px auto;
+      opacity: .95;
+    }
+
+    /* prevent long text overflow in playlist */
+    .truncate-ellipsis { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  </style>
 </head>
-<body class="bg-stone-100 max-w-lg mx-auto overflow-x-hidden splash-active">
+<body class="antialiased">
 
-    <!-- GLOBAL: Script URL (ganti bila perlu) -->
-    <script>
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbzuss5LM6cPrb7dRHV_qbM7BSnTWqTLrcK7GlQYB2bokDKUn_L2lrThbkNgWvCuv7o_/exec';
-    </script>
+<!-- CHANGE THIS: set your Google Apps Script Web App URL -->
+<script> const scriptURL = 'https://script.google.com/macros/s/AKfycbzuss5LM6cPrb7dRHV_qbM7BSnTWqTLrcK7GlQYB2bokDKUn_L2lrThbkNgWvCuv7o_/exec'; </script>
 
-    <!-- SELECT SCREEN: pilih jenis undangan -->
-    <div id="select-screen" class="fixed inset-0 z-60 flex flex-col items-center justify-center p-6">
-        <div class="bg-white p-8 rounded-2xl shadow-2xl text-center max-w-md w-full">
-            <h2 class="text-lg text-stone-700 mb-2 font-semibold">Pilih Jenis Undangan</h2>
-            <p class="text-sm text-stone-500 mb-6">Silakan pilih undangan yang ingin ditampilkan</p>
-            <div class="flex gap-3 justify-center">
-                <button id="select-wedding" class="px-6 py-3 bg-rose-600 hover:bg-rose-500 text-white rounded-lg shadow">💍 Pernikahan</button>
-                <button id="select-khitan" class="px-6 py-3 bg-sky-600 hover:bg-sky-500 text-white rounded-lg shadow">🧒 Khitan</button>
-            </div>
-            <p class="text-xs text-stone-400 mt-4">Jika kamu membuka link langsung ke tipe tertentu, misal <code>?type=khitan</code>, pilihan akan otomatis terbuka.</p>
-        </div>
+<!-- MUSIC -->
+<audio id="background-music" loop></audio>
+<audio id="preview-music"></audio>
+
+<!-- ADMIN BUTTON (visible) -->
+<button id="open-admin-panel-btn" title="Buka Panel Admin"
+  class="fixed bottom-5 right-5 z-50 bg-white/90 text-rose-700 shadow-lg px-3 py-2 rounded-full flex items-center gap-2 hover:scale-105 transition">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="text-rose-700"><path d="M12 15.5A3.5 3.5 0 1 0 12 8.5a3.5 3.5 0 0 0 0 7z"></path><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83"></path></svg>
+  <span class="text-sm font-semibold">⚙️ Admin</span>
+</button>
+
+<!-- SELECT SCREEN (when first open) -->
+<div id="select-screen" class="fixed inset-0 z-40 flex items-center justify-center p-6">
+  <div class="max-w-invite w-full bg-white card-shadow p-8 rounded-2xl text-center">
+    <h3 class="text-2xl font-semibold text-rose-700">Pilih Jenis Undangan</h3>
+    <p class="text-sm text-muted mt-2 mb-6">Silakan pilih undangan yang ingin dilihat</p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <button id="select-wedding" class="flex-1 py-3 rounded-lg bg-gradient-to-r from-rose-300 to-rose-500 text-white font-semibold shadow">💍 Pernikahan</button>
+      <button id="select-khitan" class="flex-1 py-3 rounded-lg bg-gradient-to-r from-indigo-300 to-indigo-500 text-white font-semibold shadow">🧒 Khitan</button>
     </div>
+    <div class="mt-5 text-xs text-muted">Link bisa diarahkan langsung ke tipe tertentu: <code>?type=wedding</code> atau <code>?type=khitan</code>.</div>
+  </div>
+</div>
 
-    <!-- Music player (global) -->
-    <audio id="background-music" loop></audio>
-    <audio id="preview-music"></audio>
-    <button id="music-toggle" class="fixed top-5 left-4 z-[60] bg-white/70 backdrop-blur-sm p-3 rounded-full shadow-lg hidden">
-        <svg id="music-on-icon" class="text-stone-700" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
-        <svg id="music-off-icon" class="hidden text-stone-700" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="1" y1="1" x2="23" y2="23"></line></svg>
-    </button>
+<!-- MAIN WRAPPER -->
+<main id="main" class="relative z-10">
 
-    <!-- MAIN: content for wedding & khitan (both hidden initially) -->
-    <main id="main-wrapper" class="opacity-0 transition-opacity duration-700">
+  <!-- WEDDING CONTENT -->
+  <section id="wedding-content" class="hidden max-w-invite mx-auto">
+    <!-- Cover -->
+    <header id="wedding-cover" class="hero-bg h-screen rounded-b-[28px] flex flex-col items-center justify-center text-white text-center"
+            style="background-image: linear-gradient(180deg, rgba(0,0,0,0.36), rgba(0,0,0,0.36)), url('https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1400&q=60');">
+      <div class="px-6">
+        <h4 class="text-sm tracking-widest uppercase text-rose-100">Walimatul 'Ursy</h4>
+        <h1 class="font-great-vibes text-6xl leading-tight mt-4 cover-title-shadow">Desmita & Ahmad</h1>
+        <div class="flourish my-4"></div>
+        <p id="wedding-guest-name" class="bg-black/30 px-4 py-2 rounded-lg inline-block font-semibold">Tamu Terhormat</p>
+        <div class="mt-8">
+          <button id="open-wedding" class="px-8 py-3 rounded-full bg-white text-rose-700 font-semibold shadow hover:scale-105 transition transform">Buka Undangan</button>
+        </div>
+      </div>
+    </header>
 
-        <!-- ========== WEDDING CONTENT ========== -->
-        <div id="wedding-content" class="hidden-el">
-            <!-- Cover (wedding) -->
-            <header id="wedding-cover" class="bg-hero h-screen flex flex-col items-center justify-center text-white text-center p-4" style="background-image: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url('https://placehold.co/800x1200/a89078/ffffff?text=Cover+Wedding');">
-                <h2 class="text-xl tracking-widest">Walimatul 'Ursy</h2>
-                <h1 class="font-great-vibes text-7xl my-4">Desmita & Ahmad</h1>
-                <p id="wedding-guest-name" class="text-2xl font-semibold mt-2 bg-black/30 px-4 py-2 rounded-lg">Tamu</p>
-                <div class="mt-8">
-                    <button id="open-wedding" class="mt-8 bg-white/80 text-stone-800 font-semibold py-3 px-8 rounded-full shadow hover:scale-105 transition transform">Buka Undangan Pernikahan</button>
-                </div>
-            </header>
-
-            <!-- Wedding inner content (copied/adapted from original) -->
-            <section id="wedding-main" class="hidden-el">
-                <!-- Navigation, profile, etc — reuse layout from original but scoped to wedding -->
-                <div id="wedding-nav" class="hidden fixed top-1/2 -translate-y-1/2 right-4 z-40 flex flex-col space-y-2">
-                    <button title="Kembali ke Sampul" id="wedding-back-to-cover" class="bg-white/70 backdrop-blur-sm p-3 rounded-full shadow-lg">🏠</button>
-                    <button title="Profil Pengantin" class="bg-white/70 backdrop-blur-sm p-3 rounded-full shadow-lg" onclick="document.getElementById('bride-groom-section-wedding').scrollIntoView({behavior: 'smooth'})">👰🤵</button>
-                    <button title="Waktu Acara" class="bg-white/70 backdrop-blur-sm p-3 rounded-full shadow-lg" onclick="document.getElementById('save-the-date-section-wedding').scrollIntoView({behavior: 'smooth'})">📅</button>
-                    <button title="Hitung Mundur" class="bg-white/70 backdrop-blur-sm p-3 rounded-full shadow-lg" onclick="document.getElementById('countdown-section-wedding').scrollIntoView({behavior: 'smooth'})">⏳</button>
-                    <button title="Buku Tamu" class="bg-white/70 backdrop-blur-sm p-3 rounded-full shadow-lg" onclick="document.getElementById('guestbook-section-wedding').scrollIntoView({behavior: 'smooth'})">💬</button>
-                </div>
-
-                <header class="bg-hero h-screen flex flex-col items-center justify-center text-white text-center p-4" data-type="wedding"></header>
-
-                <!-- Bride & Groom (wedding) -->
-                <section id="bride-groom-section-wedding" class="py-20 px-6 text-center bg-amber-50">
-                    <h2 class="font-great-vibes text-5xl text-stone-800 mb-12">Assalamu'alaikum Wr. Wb.</h2>
-                    <p class="max-w-xl mx-auto text-stone-700 mb-12">Dengan memohon rahmat dan ridho-Nya, kami bermaksud menyelenggarakan pernikahan putra-putri kami:</p>
-                    <div class="flex flex-col md:flex-row items-center justify-center gap-12">
-                        <div class="w-full">
-                            <img id="wedding-bride-img" src="https://placehold.co/300x300/e2d6c9/333333?text=Desmita" alt="Desmita" class="w-48 h-48 rounded-full mx-auto object-cover border-4 border-white custom-shadow">
-                            <h3 class="font-great-vibes text-4xl mt-6 text-stone-700">Desmita Indriani Ahmad</h3>
-                            <p class="mt-2 text-stone-600">Putri dari Bapak Andri Ahmad & Ibu Sri Liyan Kutey</p>
-                        </div>
-                        <p class="font-great-vibes text-7xl text-stone-400">&</p>
-                        <div class="w-full">
-                            <img id="wedding-groom-img" src="https://placehold.co/300x300/d1c3b6/333333?text=Ahmad" alt="Ahmad" class="w-48 h-48 rounded-full mx-auto object-cover border-4 border-white custom-shadow">
-                            <h3 class="font-great-vibes text-4xl mt-6 text-stone-700">Ahmad Mopangga</h3>
-                            <p class="mt-2 text-stone-600">Putra dari Bapak Ramli Mopangga & Ibu Ratna Yasin</p>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Save the date (wedding) -->
-                <section id="save-the-date-section-wedding" class="py-20 px-6 bg-stone-100 text-center">
-                    <h2 class="font-great-vibes text-5xl text-stone-800 mb-12">Save The Date</h2>
-                    <div class="space-y-8 max-w-md mx-auto">
-                        <div class="bg-white p-8 rounded-2xl custom-shadow text-stone-700">
-                            <h3 class="font-great-vibes text-4xl mb-4">Akad Nikah</h3>
-                            <p class="font-semibold text-lg" id="wedding-akad-date">Minggu, 28 September 2025</p>
-                            <p id="wedding-akad-time">Pukul 10.00 WITA - Selesai</p>
-                            <hr class="my-4 border-stone-200">
-                            <p class="font-semibold">Lokasi:</p>
-                            <p id="wedding-akad-loc">Kediaman Mempelai Wanita<br>Jl. Imam Bonjol, 79, Kota Gorontalo</p>
-                            <a id="map-link-akad-wedding" href="#" target="_blank" class="mt-6 inline-block bg-stone-700 hover:bg-stone-600 text-white font-semibold py-2 px-6 rounded-full shadow-md">Lihat Peta</a>
-                        </div>
-                        <div class="bg-white p-8 rounded-2xl custom-shadow text-stone-700">
-                            <h3 class="font-great-vibes text-4xl mb-4">Resepsi Pernikahan</h3>
-                            <p class="font-semibold text-lg" id="wedding-resepsi-date">Minggu, 28 September 2025</p>
-                            <p id="wedding-resepsi-time">Pukul 19.00 WITA - Selesai</p>
-                            <hr class="my-4 border-stone-200">
-                            <p class="font-semibold">Lokasi:</p>
-                            <p id="wedding-resepsi-loc">Kediaman Mempelai Wanita<br>Jl. Imam Bonjol, 79, Kota Gorontalo</p>
-                            <a id="map-link-resepsi-wedding" href="#" target="_blank" class="mt-6 inline-block bg-stone-700 hover:bg-stone-600 text-white font-semibold py-2 px-6 rounded-full shadow-md">Lihat Peta</a>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Kirim Hadiah -->
-                <section class="py-20 px-6 bg-amber-50 text-center">
-                    <h2 class="font-great-vibes text-5xl text-stone-800 mb-4">Kirim Hadiah</h2>
-                    <div class="max-w-xs mx-auto bg-white p-6 rounded-2xl custom-shadow">
-                        <img src="https://raw.githubusercontent.com/qisel/Desmita-Ahmad/main/ewallet.jpg" alt="E-Wallet QR Code" class="w-full rounded-lg" onerror="this.onerror=null;this.src='https://placehold.co/400x400?text=Gagal+Memuat+QR';">
-                        <div class="text-left mt-4 text-stone-700 text-sm">
-                            <p class="font-semibold">Bank Mandiri</p>
-                            <p>1500012345678 a/n Desmita Indriani Ahmad</p>
-                            <hr class="my-2 border-stone-200">
-                            <p class="font-semibold">BRI</p>
-                            <p>098701234567890 a/n Ahmad Mopangga</p>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Countdown (wedding) -->
-                <section id="countdown-section-wedding" class="py-20 px-6 bg-hero text-white text-center" style="background-image: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url('https://placehold.co/1200x600/a89078/ffffff?text=Countdown+Wedding');">
-                    <h2 class="font-great-vibes text-5xl mb-8">Menuju Hari Bahagia</h2>
-                    <div id="countdown-wedding" class="flex justify-center space-x-2 md:space-x-4 text-center">
-                        <div><div id="days-w" class="text-4xl font-bold bg-white/20 backdrop-blur-sm p-4 rounded-lg">00</div><div class="text-sm mt-2">Hari</div></div>
-                        <div><div id="hours-w" class="text-4xl font-bold bg-white/20 backdrop-blur-sm p-4 rounded-lg">00</div><div class="text-sm mt-2">Jam</div></div>
-                        <div><div id="minutes-w" class="text-4xl font-bold bg-white/20 backdrop-blur-sm p-4 rounded-lg">00</div><div class="text-sm mt-2">Menit</div></div>
-                        <div><div id="seconds-w" class="text-4xl font-bold bg-white/20 backdrop-blur-sm p-4 rounded-lg">00</div><div class="text-sm mt-2">Detik</div></div>
-                    </div>
-                </section>
-
-                <!-- Guestbook (shared comments) -->
-                <section id="guestbook-section-wedding" class="py-20 px-6 bg-stone-100 text-center">
-                    <h2 class="font-great-vibes text-5xl text-stone-800 mb-12">Buku Tamu & Ucapan</h2>
-                    <div class="max-w-md mx-auto bg-white p-8 rounded-2xl custom-shadow text-left">
-                        <form id="guestbook-form-wedding">
-                            <input type="hidden" name="action" value="saveComment">
-                            <input type="hidden" name="type" value="wedding">
-                            <div class="mb-4">
-                                <label class="block text-stone-700 font-semibold mb-2">Nama</label>
-                                <input type="text" id="name-w" name="name" class="w-full px-4 py-2 border border-stone-300 rounded-lg" required>
-                            </div>
-                            <div class="mb-4">
-                                <label class="block text-stone-700 font-semibold mb-2">Konfirmasi Kehadiran</label>
-                                <select id="attendance-w" name="attendance" class="w-full px-4 py-2 border border-stone-300 rounded-lg" required>
-                                    <option value="Insya Allah Hadir">Insya Allah Hadir</option>
-                                    <option value="Berhalangan">Berhalangan</option>
-                                </select>
-                            </div>
-                            <div class="mb-4">
-                                <label class="block text-stone-700 font-semibold mb-2">Ucapan & Doa</label>
-                                <textarea id="message-w" name="message" rows="4" class="w-full px-4 py-2 border border-stone-300 rounded-lg" required></textarea>
-                            </div>
-                            <button type="submit" class="w-full bg-stone-700 hover:bg-stone-600 text-white font-bold py-3 rounded-lg">Kirim Ucapan</button>
-                            <p id="form-status-w" class="text-center mt-4 text-sm"></p>
-                        </form>
-                    </div>
-                    <div id="comments-container-w" class="max-w-md mx-auto mt-12 text-left space-y-3">
-                        <p id="loading-comments-w" class="text-center text-stone-600 animate-pulse">Memuat komentar...</p>
-                    </div>
-                </section>
-
-                <footer class="py-12 px-6 text-center text-stone-600 bg-stone-200">
-                    <p class="font-great-vibes text-4xl my-6">Desmita & Ahmad</p>
-                    <p class="text-sm">&copy; 2025 Undangan Digital.</p>
-                    <hr class="my-6 border-stone-300 max-w-[100px] mx-auto">
-                    <p class="text-xs text-stone-500">Undangan Digital oleh <span class="font-semibold">arkandigital barakati</span></p>
-                </footer>
-            </section>
+    <!-- Wedding Main -->
+    <div id="wedding-main" class="hidden bg-white -mt-12 rounded-t-3xl pb-16 fade-in">
+      <div class="px-6 pt-10">
+        <!-- Navigation small -->
+        <div class="flex justify-end space-x-3 mb-4">
+          <button id="wedding-nav-profile" class="text-sm px-3 py-2 rounded bg-rose-50 text-rose-700">Profil</button>
+          <button id="wedding-nav-date" class="text-sm px-3 py-2 rounded bg-rose-50 text-rose-700">Waktu</button>
+          <button id="wedding-nav-countdown" class="text-sm px-3 py-2 rounded bg-rose-50 text-rose-700">Hitung Mundur</button>
+          <button id="wedding-nav-guestbook" class="text-sm px-3 py-2 rounded bg-rose-50 text-rose-700">Buku Tamu</button>
         </div>
 
-        <!-- ========== KHITAN CONTENT ========== -->
-        <div id="khitan-content" class="hidden-el">
-            <!-- Cover (khitan) -->
-            <header id="khitan-cover" class="bg-hero h-screen flex flex-col items-center justify-center text-white text-center p-4" style="background-image: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url('https://placehold.co/800x1200/6fb3ff/ffffff?text=Cover+Khitan');">
-                <h2 class="text-xl tracking-widest">Syukuran Khitan</h2>
-                <h1 class="font-great-vibes text-6xl my-4">Syukuran Putra Bapak/Ibu</h1>
-                <p id="khitan-guest-name" class="text-2xl font-semibold mt-2 bg-black/30 px-4 py-2 rounded-lg">Tamu</p>
-                <div class="mt-8">
-                    <button id="open-khitan" class="mt-8 bg-white/80 text-stone-800 font-semibold py-3 px-8 rounded-full shadow hover:scale-105 transition transform">Buka Undangan Khitan</button>
-                </div>
-            </header>
-
-            <!-- Khitan inner content -->
-            <section id="khitan-main" class="hidden-el">
-                <div id="khitan-nav" class="hidden fixed top-1/2 -translate-y-1/2 right-4 z-40 flex flex-col space-y-2">
-                    <button title="Kembali ke Sampul" id="khitan-back-to-cover" class="bg-white/70 backdrop-blur-sm p-3 rounded-full shadow-lg">🏠</button>
-                    <button title="Waktu Acara" class="bg-white/70 backdrop-blur-sm p-3 rounded-full shadow-lg" onclick="document.getElementById('save-the-date-section-khitan').scrollIntoView({behavior: 'smooth'})">📅</button>
-                    <button title="Buku Tamu" class="bg-white/70 backdrop-blur-sm p-3 rounded-full shadow-lg" onclick="document.getElementById('guestbook-section-khitan').scrollIntoView({behavior: 'smooth'})">💬</button>
-                </div>
-
-                <section id="khitan-info" class="py-20 px-6 bg-amber-50 text-center">
-                    <h2 class="font-great-vibes text-5xl text-stone-800 mb-6">Assalamu'alaikum</h2>
-                    <p class="max-w-xl mx-auto text-stone-700 mb-6">Dengan memohon rahmat, kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri acara syukuran khitan putra kami:</p>
-                    <div class="max-w-md mx-auto bg-white p-8 rounded-2xl custom-shadow">
-                        <h3 class="font-semibold text-lg">Nama Anak</h3>
-                        <p id="khitan-child-name" class="text-stone-700">Nama Anak</p>
-                        <hr class="my-4 border-stone-200">
-                        <p class="font-semibold">Tanggal & Waktu</p>
-                        <p id="khitan-date-time" class="text-stone-700">Minggu, 5 Oktober 2025 — 09.00 WITA</p>
-                        <p class="font-semibold mt-4">Lokasi</p>
-                        <p id="khitan-location" class="text-stone-700">Kediaman Bapak/Ibu — Alamat lengkap</p>
-                        <a id="map-link-khitan" href="#" target="_blank" class="mt-6 inline-block bg-stone-700 hover:bg-stone-600 text-white font-semibold py-2 px-6 rounded-full shadow-md">Lihat Peta</a>
-                    </div>
-                </section>
-
-                <!-- Countdown (khitan) -->
-                <section id="countdown-section-khitan" class="py-20 px-6 bg-hero text-white text-center" style="background-image: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url('https://placehold.co/1200x600/6fb3ff/ffffff?text=Countdown+Khitan');">
-                    <h2 class="font-great-vibes text-4xl mb-8">Menuju Hari Acara</h2>
-                    <div id="countdown-khitan" class="flex justify-center space-x-2 md:space-x-4 text-center">
-                        <div><div id="days-k" class="text-3xl font-bold bg-white/20 backdrop-blur-sm p-4 rounded-lg">00</div><div class="text-sm mt-2">Hari</div></div>
-                        <div><div id="hours-k" class="text-3xl font-bold bg-white/20 backdrop-blur-sm p-4 rounded-lg">00</div><div class="text-sm mt-2">Jam</div></div>
-                        <div><div id="minutes-k" class="text-3xl font-bold bg-white/20 backdrop-blur-sm p-4 rounded-lg">00</div><div class="text-sm mt-2">Menit</div></div>
-                        <div><div id="seconds-k" class="text-3xl font-bold bg-white/20 backdrop-blur-sm p-4 rounded-lg">00</div><div class="text-sm mt-2">Detik</div></div>
-                    </div>
-                </section>
-
-                <!-- Guestbook (shared comments) -->
-                <section id="guestbook-section-khitan" class="py-20 px-6 bg-stone-100 text-center">
-                    <h2 class="font-great-vibes text-4xl text-stone-800 mb-8">Buku Tamu & Ucapan</h2>
-                    <div class="max-w-md mx-auto bg-white p-8 rounded-2xl custom-shadow text-left">
-                        <form id="guestbook-form-khitan">
-                            <input type="hidden" name="action" value="saveComment">
-                            <input type="hidden" name="type" value="khitan">
-                            <div class="mb-4">
-                                <label class="block text-stone-700 font-semibold mb-2">Nama</label>
-                                <input type="text" id="name-k" name="name" class="w-full px-4 py-2 border border-stone-300 rounded-lg" required>
-                            </div>
-                            <div class="mb-4">
-                                <label class="block text-stone-700 font-semibold mb-2">Konfirmasi Kehadiran</label>
-                                <select id="attendance-k" name="attendance" class="w-full px-4 py-2 border border-stone-300 rounded-lg" required>
-                                    <option value="Insya Allah Hadir">Insya Allah Hadir</option>
-                                    <option value="Berhalangan">Berhalangan</option>
-                                </select>
-                            </div>
-                            <div class="mb-4">
-                                <label class="block text-stone-700 font-semibold mb-2">Ucapan & Doa</label>
-                                <textarea id="message-k" name="message" rows="4" class="w-full px-4 py-2 border border-stone-300 rounded-lg" required></textarea>
-                            </div>
-                            <button type="submit" class="w-full bg-stone-700 hover:bg-stone-600 text-white font-bold py-3 rounded-lg">Kirim Ucapan</button>
-                            <p id="form-status-k" class="text-center mt-4 text-sm"></p>
-                        </form>
-                    </div>
-                    <div id="comments-container-k" class="max-w-md mx-auto mt-12 text-left space-y-3">
-                        <p id="loading-comments-k" class="text-center text-stone-600 animate-pulse">Memuat komentar...</p>
-                    </div>
-                </section>
-
-                <footer class="py-12 px-6 text-center text-stone-600 bg-stone-200">
-                    <p class="font-great-vibes text-4xl my-6">Syukuran Khitan</p>
-                    <p class="text-sm">&copy; 2025 Undangan Digital.</p>
-                </footer>
-            </section>
-        </div>
-
-    </main>
-
-    <!-- ADMIN PANEL (satu panel, switchable type) -->
-    <div id="admin-panel" class="invisible opacity-0 fixed top-4 right-4 bg-gray-900/88 backdrop-blur-md p-3 shadow-2xl z-[70] transform -translate-y-full w-80 rounded-xl">
-        <button id="close-admin-panel" class="absolute -top-2 -right-2 bg-white text-gray-800 rounded-full w-7 h-7 flex items-center justify-center shadow-lg">&times;</button>
-        <h3 class="font-bold text-center text-sm mb-3 text-white">Panel Admin</h3>
-
-        <div class="flex gap-2 mb-3">
-            <button id="admin-type-wedding" class="flex-1 py-1 rounded bg-rose-600 text-white text-xs">Wedding</button>
-            <button id="admin-type-khitan" class="flex-1 py-1 rounded bg-sky-600 text-white text-xs">Khitan</button>
-        </div>
-
-        <div class="space-y-3 text-xs max-h-[60vh] overflow-y-auto pr-2 text-white">
-            <div>
-                <label class="font-semibold text-white/90">Undangan Untuk</label>
-                <div class="flex items-center space-x-2 mt-1">
-                    <input type="text" id="admin-guest-name" placeholder="Nama Tamu..." class="w-full px-3 py-2 bg-white/10 border border-white/20 text-white placeholder-white/50 rounded-md text-xs">
-                    <button id="generate-link-btn" class="bg-cyan-600 hover:bg-cyan-500 text-white px-2 py-2 rounded-md whitespace-nowrap text-xs">Buat</button>
-                </div>
-                <textarea id="whatsapp-message" rows="6" class="hidden w-full px-3 py-2 bg-white/10 border border-white/20 text-white placeholder-white/50 rounded-md mt-2 text-xs" placeholder="Pesan akan muncul di sini..."></textarea>
-                <button id="copy-message-btn" class="hidden w-full bg-cyan-500 hover:bg-cyan-400 text-white mt-2 py-2 rounded-md font-bold text-xs">Salin Pesan</button>
+        <!-- Bride & Groom -->
+        <section id="bride-groom-section-wedding" class="text-center py-10">
+          <h2 class="font-great-vibes text-4xl text-rose-700">Assalamu'alaikum</h2>
+          <p class="mt-3 text-muted max-w-xl mx-auto">Dengan memohon rahmat dan ridho-Nya, kami bermaksud menyelenggarakan pernikahan putra-putri kami:</p>
+          <div class="mt-8 grid grid-cols-1 md:grid-cols-3 items-center gap-4">
+            <div class="md:col-span-1">
+              <img id="wedding-bride-img" src="https://placehold.co/300x300/e2d6c9/333333?text=Desmita" alt="Desmita" class="w-40 h-40 rounded-full mx-auto object-cover border-4 border-white card-shadow">
+              <h3 class="font-great-vibes text-2xl mt-4">Desmita Indriani</h3>
+              <p class="text-sm text-muted mt-1">Putri dari Bapak Andri & Ibu Sri</p>
             </div>
+            <div class="md:col-span-1 text-3xl font-great-vibes text-rose-200 text-center"> & </div>
+            <div class="md:col-span-1">
+              <img id="wedding-groom-img" src="https://placehold.co/300x300/d1c3b6/333333?text=Ahmad" alt="Ahmad" class="w-40 h-40 rounded-full mx-auto object-cover border-4 border-white card-shadow">
+              <h3 class="font-great-vibes text-2xl mt-4">Ahmad Mopangga</h3>
+              <p class="text-sm text-muted mt-1">Putra dari Bapak Ramli & Ibu Ratna</p>
+            </div>
+          </div>
+        </section>
 
-            <hr class="border-white/20">
+        <!-- Save The Date -->
+        <section id="save-the-date-section-wedding" class="py-8">
+          <div class="max-w-2xl mx-auto grid md:grid-cols-2 gap-6">
+            <div class="bg-white p-6 rounded-2xl card-shadow">
+              <h4 class="font-great-vibes text-2xl text-rose-700">Akad Nikah</h4>
+              <p id="wedding-akad-date" class="font-semibold mt-2">Minggu, 28 September 2025</p>
+              <p id="wedding-akad-time" class="text-muted">Pukul 10.00 WITA - Selesai</p>
+              <p class="mt-3 text-sm">Lokasi: <span id="wedding-akad-loc" class="font-medium">Kediaman Mempelai Wanita, Jl. Imam Bonjol</span></p>
+              <a id="map-link-akad-wedding" href="#" target="_blank" class="mt-4 inline-block text-sm px-4 py-2 bg-rose-50 text-rose-700 rounded-lg">Lihat Peta</a>
+            </div>
+            <div class="bg-white p-6 rounded-2xl card-shadow">
+              <h4 class="font-great-vibes text-2xl text-rose-700">Resepsi</h4>
+              <p id="wedding-resepsi-date" class="font-semibold mt-2">Minggu, 28 September 2025</p>
+              <p id="wedding-resepsi-time" class="text-muted">Pukul 19.00 WITA - Selesai</p>
+              <p class="mt-3 text-sm">Lokasi: <span id="wedding-resepsi-loc" class="font-medium">Kediaman Mempelai Wanita</span></p>
+              <a id="map-link-resepsi-wedding" href="#" target="_blank" class="mt-4 inline-block text-sm px-4 py-2 bg-rose-50 text-rose-700 rounded-lg">Lihat Peta</a>
+            </div>
+          </div>
+        </section>
 
-            <!-- Settings Form -->
-            <form id="settings-form">
-                <input type="hidden" name="action" value="saveSettings">
-                <input type="hidden" name="type" id="settings-type" value="wedding">
+        <!-- Countdown -->
+        <section id="countdown-section-wedding" class="py-8 bg-gradient-to-b from-rose-50 to-white rounded-2xl p-6">
+          <h3 class="text-center text-xl font-semibold text-rose-700">Menuju Hari Bahagia</h3>
+          <div id="countdown-wedding" class="mt-6 flex justify-center gap-4 text-center">
+            <div><div id="days-w" class="text-2xl font-bold bg-white/80 px-4 py-3 rounded-lg">00</div><div class="text-sm mt-2 text-muted">Hari</div></div>
+            <div><div id="hours-w" class="text-2xl font-bold bg-white/80 px-4 py-3 rounded-lg">00</div><div class="text-sm mt-2 text-muted">Jam</div></div>
+            <div><div id="minutes-w" class="text-2xl font-bold bg-white/80 px-4 py-3 rounded-lg">00</div><div class="text-sm mt-2 text-muted">Menit</div></div>
+            <div><div id="seconds-w" class="text-2xl font-bold bg-white/80 px-4 py-3 rounded-lg">00</div><div class="text-sm mt-2 text-muted">Detik</div></div>
+          </div>
+        </section>
 
-                <div>
-                    <label class="font-semibold text-white/90">Foto Sampul (URL)</label>
-                    <div class="flex items-center space-x-2 mt-1">
-                        <input type="url" name="cover_photo_url" id="cover_photo_url_input" placeholder="URL Foto Sampul..." class="w-full px-3 py-2 bg-white/10 border border-white/20 text-white placeholder-white/50 rounded-md text-xs">
-                    </div>
-                </div>
+        <!-- Gift -->
+        <section class="py-8">
+          <div class="max-w-md mx-auto bg-white p-6 rounded-2xl card-shadow text-center">
+            <h4 class="font-semibold text-rose-700">Kirim Hadiah</h4>
+            <img src="https://raw.githubusercontent.com/qisel/Desmita-Ahmad/main/ewallet.jpg" alt="QR" class="w-48 mx-auto mt-4 rounded-lg" onerror="this.onerror=null;this.src='https://placehold.co/400x400?text=QR';">
+            <div class="mt-4 text-sm text-muted">
+              <p class="font-medium">Bank Mandiri</p>
+              <p>1500012345678 a/n Desmita Indriani Ahmad</p>
+              <p class="mt-2 font-medium">BRI</p>
+              <p>098701234567890 a/n Ahmad Mopangga</p>
+            </div>
+          </div>
+        </section>
 
-                <div>
-                    <label class="font-semibold text-white/90">Link Peta Acara</label>
-                    <div class="flex items-center space-x-2 mt-1">
-                        <input type="url" name="maps_link" id="maps_link_input" placeholder="Contoh: https://maps.app.goo.gl/..." class="w-full px-3 py-2 bg-white/10 border border-white/20 text-white placeholder-white/50 rounded-md text-xs">
-                    </div>
-                </div>
-
-                <div>
-                    <label class="font-semibold text-white/90">Playlist Lagu (JSON)</label>
-                    <input type="hidden" name="music_playlist" id="music_playlist_input">
-                    <div id="playlist-container" class="mt-1 space-y-1 text-xs">
-                        <p id="no-song-text" class="text-white/50 text-center py-2">Belum ada lagu.</p>
-                    </div>
-
-                    <div id="add-song-form" class="hidden space-y-2 mt-2 p-2 bg-white/10 rounded-md">
-                        <input type="text" id="new-song-title" placeholder="Judul Lagu..." class="w-full px-3 py-2 bg-white/10 border border-white/20 text-white placeholder-white/50 rounded-md text-xs">
-                        <input type="url" id="new-song-url" placeholder="URL MP3 Lagu..." class="w-full px-3 py-2 bg-white/10 border border-white/20 text-white placeholder-white/50 rounded-md text-xs">
-                        <div class="flex space-x-2">
-                             <button type="button" id="save-new-song-btn" class="w-full bg-green-600 hover:bg-green-500 text-white py-1 rounded-md text-xs">Simpan Lagu</button>
-                             <button type="button" id="cancel-add-song-btn" class="w-full bg-gray-600 hover:bg-gray-500 text-white py-1 rounded-md text-xs">Batal</button>
-                        </div>
-                    </div>
-                    <button type="button" id="add-song-btn" class="w-full bg-purple-600 hover:bg-purple-500 text-white mt-2 py-2 rounded-md font-bold text-xs">Tambah Lagu</button>
-                </div>
-
-                <button type="submit" id="save-settings-btn" class="w-full bg-green-600 hover:bg-green-500 text-white mt-3 py-2 rounded-md font-bold text-xs">Simpan Pengaturan</button>
+        <!-- Guestbook (shared) -->
+        <section id="guestbook-section-wedding" class="py-8">
+          <h3 class="text-center text-xl font-great-vibes text-rose-700">Buku Tamu & Ucapan</h3>
+          <div class="max-w-lg mx-auto mt-6 bg-white p-6 rounded-2xl card-shadow">
+            <form id="guestbook-form-wedding">
+              <input type="hidden" name="action" value="saveComment">
+              <input type="hidden" name="type" value="wedding">
+              <div class="mb-3">
+                <label class="text-sm font-semibold text-muted">Nama</label>
+                <input id="name-w" name="name" required>
+              </div>
+              <div class="mb-3">
+                <label class="text-sm font-semibold text-muted">Kehadiran</label>
+                <select id="attendance-w" name="attendance" required>
+                  <option>Insya Allah Hadir</option>
+                  <option>Berhalangan</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label class="text-sm font-semibold text-muted">Ucapan & Doa</label>
+                <textarea id="message-w" name="message" rows="3" required></textarea>
+              </div>
+              <button type="submit" class="w-full py-3 rounded-lg bg-rose-600 text-white font-semibold">Kirim Ucapan</button>
+              <p id="form-status-w" class="text-center text-sm mt-2 text-muted"></p>
             </form>
+
+            <div id="comments-container-w" class="mt-6 space-y-3">
+              <p id="loading-comments-w" class="text-center text-muted">Memuat komentar...</p>
+            </div>
+          </div>
+        </section>
+
+        <footer class="mt-10 text-center text-sm text-muted">&copy; 2025 Undangan Digital — Rose Gold Edition</footer>
+      </div>
+    </div>
+  </section>
+
+  <!-- KHITAN CONTENT -->
+  <section id="khitan-content" class="hidden max-w-invite mx-auto">
+    <!-- Cover -->
+    <header id="khitan-cover" class="hero-bg h-screen rounded-b-[28px] flex flex-col items-center justify-center text-white text-center"
+            style="background-image: linear-gradient(180deg, rgba(3,16,53,0.28), rgba(3,16,53,0.28)), url('https://images.unsplash.com/photo-1523978591478-c753949ff840?auto=format&fit=crop&w=1400&q=60');">
+      <div class="px-6">
+        <h4 class="text-sm tracking-widest uppercase text-white/80">Syukuran Khitan</h4>
+        <h1 class="font-great-vibes text-5xl mt-3 cover-title-shadow">Syukuran Putra</h1>
+        <div class="flourish my-4"></div>
+        <p id="khitan-guest-name" class="bg-black/30 px-4 py-2 rounded-lg inline-block font-semibold">Tamu</p>
+        <div class="mt-8">
+          <button id="open-khitan" class="px-8 py-3 rounded-full bg-white text-indigo-700 font-semibold shadow hover:scale-105 transition transform">Buka Undangan Khitan</button>
         </div>
+      </div>
+    </header>
+
+    <div id="khitan-main" class="hidden bg-white -mt-12 rounded-t-3xl pb-16 fade-in">
+      <div class="px-6 pt-10">
+        <div class="flex justify-end space-x-3 mb-4">
+          <button id="khitan-nav-date" class="text-sm px-3 py-2 rounded bg-indigo-50 text-indigo-700">Waktu</button>
+          <button id="khitan-nav-guestbook" class="text-sm px-3 py-2 rounded bg-indigo-50 text-indigo-700">Buku Tamu</button>
+        </div>
+
+        <section id="khitan-info" class="text-center py-10">
+          <h2 class="font-great-vibes text-3xl text-indigo-700">Assalamu'alaikum</h2>
+          <p class="mt-3 text-muted max-w-xl mx-auto">Dengan memohon rahmat, kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri acara syukuran khitan putra kami:</p>
+          <div class="mt-6 max-w-md mx-auto bg-white p-6 rounded-2xl card-shadow">
+            <h4 class="font-semibold">Nama Anak</h4>
+            <p id="khitan-child-name" class="text-muted">(Nama Anak)</p>
+            <p class="mt-3 font-semibold">Tanggal & Waktu</p>
+            <p id="khitan-date-time" class="text-muted">Minggu, 5 Oktober 2025 — 09.00 WITA</p>
+            <p class="mt-3 font-semibold">Lokasi</p>
+            <p id="khitan-location" class="text-muted">Kediaman Bapak/Ibu — Alamat lengkap</p>
+            <a id="map-link-khitan" href="#" target="_blank" class="mt-4 inline-block text-sm px-4 py-2 bg-indigo-50 text-indigo-700 rounded-lg">Lihat Peta</a>
+          </div>
+        </section>
+
+        <!-- Countdown Khitan -->
+        <section id="countdown-section-khitan" class="py-8 bg-gradient-to-b from-indigo-50 to-white rounded-2xl p-6">
+          <h3 class="text-center text-lg font-semibold text-indigo-700">Menuju Hari Acara</h3>
+          <div id="countdown-khitan" class="mt-4 flex justify-center gap-4 text-center">
+            <div><div id="days-k" class="text-xl font-bold bg-white/80 px-3 py-2 rounded-lg">00</div><div class="text-sm mt-2 text-muted">Hari</div></div>
+            <div><div id="hours-k" class="text-xl font-bold bg-white/80 px-3 py-2 rounded-lg">00</div><div class="text-sm mt-2 text-muted">Jam</div></div>
+            <div><div id="minutes-k" class="text-xl font-bold bg-white/80 px-3 py-2 rounded-lg">00</div><div class="text-sm mt-2 text-muted">Menit</div></div>
+            <div><div id="seconds-k" class="text-xl font-bold bg-white/80 px-3 py-2 rounded-lg">00</div><div class="text-sm mt-2 text-muted">Detik</div></div>
+          </div>
+        </section>
+
+        <!-- Guestbook Khitan (shared comments) -->
+        <section id="guestbook-section-khitan" class="py-8">
+          <h3 class="text-center text-xl font-great-vibes text-indigo-700">Buku Tamu & Ucapan</h3>
+          <div class="max-w-lg mx-auto mt-6 bg-white p-6 rounded-2xl card-shadow">
+            <form id="guestbook-form-khitan">
+              <input type="hidden" name="action" value="saveComment">
+              <input type="hidden" name="type" value="khitan">
+              <div class="mb-3">
+                <label class="text-sm font-semibold text-muted">Nama</label>
+                <input id="name-k" name="name" required>
+              </div>
+              <div class="mb-3">
+                <label class="text-sm font-semibold text-muted">Kehadiran</label>
+                <select id="attendance-k" name="attendance" required>
+                  <option>Insya Allah Hadir</option>
+                  <option>Berhalangan</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label class="text-sm font-semibold text-muted">Ucapan & Doa</label>
+                <textarea id="message-k" name="message" rows="3" required></textarea>
+              </div>
+              <button type="submit" class="w-full py-3 rounded-lg bg-indigo-600 text-white font-semibold">Kirim Ucapan</button>
+              <p id="form-status-k" class="text-center text-sm mt-2 text-muted"></p>
+            </form>
+
+            <div id="comments-container-k" class="mt-6 space-y-3">
+              <p id="loading-comments-k" class="text-center text-muted">Memuat komentar...</p>
+            </div>
+          </div>
+        </section>
+
+        <footer class="mt-10 text-center text-sm text-muted">&copy; 2025 Undangan Digital — Khitan</footer>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ADMIN PANEL (VISIBLE VIA BUTTON) -->
+<div id="admin-panel" class="fixed top-6 right-6 z-50 w-80 bg-gradient-to-br from-white/95 to-rose-50 p-4 rounded-2xl hidden shadow-lg">
+  <div class="flex items-center justify-between mb-3">
+    <h4 class="text-sm font-semibold text-rose-700">Panel Admin</h4>
+    <button id="close-admin-panel" class="text-sm text-muted">✕</button>
+  </div>
+
+  <div class="mb-3 text-xs">
+    <div class="flex gap-2 mb-2">
+      <button id="admin-type-wedding" class="flex-1 py-1 rounded bg-rose-700 text-white text-xs font-semibold">Wedding</button>
+      <button id="admin-type-khitan" class="flex-1 py-1 rounded bg-indigo-700 text-white text-xs font-semibold">Khitan</button>
     </div>
 
-    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-    <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        AOS.init({ duration: 700, once: true });
+    <div class="mb-2">
+      <label class="block text-[11px] text-muted mb-1">Undangan Untuk</label>
+      <div class="flex gap-2">
+        <input id="admin-guest-name" placeholder="Nama Tamu..." class="flex-1 text-sm" />
+        <button id="generate-link-btn" class="px-2 rounded bg-rose-600 text-white text-sm">Buat</button>
+      </div>
+      <textarea id="whatsapp-message" rows="4" class="mt-2 text-xs hidden" placeholder="Pesan undangan..."></textarea>
+      <button id="copy-message-btn" class="mt-2 w-full hidden bg-rose-700 text-white py-2 rounded text-sm">Salin Pesan</button>
+    </div>
 
-        // Global state
-        let currentType = null; // "wedding" | "khitan"
-        const playlists = { wedding: [], khitan: [] };
-        let currentPlaylistIndex = 0;
-        const musicPlayer = document.getElementById('background-music');
-        const previewPlayer = document.getElementById('preview-music');
-        const musicToggle = document.getElementById('music-toggle');
-        const musicOnIcon = document.getElementById('music-on-icon');
-        const musicOffIcon = document.getElementById('music-off-icon');
+    <hr class="my-2" />
 
-        // Elements
-        const selectScreen = document.getElementById('select-screen');
-        const mainWrapper = document.getElementById('main-wrapper');
+    <form id="settings-form-admin">
+      <input type="hidden" name="action" value="saveSettings">
+      <input type="hidden" name="type" id="settings-type" value="wedding">
 
-        const weddingContent = document.getElementById('wedding-content');
-        const khitanContent = document.getElementById('khitan-content');
+      <div class="mb-2">
+        <label class="block text-[12px] text-muted mb-1">Foto Sampul (URL)</label>
+        <input type="url" name="cover_photo_url" id="cover_photo_url_input" class="text-sm" placeholder="https://..." />
+      </div>
+      <div class="mb-2">
+        <label class="block text-[12px] text-muted mb-1">Link Peta</label>
+        <input type="url" name="maps_link" id="maps_link_input" class="text-sm" placeholder="https://maps.app..." />
+      </div>
 
-        // open buttons on covers
-        document.getElementById('select-wedding').addEventListener('click', () => startInvitation('wedding'));
-        document.getElementById('select-khitan').addEventListener('click', () => startInvitation('khitan'));
+      <div class="mb-2">
+        <label class="block text-[12px] text-muted mb-1">Playlist (JSON)</label>
+        <input type="hidden" name="music_playlist" id="music_playlist_input">
+        <div id="playlist-container-admin" class="text-xs space-y-2">
+          <p id="no-song-text" class="text-muted text-center">Belum ada lagu.</p>
+        </div>
+        <div id="add-song-form" class="mt-2 hidden">
+          <input id="new-song-title" placeholder="Judul Lagu..." class="mb-1 text-sm" />
+          <input id="new-song-url" placeholder="URL MP3..." class="mb-2 text-sm" />
+          <div class="flex gap-2">
+            <button type="button" id="save-new-song-btn" class="flex-1 text-sm bg-green-600 text-white py-1 rounded">Simpan</button>
+            <button type="button" id="cancel-add-song-btn" class="flex-1 text-sm bg-gray-300 py-1 rounded">Batal</button>
+          </div>
+        </div>
+        <button type="button" id="add-song-btn" class="mt-2 w-full text-sm bg-purple-600 text-white py-1 rounded">Tambah Lagu</button>
+      </div>
 
-        // also support direct ?type= in URL
-        const urlParamsInit = new URLSearchParams(window.location.search);
-        const requestedType = urlParamsInit.get('type');
-        if (requestedType === 'khitan' || requestedType === 'wedding') {
-            // open selected immediately
-            startInvitation(requestedType);
-        }
+      <button id="save-settings-btn" type="submit" class="mt-2 w-full bg-rose-700 text-white py-2 rounded text-sm">Simpan Pengaturan</button>
+    </form>
+  </div>
+</div>
 
-        function startInvitation(type) {
-            currentType = type;
-            // hide select screen
-            if (selectScreen) selectScreen.style.display = 'none';
-            // show relevant content and main
-            if (type === 'wedding') {
-                weddingContent.classList.remove('hidden-el');
-                khitanContent.classList.add('hidden-el');
-                // show cover only initially
-                document.getElementById('wedding-cover').style.display = 'flex';
-                document.getElementById('wedding-main').classList.add('hidden-el');
-            } else {
-                khitanContent.classList.remove('hidden-el');
-                weddingContent.classList.add('hidden-el');
-                document.getElementById('khitan-cover').style.display = 'flex';
-                document.getElementById('khitan-main').classList.add('hidden-el');
-            }
-            mainWrapper.style.opacity = '1';
-            document.body.classList.remove('splash-active');
-            fetchAllData(type);
-            // show admin button (for owner) - here we show open admin panel button on long-press top-right? For simplicity, show on double-click cover.
-            attachCoverOpenHandlers();
-        }
+<!-- AOS -->
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
 
-        // Cover buttons to open invitation content
-        function attachCoverOpenHandlers() {
-            const openW = document.getElementById('open-wedding');
-            if (openW) openW.addEventListener('click', () => {
-                document.getElementById('wedding-cover').style.display = 'none';
-                document.getElementById('wedding-main').classList.remove('hidden-el');
-                document.getElementById('wedding-nav').classList.remove('hidden');
-            });
-            const openK = document.getElementById('open-khitan');
-            if (openK) openK.addEventListener('click', () => {
-                document.getElementById('khitan-cover').style.display = 'none';
-                document.getElementById('khitan-main').classList.remove('hidden-el');
-                document.getElementById('khitan-nav').classList.remove('hidden');
-            });
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  AOS.init({ duration: 800, once: true });
 
-            // back to cover
-            const backW = document.getElementById('wedding-back-to-cover');
-            if (backW) backW.addEventListener('click', () => {
-                document.getElementById('wedding-main').classList.add('hidden-el');
-                document.getElementById('wedding-cover').style.display = 'flex';
-                document.getElementById('wedding-nav').classList.add('hidden');
-            });
-            const backK = document.getElementById('khitan-back-to-cover');
-            if (backK) backK.addEventListener('click', () => {
-                document.getElementById('khitan-main').classList.add('hidden-el');
-                document.getElementById('khitan-cover').style.display = 'flex';
-                document.getElementById('khitan-nav').classList.add('hidden');
-            });
+  // Elements
+  const selectScreen = document.getElementById('select-screen');
+  const weddingContent = document.getElementById('wedding-content');
+  const khitanContent = document.getElementById('khitan-content');
+  const openWeddingBtn = document.getElementById('open-wedding');
+  const openKhitanBtn = document.getElementById('open-khitan');
+  const weddingMain = document.getElementById('wedding-main');
+  const khitanMain = document.getElementById('khitan-main');
 
-            // admin open: double-click top-right of page (convenience)
-            window.addEventListener('dblclick', (e) => {
-                // open admin panel
-                openAdminPanel();
-            });
-        }
+  const adminBtn = document.getElementById('open-admin-panel-btn');
+  const adminPanel = document.getElementById('admin-panel');
+  const closeAdminBtn = document.getElementById('close-admin-panel');
+  const settingsTypeInput = document.getElementById('settings-type');
+  const adminTypeWedding = document.getElementById('admin-type-wedding');
+  const adminTypeKhitan = document.getElementById('admin-type-khitan');
+  const generateBtn = document.getElementById('generate-link-btn');
+  const adminGuestName = document.getElementById('admin-guest-name');
+  const whatsappMessage = document.getElementById('whatsapp-message');
+  const copyMessageBtn = document.getElementById('copy-message-btn');
 
-        // ------------------ ADMIN PANEL LOGIC ------------------
-        const adminPanel = document.getElementById('admin-panel');
-        const openAdminBtn = document.getElementById('open-admin-panel-btn'); // may not exist in this version
-        const closeAdminBtn = document.getElementById('close-admin-panel');
-        const adminTypeWeddingBtn = document.getElementById('admin-type-wedding');
-        const adminTypeKhitanBtn = document.getElementById('admin-type-khitan');
-        const settingsTypeInput = document.getElementById('settings-type');
+  // Playlist admin
+  const addSongBtn = document.getElementById('add-song-btn');
+  const addSongForm = document.getElementById('add-song-form');
+  const cancelAddSongBtn = document.getElementById('cancel-add-song-btn');
+  const saveNewSongBtn = document.getElementById('save-new-song-btn');
+  const newSongTitle = document.getElementById('new-song-title');
+  const newSongUrl = document.getElementById('new-song-url');
+  const playlistContainerAdmin = document.getElementById('playlist-container-admin');
+  const musicPlaylistInput = document.getElementById('music_playlist_input');
+  const noSongText = document.getElementById('no-song-text');
 
-        function openAdminPanel(forType = currentType || 'wedding') {
-            adminPanel.classList.remove('invisible');
-            setTimeout(() => {
-                adminPanel.classList.remove('opacity-0', '-translate-y-full');
-            }, 10);
-            // set active type
-            setAdminType(forType);
-        }
+  // Guestbook forms
+  const guestbookFormW = document.getElementById('guestbook-form-wedding');
+  const guestbookFormK = document.getElementById('guestbook-form-khitan');
 
-        function closeAdminPanel() {
-            adminPanel.classList.add('opacity-0', '-translate-y-full');
-            adminPanel.addEventListener('transitionend', () => adminPanel.classList.add('invisible'), { once: true });
-            if (previewPlayer && !previewPlayer.paused) previewPlayer.pause();
-        }
+  // Countdown defaults
+  const weddingDateDefault = 'Sep 28, 2025 10:00:00';
+  const khitanDateDefault = 'Oct 05, 2025 09:00:00';
 
-        if (closeAdminBtn) closeAdminBtn.addEventListener('click', closeAdminPanel);
+  // state
+  let currentType = null; // 'wedding' | 'khitan'
+  let playlists = { wedding: [], khitan: [] };
+  let currentTrackIndex = 0;
+  const musicPlayer = document.getElementById('background-music');
+  const previewPlayer = document.getElementById('preview-music');
 
-        function setAdminType(t) {
-            settingsTypeInput.value = t;
-            adminTypeWeddingBtn.classList.toggle('opacity-60', t !== 'wedding');
-            adminTypeKhitanBtn.classList.toggle('opacity-60', t !== 'khitan');
-            // load settings for that type into admin fields (we will have saved latest fetch into applySettings cache)
-            fetchAllData(t); // refresh panel with that type
-        }
+  // Select screen buttons
+  document.getElementById('select-wedding').addEventListener('click', () => start('wedding'));
+  document.getElementById('select-khitan').addEventListener('click', () => start('khitan'));
 
-        adminTypeWeddingBtn.addEventListener('click', () => setAdminType('wedding'));
-        adminTypeKhitanBtn.addEventListener('click', () => setAdminType('khitan'));
+  // direct type param support
+  const initParams = new URLSearchParams(window.location.search);
+  const initType = initParams.get('type');
+  const guestParam = initParams.get('to') ? initParams.get('to').replace(/_/g,' ') : null;
+  if (initType === 'wedding' || initType === 'khitan') {
+    start(initType);
+    if (guestParam) {
+      if (initType === 'khitan') document.getElementById('khitan-guest-name').textContent = guestParam;
+      else document.getElementById('wedding-guest-name').textContent = guestParam;
+    }
+  }
 
-        // Generate & copy message
-        const generateBtn = document.getElementById('generate-link-btn');
-        const adminGuestNameInput = document.getElementById('admin-guest-name');
-        const whatsappMessageTextarea = document.getElementById('whatsapp-message');
-        const copyMessageBtn = document.getElementById('copy-message-btn');
+  function start(type) {
+    currentType = type;
+    selectScreen.style.display = 'none';
+    if (type === 'wedding') {
+      weddingContent.classList.remove('hidden');
+      khitanContent.classList.add('hidden');
+      document.body.scrollTop = 0; document.documentElement.scrollTop = 0;
+      fetchAndApply(type);
+    } else {
+      khitanContent.classList.remove('hidden');
+      weddingContent.classList.add('hidden');
+      document.body.scrollTop = 0; document.documentElement.scrollTop = 0;
+      fetchAndApply(type);
+    }
+  }
 
-        function generateMessage(guest, type) {
-            const guestForUrl = guest.replace(/ /g, "_");
-            const invitationLink = `${window.location.origin}${window.location.pathname}?type=${type}&to=${guestForUrl}`;
-            return `Assalamu'alaikum Warahmatullahi Wabarakatuh
+  // Cover open buttons
+  if (openWeddingBtn) openWeddingBtn.addEventListener('click', () => {
+    document.getElementById('wedding-cover').classList.add('fade-out');
+    setTimeout(()=> {
+      document.getElementById('wedding-cover').style.display = 'none';
+      weddingMain.classList.remove('hidden');
+      weddingMain.classList.add('zoom-in');
+      window.scrollTo({top:0,behavior:'smooth'});
+    }, 500);
+  });
+  if (openKhitanBtn) openKhitanBtn.addEventListener('click', () => {
+    document.getElementById('khitan-cover').classList.add('fade-out');
+    setTimeout(()=> {
+      document.getElementById('khitan-cover').style.display = 'none';
+      khitanMain.classList.remove('hidden');
+      khitanMain.classList.add('zoom-in');
+      window.scrollTo({top:0,behavior:'smooth'});
+    }, 500);
+  });
 
-Tanpa mengurangi rasa hormat, kami mengundang Bapak/Ibu/Saudara/i ${guest} untuk hadir di acara:
+  // Admin panel toggle
+  adminBtn.addEventListener('click', () => {
+    openAdmin('wedding');
+  });
+  closeAdminBtn.addEventListener('click', () => closeAdmin());
 
-Undangan: ${type === 'wedding' ? 'Pernikahan' : 'Khitan'}
-Tautan undangan: ${invitationLink}
+  function openAdmin(forType='wedding'){
+    adminPanel.classList.remove('hidden'); adminPanel.classList.add('visible');
+    settingsTypeInput.value = forType;
+    setAdminTypeButton(forType);
+    fetchAndApply(forType); // load settings to panel
+  }
+  function closeAdmin(){
+    adminPanel.classList.add('hidden'); adminPanel.classList.remove('visible');
+  }
 
-Terima kasih.
-Wassalamu'alaikum Warahmatullahi Wabarakatuh`.trim();
-        }
+  function setAdminTypeButton(type){
+    adminTypeWedding.classList.toggle('opacity-50', type !== 'wedding');
+    adminTypeKhitan.classList.toggle('opacity-50', type !== 'khitan');
+    settingsTypeInput.value = type;
+  }
+  adminTypeWedding.addEventListener('click', () => { setAdminTypeButton('wedding'); fetchAndApply('wedding'); });
+  adminTypeKhitan.addEventListener('click', () => { setAdminTypeButton('khitan'); fetchAndApply('khitan'); });
 
-        if (generateBtn) {
-            generateBtn.addEventListener('click', () => {
-                const guest = adminGuestNameInput.value.trim();
-                const t = settingsTypeInput.value || currentType || 'wedding';
-                if (!guest) return alert('Masukkan nama tamu terlebih dahulu.');
-                whatsappMessageTextarea.value = generateMessage(guest, t);
-                whatsappMessageTextarea.classList.remove('hidden');
-                copyMessageBtn.classList.remove('hidden');
-                copyMessageBtn.textContent = 'Salin Pesan';
-            });
-        }
+  // Generate message
+  generateBtn.addEventListener('click', () => {
+    const guest = adminGuestName.value.trim();
+    const t = settingsTypeInput.value || currentType || 'wedding';
+    if (!guest) return alert('Isi nama tamu dulu.');
+    const guestForUrl = guest.replace(/ /g,'_');
+    const invLink = `${window.location.origin}${window.location.pathname}?type=${t}&to=${guestForUrl}`;
+    const msg = `Assalamu'alaikum Warahmatullahi Wabarakatuh\n\nTanpa mengurangi rasa hormat, kami mengundang Bapak/Ibu ${guest} untuk hadir pada acara ${t === 'wedding' ? 'Pernikahan' : 'Khitan'}.\n\nTautan undangan: ${invLink}\n\nWassalamu'alaikum.`;
+    whatsappMessage.value = msg;
+    whatsappMessage.classList.remove('hidden');
+    copyMessageBtn.classList.remove('hidden');
+    copyMessageBtn.textContent = 'Salin Pesan';
+  });
+  copyMessageBtn.addEventListener('click', () => {
+    navigator.clipboard?.writeText(whatsappMessage.value).then(()=> {
+      copyMessageBtn.textContent = 'Tersalin!';
+      setTimeout(()=> copyMessageBtn.textContent = 'Salin Pesan', 1500);
+    }).catch(()=> alert('Gagal menyalin pesan.'));
+  });
 
-        if (copyMessageBtn) {
-            copyMessageBtn.addEventListener('click', () => {
-                const text = whatsappMessageTextarea.value;
-                navigator.clipboard?.writeText(text).then(() => {
-                    copyMessageBtn.textContent = 'Tersalin!';
-                    setTimeout(() => copyMessageBtn.textContent = 'Salin Pesan', 1500);
-                }).catch(() => alert('Gagal menyalin pesan.'));
-            });
-        }
+  // Playlist admin controls
+  addSongBtn.addEventListener('click', ()=> { addSongForm.classList.remove('hidden'); addSongBtn.classList.add('hidden'); });
+  cancelAddSongBtn.addEventListener('click', ()=> { addSongForm.classList.add('hidden'); addSongBtn.classList.remove('hidden'); newSongTitle.value=''; newSongUrl.value=''; });
+  saveNewSongBtn.addEventListener('click', ()=> {
+    const title = newSongTitle.value.trim(); const url = newSongUrl.value.trim();
+    if (!title || !url) return alert('Isi judul dan url lagu.');
+    const t = settingsTypeInput.value || currentType || 'wedding';
+    playlists[t] = playlists[t] || [];
+    playlists[t].push({ title, url });
+    renderPlaylistAdmin(t);
+    cancelAddSongBtn.click();
+  });
 
-        // Playlist admin controls (shared functions but per-type arrays)
-        const addSongBtn = document.getElementById('add-song-btn');
-        const addSongForm = document.getElementById('add-song-form');
-        const cancelAddSongBtn = document.getElementById('cancel-add-song-btn');
-        const saveNewSongBtn = document.getElementById('save-new-song-btn');
-        const newSongTitleInput = document.getElementById('new-song-title');
-        const newSongUrlInput = document.getElementById('new-song-url');
-        const playlistContainer = document.getElementById('playlist-container');
-        const musicPlaylistInput = document.getElementById('music_playlist_input');
-        const noSongText = document.getElementById('no-song-text');
+  function renderPlaylistAdmin(type){
+    playlistContainerAdmin.innerHTML = '';
+    const list = playlists[type] || [];
+    if (!list.length) {
+      playlistContainerAdmin.appendChild(noSongText);
+      noSongText.classList.remove('hidden');
+    } else {
+      noSongText.classList.add('hidden');
+      list.forEach((s,i) => {
+        const div = document.createElement('div');
+        div.className = 'flex items-center justify-between bg-white/5 p-2 rounded';
+        div.innerHTML = `<div class="truncate-ellipsis text-xs">${escapeHtml(s.title)}</div>
+        <div class="flex gap-2"><button data-idx="${i}" class="btn-preview text-xs">▶</button><button data-idx="${i}" class="btn-del text-xs text-red-600">✕</button></div>`;
+        playlistContainerAdmin.appendChild(div);
+      });
+    }
+    musicPlaylistInput.value = JSON.stringify(list);
+  }
 
-        addSongBtn.addEventListener('click', () => {
-            addSongForm.classList.remove('hidden');
-            addSongBtn.classList.add('hidden');
-        });
-        cancelAddSongBtn.addEventListener('click', () => {
-            addSongForm.classList.add('hidden');
-            addSongBtn.classList.remove('hidden');
-            newSongTitleInput.value = '';
-            newSongUrlInput.value = '';
-        });
+  playlistContainerAdmin.addEventListener('click',(e)=> {
+    const btn = e.target;
+    if (btn.classList.contains('btn-del')) {
+      const idx = Number(btn.dataset.idx); const t = settingsTypeInput.value || currentType || 'wedding';
+      playlists[t].splice(idx,1); renderPlaylistAdmin(t);
+    } else if (btn.classList.contains('btn-preview')) {
+      const idx = Number(btn.dataset.idx); const t = settingsTypeInput.value || currentType || 'wedding';
+      const url = (playlists[t] && playlists[t][idx]) ? playlists[t][idx].url : null;
+      if (!url) return;
+      if (previewPlayer.src === url && !previewPlayer.paused) { previewPlayer.pause(); btn.textContent='▶'; }
+      else { document.querySelectorAll('.btn-preview').forEach(b=>b.textContent='▶'); previewPlayer.src=url; previewPlayer.play(); btn.textContent='❚❚'; }
+    }
+  });
 
-        saveNewSongBtn.addEventListener('click', () => {
-            const title = newSongTitleInput.value.trim();
-            const url = newSongUrlInput.value.trim();
-            if (!title || !url) return alert('Judul dan URL harus diisi.');
-            const t = settingsTypeInput.value || currentType || 'wedding';
-            playlists[t].push({ title, url });
-            renderPlaylist(t);
-            cancelAddSongBtn.click();
-        });
+  previewPlayer.addEventListener('pause', ()=> document.querySelectorAll('.btn-preview').forEach(b=>b.textContent='▶'));
+  previewPlayer.addEventListener('ended', ()=> document.querySelectorAll('.btn-preview').forEach(b=>b.textContent='▶'));
 
-        function renderPlaylist(type) {
-            playlistContainer.innerHTML = '';
-            const list = playlists[type] || [];
-            if (list.length === 0) {
-                playlistContainer.appendChild(noSongText);
-                noSongText.classList.remove('hidden');
-            } else {
-                noSongText.classList.add('hidden');
-                list.forEach((song, idx) => {
-                    const div = document.createElement('div');
-                    div.className = 'flex items-center justify-between bg-white/10 p-1.5 rounded-md text-xs';
-                    div.innerHTML = `
-                        <div class="flex items-center space-x-2 truncate w-full">
-                            <button type="button" data-url="${song.url}" class="preview-song-btn text-cyan-400 hover:text-cyan-300 text-sm">▶</button>
-                            <span class="truncate text-white/90">${song.title}</span>
-                        </div>
-                        <div class="flex items-center space-x-2 flex-shrink-0">
-                            <button type="button" title="Jadikan Default" data-index="${idx}" class="default-song-btn text-yellow-400 text-sm">${idx === 0 ? '★' : '☆'}</button>
-                            <button type="button" title="Hapus" data-index="${idx}" class="remove-song-btn text-red-400 font-bold text-sm">&times;</button>
-                        </div>
-                    `;
-                    playlistContainer.appendChild(div);
-                });
-            }
-            musicPlaylistInput.value = JSON.stringify(list);
-        }
+  // Fetch settings + comments
+  async function fetchAndApply(type='wedding') {
+    try {
+      const res = await fetch(`${scriptURL}?type=${type}`);
+      if (!res.ok) throw new Error('Fetch error');
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+      applySettings(type, data.settings || {});
+      showComments(data.comments || []);
+    } catch (err) {
+      console.error(err);
+      // non-blocking alert
+      // alert('Gagal memuat data. Pastikan Apps Script & Spreadsheet sudah dikonfigurasi.');
+    }
+  }
 
-        playlistContainer.addEventListener('click', (ev) => {
-            const btn = ev.target.closest('button');
-            if (!btn) return;
-            if (btn.classList.contains('remove-song-btn')) {
-                const idx = parseInt(btn.dataset.index, 10);
-                const t = settingsTypeInput.value || currentType || 'wedding';
-                playlists[t].splice(idx, 1);
-                renderPlaylist(t);
-            } else if (btn.classList.contains('default-song-btn')) {
-                const idx = parseInt(btn.dataset.index, 10);
-                const t = settingsTypeInput.value || currentType || 'wedding';
-                if (idx > 0) {
-                    const [item] = playlists[t].splice(idx, 1);
-                    playlists[t].unshift(item);
-                    renderPlaylist(t);
-                }
-            } else if (btn.classList.contains('preview-song-btn')) {
-                const url = btn.dataset.url;
-                if (musicPlayer && !musicPlayer.paused) musicPlayer.pause();
-                if (previewPlayer.src === url && !previewPlayer.paused) {
-                    previewPlayer.pause();
-                    btn.textContent = '▶';
-                } else {
-                    document.querySelectorAll('.preview-song-btn').forEach(b => b.textContent = '▶');
-                    previewPlayer.src = url;
-                    previewPlayer.play();
-                    btn.textContent = '❚❚';
-                }
-            }
-        });
+  function applySettings(type, settings){
+    // playlists
+    try { playlists[type] = JSON.parse(settings.music_playlist || '[]'); } catch(e){ playlists[type]=[]; }
+    renderPlaylistAdmin(type);
 
-        previewPlayer.addEventListener('pause', () => document.querySelectorAll('.preview-song-btn').forEach(b => b.textContent = '▶'));
-        previewPlayer.addEventListener('ended', () => document.querySelectorAll('.preview-song-btn').forEach(b => b.textContent = '▶'));
+    // cover
+    if (type === 'wedding') {
+      const cw = settings.cover_photo_url || '';
+      if (cw) document.getElementById('wedding-cover').style.backgroundImage = `linear-gradient(180deg, rgba(0,0,0,0.36), rgba(0,0,0,0.36)), url('${cw}')`;
+      document.getElementById('map-link-akad-wedding').href = settings.maps_link || '#';
+      document.getElementById('map-link-resepsi-wedding').href = settings.maps_link || '#';
+      if (settings.akad_date) document.getElementById('wedding-akad-date').textContent = settings.akad_date;
+      if (settings.resepsi_date) document.getElementById('wedding-resepsi-date').textContent = settings.resepsi_date;
+      // music player
+      if (playlists[type] && playlists[type].length) {
+        musicPlayer.src = playlists[type][0].url;
+        musicPlayer.load();
+      }
+    } else {
+      const ck = settings.cover_photo_url || '';
+      if (ck) document.getElementById('khitan-cover').style.backgroundImage = `linear-gradient(180deg, rgba(3,16,53,0.28), rgba(3,16,53,0.28)), url('${ck}')`;
+      document.getElementById('map-link-khitan').href = settings.maps_link || '#';
+      if (settings.child_name) document.getElementById('khitan-child-name').textContent = settings.child_name;
+      if (settings.khitan_datetime) document.getElementById('khitan-date-time').textContent = settings.khitan_datetime;
+      if (settings.khitan_location) document.getElementById('khitan-location').textContent = settings.khitan_location;
+      if (playlists[type] && playlists[type].length) {
+        musicPlayer.src = playlists[type][0].url;
+        musicPlayer.load();
+      }
+    }
+    // fill admin fields when panel open
+    if (settingsTypeInput.value === type) {
+      document.getElementById('cover_photo_url_input').value = settings.cover_photo_url || '';
+      document.getElementById('maps_link_input').value = settings.maps_link || '';
+      musicPlaylistInput.value = settings.music_playlist || JSON.stringify(playlists[type] || []);
+      renderPlaylistAdmin(type);
+    }
+    // init countdowns (use settings or defaults)
+    initCountdown(settings.akad_datetime || weddingDateDefault, {days:'days-w', hours:'hours-w', minutes:'minutes-w', seconds:'seconds-w'});
+    initCountdown(settings.khitan_datetime || khitanDateDefault, {days:'days-k', hours:'hours-k', minutes:'minutes-k', seconds:'seconds-k'});
+  }
 
-        // ------------------ FETCH / APPLY DATA ------------------
-        async function fetchAllData(type = currentType || 'wedding') {
-            try {
-                const res = await fetch(`${scriptURL}?type=${type}`);
-                if (!res.ok) throw new Error(`HTTP ${res.status}`);
-                const data = await res.json();
-                if (data.error) throw new Error(data.error);
-                applySettings(type, data.settings || {});
-                displayCommentsShared(data.comments || []);
-            } catch (err) {
-                console.error('fetchAllData error', err);
-                // user-friendly alerts
-                alert('Gagal memuat data. Pastikan script dan spreadsheet sudah dikonfigurasikan dan deployed.');
-            }
-        }
+  // Comments (shared)
+  function showComments(comments){
+    const cw = document.getElementById('comments-container-w');
+    const ck = document.getElementById('comments-container-k');
+    [cw,ck].forEach(container => {
+      if (!container) return;
+      container.innerHTML = '';
+      if (!comments || comments.length === 0) {
+        container.innerHTML = '<p class="text-center text-muted">Jadilah yang pertama memberi ucapan!</p>'; return;
+      }
+      comments.forEach(c => {
+        const div = document.createElement('div');
+        div.className = 'bg-white p-3 rounded-lg card-shadow';
+        div.innerHTML = `<div class="flex justify-between items-start"><div><div class="font-semibold">${escapeHtml(c.name)}</div><div class="text-xs text-muted">${escapeHtml(c.attendance)}</div></div><div class="text-xs text-muted">${new Date(c.timestamp).toLocaleString('id-ID')}</div></div>
+        <p class="mt-2 text-sm text-muted">&ldquo;${escapeHtml(c.message)}&rdquo;</p>`;
+        container.appendChild(div);
+      });
+    });
+  }
 
-        function applySettings(type, settings) {
-            // cache playlist for type
-            try {
-                playlists[type] = JSON.parse(settings.music_playlist || '[]');
-            } catch (e) {
-                playlists[type] = [];
-            }
-            // set cover images & links for the type
-            if (type === 'wedding') {
-                // cover
-                const coverUrl = settings.cover_photo_url || 'https://placehold.co/1200x800/a89078/ffffff?text=Cover+Wedding';
-                document.querySelectorAll('#wedding-cover, #wedding-main header').forEach(el => {
-                    if (el) el.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url('${coverUrl}')`;
-                });
-                // map links
-                document.getElementById('map-link-akad-wedding').href = settings.maps_link || '#';
-                document.getElementById('map-link-resepsi-wedding').href = settings.maps_link || '#';
-                // date/time/location if present
-                if (settings.akad_date) document.getElementById('wedding-akad-date').textContent = settings.akad_date;
-                if (settings.resepsi_date) document.getElementById('wedding-resepsi-date').textContent = settings.resepsi_date;
-            } else {
-                const coverUrl = settings.cover_photo_url || 'https://placehold.co/1200x800/6fb3ff/ffffff?text=Cover+Khitan';
-                document.querySelectorAll('#khitan-cover, #khitan-main header').forEach(el => {
-                    if (el) el.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url('${coverUrl}')`;
-                });
-                document.getElementById('map-link-khitan').href = settings.maps_link || '#';
-                if (settings.child_name) document.getElementById('khitan-child-name').textContent = settings.child_name;
-                if (settings.khitan_datetime) document.getElementById('khitan-date-time').textContent = settings.khitan_datetime;
-                if (settings.khitan_location) document.getElementById('khitan-location').textContent = settings.khitan_location;
-            }
+  // Guestbook submit handlers (shared)
+  [guestbookFormW, guestbookFormK].forEach(form => {
+    if (!form) return;
+    form.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const btn = form.querySelector('button[type="submit"]');
+      const original = btn.textContent;
+      btn.disabled=true; btn.textContent='Menyimpan...';
+      fetch(scriptURL, { method:'POST', body:new FormData(form)})
+      .then(r=>r.json())
+      .then(json=>{
+        if (json.result === 'success') {
+          const status = form.querySelector('[id^="form-status"]'); if (status) status.textContent='Terima kasih, ucapan Anda telah tersimpan!';
+          form.reset();
+          fetchAndApply(currentType || form.querySelector('input[name="type"]').value);
+        } else throw new Error(json.message || 'Error');
+      }).catch(err=>{
+        alert('Gagal mengirim ucapan: '+err.message);
+      }).finally(()=> { setTimeout(()=>{ btn.disabled=false; btn.textContent=original; },900); });
+    });
+  });
 
-            // populate admin fields for currently open admin type
-            if (settingsTypeInput.value === type) {
-                document.getElementById('cover_photo_url_input').value = settings.cover_photo_url || '';
-                document.getElementById('maps_link_input').value = settings.maps_link || '';
-                musicPlaylistInput.value = settings.music_playlist || JSON.stringify(playlists[type] || []);
-                renderPlaylist(type);
-                // show music toggle if playlist items exist
-                if ((playlists[type] || []).length > 0) {
-                    musicToggle.style.display = 'flex';
-                    musicPlayer.src = playlists[type][0].url;
-                    musicPlayer.load();
-                    // autoplay attempts may be blocked — handled elsewhere
-                } else {
-                    musicToggle.style.display = 'none';
-                }
-            }
-        }
+  // Settings form (admin)
+  document.getElementById('settings-form-admin').addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const btn = document.getElementById('save-settings-btn');
+    const original = btn.textContent; btn.disabled=true; btn.textContent='Menyimpan...';
+    const t = settingsTypeInput.value || currentType || 'wedding';
+    document.getElementById('music_playlist_input').value = JSON.stringify(playlists[t] || []);
+    fetch(scriptURL, { method:'POST', body:new FormData(e.target)})
+      .then(r=>r.json())
+      .then(json => {
+        if (json.result === 'success') {
+          alert('Pengaturan tersimpan.');
+          fetchAndApply(t);
+        } else throw new Error(json.message||'Error');
+      }).catch(err=> alert('Gagal menyimpan: '+err.message))
+      .finally(()=> { setTimeout(()=>{ btn.disabled=false; btn.textContent=original; },800); });
+  });
 
-        // ------------------ COMMENTS (shared) ------------------
-        function displayCommentsShared(comments) {
-            // fill both containers (wedding & khitan) because comments are shared
-            const containerW = document.getElementById('comments-container-w');
-            const containerK = document.getElementById('comments-container-k');
+  // Countdown util
+  const countdownIntervals = {};
+  function initCountdown(targetStr, ids){
+    // clear previous interval for that container if any
+    if (ids.container && countdownIntervals[ids.container.id]) clearInterval(countdownIntervals[ids.container.id]);
+    const target = new Date(targetStr).getTime();
+    if (isNaN(target)) return;
+    function tick(){
+      const now = Date.now(); const dist = target - now;
+      if (dist < 0) {
+        if (ids.container) ids.container.innerHTML = "<div class='text-center'>Acara Telah Berlangsung</div>";
+        clearInterval(countdownIntervals[ids.container.id]); return;
+      }
+      const days = Math.floor(dist / (1000*60*60*24));
+      const hours = Math.floor((dist % (1000*60*60*24)) / (1000*60*60));
+      const minutes = Math.floor((dist % (1000*60*60)) / (1000*60));
+      const seconds = Math.floor((dist % (1000*60)) / 1000);
+      if (ids.days) document.getElementById(ids.days).textContent = String(days).padStart(2,'0');
+      if (ids.hours) document.getElementById(ids.hours).textContent = String(hours).padStart(2,'0');
+      if (ids.minutes) document.getElementById(ids.minutes).textContent = String(minutes).padStart(2,'0');
+      if (ids.seconds) document.getElementById(ids.seconds).textContent = String(seconds).padStart(2,'0');
+    }
+    tick();
+    countdownIntervals[ids.container.id] = setInterval(tick, 1000);
+  }
 
-            [containerW, containerK].forEach(container => {
-                if (!container) return;
-                container.innerHTML = '';
-                if (comments.length === 0) {
-                    container.innerHTML = '<p class="text-center text-stone-600">Jadilah yang pertama memberi ucapan!</p>';
-                    return;
-                }
-                comments.forEach(c => {
-                    const div = document.createElement('div');
-                    div.className = 'bg-white p-4 rounded-lg shadow-sm';
-                    div.innerHTML = `
-                        <div class="flex items-center justify-between">
-                          <p class="font-semibold text-stone-800">${escapeHtml(c.name)}</p>
-                          <span class="text-xs px-2 py-1 rounded-full ${c.attendance === 'Insya Allah Hadir' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">${escapeHtml(c.attendance)}</span>
-                        </div>
-                        <p class="text-stone-600 mt-2 italic">"${escapeHtml(c.message)}"</p>
-                        <p class="text-right text-xs text-stone-400 mt-3">${new Date(c.timestamp).toLocaleString('id-ID')}</p>
-                    `;
-                    container.appendChild(div);
-                });
-            });
-        }
+  // small helpers
+  function escapeHtml(s){ if(!s) return ''; return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m]); }
 
-        function escapeHtml(str) {
-            if (!str) return '';
-            return String(str).replace(/[&<>"']/g, function(m){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m];});
-        }
+  // playlist switching / player control
+  // (simple: clicking preview uses previewPlayer; background music uses default first track if set)
+  // playback controls: we use preview only for admin. Background autoplay is attempted by browser policy.
 
-        // ------------------ FORM SUBMISSIONS ------------------
-        // guestbook forms
-        const guestbookFormW = document.getElementById('guestbook-form-wedding');
-        const guestbookFormK = document.getElementById('guestbook-form-khitan');
+  // initial small behavior: if user double clicks top area, open admin
+  window.addEventListener('dblclick', ()=> openAdmin(currentType||'wedding'));
 
-        [guestbookFormW, guestbookFormK].forEach(form => {
-            if (!form) return;
-            form.addEventListener('submit', (ev) => {
-                ev.preventDefault();
-                const btn = form.querySelector('button[type="submit"]');
-                const originalText = btn.textContent;
-                btn.disabled = true;
-                btn.textContent = 'Menyimpan...';
-                fetch(scriptURL, { method: 'POST', body: new FormData(form) })
-                    .then(r => r.json())
-                    .then(data => {
-                        if (data.result === 'success') {
-                            const statusEl = form.querySelector('[id^="form-status"]');
-                            if (statusEl) statusEl.textContent = 'Terima kasih, ucapan Anda telah tersimpan!';
-                            form.reset();
-                            // refresh comments
-                            fetchAllData(currentType || form.querySelector('input[name="type"]').value);
-                        } else {
-                            throw new Error(data.message || 'Gagal menyimpan');
-                        }
-                    })
-                    .catch(err => alert('Gagal mengirim ucapan: ' + err.message))
-                    .finally(() => {
-                        setTimeout(() => { btn.disabled = false; btn.textContent = originalText; }, 1200);
-                    });
-            });
-        });
+}); // DOMContentLoaded
+</script>
 
-        // settings form
-        const settingsForm = document.getElementById('settings-form');
-        if (settingsForm) {
-            settingsForm.addEventListener('submit', (ev) => {
-                ev.preventDefault();
-                const btn = document.getElementById('save-settings-btn');
-                const originalText = btn.textContent;
-                btn.disabled = true;
-                btn.textContent = 'Menyimpan...';
-                // ensure playlist input is updated
-                const t = settingsTypeInput.value || currentType || 'wedding';
-                document.getElementById('music_playlist_input').value = JSON.stringify(playlists[t] || []);
-                fetch(scriptURL, { method: 'POST', body: new FormData(settingsForm) })
-                    .then(r => r.json())
-                    .then(data => {
-                        if (data.result === 'success') {
-                            alert('Pengaturan berhasil disimpan!');
-                            fetchAllData(t);
-                        } else {
-                            throw new Error(data.message || 'Gagal menyimpan pengaturan');
-                        }
-                    })
-                    .catch(err => alert('Gagal menyimpan pengaturan: ' + err.message))
-                    .finally(() => {
-                        setTimeout(() => { btn.disabled = false; btn.textContent = originalText; }, 800);
-                    });
-            });
-        }
-
-        // ------------------ MUSIC PLAYER ------------------
-        if (musicToggle && musicPlayer && musicOnIcon && musicOffIcon) {
-            musicPlayer.addEventListener('play', () => {
-                musicOnIcon.classList.remove('hidden'); musicOffIcon.classList.add('hidden');
-            });
-            musicPlayer.addEventListener('pause', () => {
-                musicOnIcon.classList.add('hidden'); musicOffIcon.classList.remove('hidden');
-            });
-            musicToggle.addEventListener('click', () => {
-                if (musicPlayer.paused) musicPlayer.play(); else musicPlayer.pause();
-            });
-            musicPlayer.addEventListener('ended', () => {
-                const t = currentType || 'wedding';
-                const list = playlists[t] || [];
-                if (list.length === 0) return;
-                currentPlaylistIndex = (currentPlaylistIndex + 1) % list.length;
-                musicPlayer.src = list[currentPlaylistIndex].url;
-                musicPlayer.play();
-            });
-        }
-
-        // ------------------ COUNTDOWNS ------------------
-        // simple function to create interval for id prefixes
-        function initCountdown(targetDateStr, ids) {
-            const target = new Date(targetDateStr).getTime();
-            if (isNaN(target)) return; // invalid date
-            const interval = setInterval(() => {
-                const now = new Date().getTime();
-                const dist = target - now;
-                if (dist < 0) {
-                    ids.container.innerHTML = "<div class='text-2xl'>Acara Telah Berlangsung</div>";
-                    clearInterval(interval);
-                    return;
-                }
-                const days = Math.floor(dist / (1000*60*60*24));
-                const hours = Math.floor((dist % (1000*60*60*24)) / (1000*60*60));
-                const minutes = Math.floor((dist % (1000*60*60)) / (1000*60));
-                const seconds = Math.floor((dist % (1000*60)) / 1000);
-                if (ids.days) document.getElementById(ids.days).innerText = String(days).padStart(2,'0');
-                if (ids.hours) document.getElementById(ids.hours).innerText = String(hours).padStart(2,'0');
-                if (ids.minutes) document.getElementById(ids.minutes).innerText = String(minutes).padStart(2,'0');
-                if (ids.seconds) document.getElementById(ids.seconds).innerText = String(seconds).padStart(2,'0');
-            }, 1000);
-        }
-
-        // Initialize countdowns with default dates (you can override via settings)
-        // wedding default: Sep 28 2025 10:00:00 (exists in original)
-        initCountdown('Sep 28, 2025 10:00:00', { container: document.getElementById('countdown-wedding'), days: 'days-w', hours: 'hours-w', minutes: 'minutes-w', seconds: 'seconds-w' });
-        // khitan default (example)
-        initCountdown('Oct 05, 2025 09:00:00', { container: document.getElementById('countdown-khitan'), days: 'days-k', hours: 'hours-k', minutes: 'minutes-k', seconds: 'seconds-k' });
-
-        // ------------------ UTILS ------------------
-        // close admin when clicking outside
-        window.addEventListener('click', (e) => {
-            if (!adminPanel.classList.contains('invisible') && !adminPanel.contains(e.target) && e.target.tagName !== 'BUTTON' && e.target.id !== 'open-admin-panel-btn') {
-                // don't auto-close if user interacting intentionally
-            }
-        });
-
-        // expose admin open (global) via double-click
-        window.openAdminPanel = openAdminPanel;
-
-        // helper: if the page loaded with 'to' param, show name on cover
-        const urlParams = new URLSearchParams(window.location.search);
-        const guestParam = urlParams.get('to')?.replace(/_/g, ' ');
-        const typeParam = urlParams.get('type');
-        if (guestParam) {
-            if (typeParam === 'khitan') document.getElementById('khitan-guest-name').textContent = guestParam;
-            else document.getElementById('wedding-guest-name').textContent = guestParam;
-        }
-
-    }); // DOMContentLoaded
-    </script>
 </body>
 </html>
