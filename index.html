@@ -1,9 +1,10 @@
+<!-- PART 1/4 -->
 <!DOCTYPE html>
 <html lang="id" class="scroll-smooth">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
-  <title>Undangan Digital — Wedding & Khitan</title>
+  <title>Undangan Digital — Wedding & Khitan (Rose Gold)</title>
 
   <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -76,6 +77,7 @@
 
     /* prevent long text overflow in playlist */
     .truncate-ellipsis { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .text-muted { color: var(--muted); }
   </style>
 </head>
 <body class="antialiased">
@@ -95,7 +97,7 @@
 </button>
 
 <!-- SELECT SCREEN (when first open) -->
-<div id="select-screen" class="fixed inset-0 z-40 flex items-center justify-center p-6">
+<div id="select-screen" class="fixed inset-0 z-40 flex items-center justify-center p-6 bg-white/80 backdrop-blur-sm">
   <div class="max-w-invite w-full bg-white card-shadow p-8 rounded-2xl text-center">
     <h3 class="text-2xl font-semibold text-rose-700">Pilih Jenis Undangan</h3>
     <p class="text-sm text-muted mt-2 mb-6">Silakan pilih undangan yang ingin dilihat</p>
@@ -238,6 +240,8 @@
     </div>
   </section>
 
+<!-- PART 1/4 END -->
+<!-- PART 2/4 -->
   <!-- KHITAN CONTENT -->
   <section id="khitan-content" class="hidden max-w-invite mx-auto">
     <!-- Cover -->
@@ -323,69 +327,68 @@
     </div>
   </section>
 
-</main>
-
-<!-- ADMIN PANEL (VISIBLE VIA BUTTON) -->
-<div id="admin-panel" class="fixed top-6 right-6 z-50 w-80 bg-gradient-to-br from-white/95 to-rose-50 p-4 rounded-2xl hidden shadow-lg">
-  <div class="flex items-center justify-between mb-3">
-    <h4 class="text-sm font-semibold text-rose-700">Panel Admin</h4>
-    <button id="close-admin-panel" class="text-sm text-muted">✕</button>
-  </div>
-
-  <div class="mb-3 text-xs">
-    <div class="flex gap-2 mb-2">
-      <button id="admin-type-wedding" class="flex-1 py-1 rounded bg-rose-700 text-white text-xs font-semibold">Wedding</button>
-      <button id="admin-type-khitan" class="flex-1 py-1 rounded bg-indigo-700 text-white text-xs font-semibold">Khitan</button>
+  <!-- ADMIN PANEL (VISIBLE VIA BUTTON) -->
+  <div id="admin-panel" class="fixed top-6 right-6 z-50 w-80 bg-gradient-to-br from-white/95 to-rose-50 p-4 rounded-2xl hidden shadow-lg">
+    <div class="flex items-center justify-between mb-3">
+      <h4 class="text-sm font-semibold text-rose-700">Panel Admin</h4>
+      <button id="close-admin-panel" class="text-sm text-muted">✕</button>
     </div>
 
-    <div class="mb-2">
-      <label class="block text-[11px] text-muted mb-1">Undangan Untuk</label>
-      <div class="flex gap-2">
-        <input id="admin-guest-name" placeholder="Nama Tamu..." class="flex-1 text-sm" />
-        <button id="generate-link-btn" class="px-2 rounded bg-rose-600 text-white text-sm">Buat</button>
-      </div>
-      <textarea id="whatsapp-message" rows="4" class="mt-2 text-xs hidden" placeholder="Pesan undangan..."></textarea>
-      <button id="copy-message-btn" class="mt-2 w-full hidden bg-rose-700 text-white py-2 rounded text-sm">Salin Pesan</button>
-    </div>
-
-    <hr class="my-2" />
-
-    <form id="settings-form-admin">
-      <input type="hidden" name="action" value="saveSettings">
-      <input type="hidden" name="type" id="settings-type" value="wedding">
-
-      <div class="mb-2">
-        <label class="block text-[12px] text-muted mb-1">Foto Sampul (URL)</label>
-        <input type="url" name="cover_photo_url" id="cover_photo_url_input" class="text-sm" placeholder="https://..." />
-      </div>
-      <div class="mb-2">
-        <label class="block text-[12px] text-muted mb-1">Link Peta</label>
-        <input type="url" name="maps_link" id="maps_link_input" class="text-sm" placeholder="https://maps.app..." />
+    <div class="mb-3 text-xs">
+      <div class="flex gap-2 mb-2">
+        <button id="admin-type-wedding" class="flex-1 py-1 rounded bg-rose-700 text-white text-xs font-semibold">Wedding</button>
+        <button id="admin-type-khitan" class="flex-1 py-1 rounded bg-indigo-700 text-white text-xs font-semibold">Khitan</button>
       </div>
 
       <div class="mb-2">
-        <label class="block text-[12px] text-muted mb-1">Playlist (JSON)</label>
-        <input type="hidden" name="music_playlist" id="music_playlist_input">
-        <div id="playlist-container-admin" class="text-xs space-y-2">
-          <p id="no-song-text" class="text-muted text-center">Belum ada lagu.</p>
+        <label class="block text-[11px] text-muted mb-1">Undangan Untuk</label>
+        <div class="flex gap-2">
+          <input id="admin-guest-name" placeholder="Nama Tamu..." class="flex-1 text-sm" />
+          <button id="generate-link-btn" class="px-2 rounded bg-rose-600 text-white text-sm">Buat</button>
         </div>
-        <div id="add-song-form" class="mt-2 hidden">
-          <input id="new-song-title" placeholder="Judul Lagu..." class="mb-1 text-sm" />
-          <input id="new-song-url" placeholder="URL MP3..." class="mb-2 text-sm" />
-          <div class="flex gap-2">
-            <button type="button" id="save-new-song-btn" class="flex-1 text-sm bg-green-600 text-white py-1 rounded">Simpan</button>
-            <button type="button" id="cancel-add-song-btn" class="flex-1 text-sm bg-gray-300 py-1 rounded">Batal</button>
+        <textarea id="whatsapp-message" rows="4" class="mt-2 text-xs hidden" placeholder="Pesan undangan..."></textarea>
+        <button id="copy-message-btn" class="mt-2 w-full hidden bg-rose-700 text-white py-2 rounded text-sm">Salin Pesan</button>
+      </div>
+
+      <hr class="my-2" />
+
+      <form id="settings-form-admin">
+        <input type="hidden" name="action" value="saveSettings">
+        <input type="hidden" name="type" id="settings-type" value="wedding">
+
+        <div class="mb-2">
+          <label class="block text-[12px] text-muted mb-1">Foto Sampul (URL)</label>
+          <input type="url" name="cover_photo_url" id="cover_photo_url_input" class="text-sm" placeholder="https://..." />
+        </div>
+        <div class="mb-2">
+          <label class="block text-[12px] text-muted mb-1">Link Peta</label>
+          <input type="url" name="maps_link" id="maps_link_input" class="text-sm" placeholder="https://maps.app..." />
+        </div>
+
+        <div class="mb-2">
+          <label class="block text-[12px] text-muted mb-1">Playlist (JSON)</label>
+          <input type="hidden" name="music_playlist" id="music_playlist_input">
+          <div id="playlist-container-admin" class="text-xs space-y-2">
+            <p id="no-song-text" class="text-muted text-center">Belum ada lagu.</p>
           </div>
+          <div id="add-song-form" class="mt-2 hidden">
+            <input id="new-song-title" placeholder="Judul Lagu..." class="mb-1 text-sm" />
+            <input id="new-song-url" placeholder="URL MP3..." class="mb-2 text-sm" />
+            <div class="flex gap-2">
+              <button type="button" id="save-new-song-btn" class="flex-1 text-sm bg-green-600 text-white py-1 rounded">Simpan</button>
+              <button type="button" id="cancel-add-song-btn" class="flex-1 text-sm bg-gray-300 py-1 rounded">Batal</button>
+            </div>
+          </div>
+          <button type="button" id="add-song-btn" class="mt-2 w-full text-sm bg-purple-600 text-white py-1 rounded">Tambah Lagu</button>
         </div>
-        <button type="button" id="add-song-btn" class="mt-2 w-full text-sm bg-purple-600 text-white py-1 rounded">Tambah Lagu</button>
-      </div>
 
-      <button id="save-settings-btn" type="submit" class="mt-2 w-full bg-rose-700 text-white py-2 rounded text-sm">Simpan Pengaturan</button>
-    </form>
+        <button id="save-settings-btn" type="submit" class="mt-2 w-full bg-rose-700 text-white py-2 rounded text-sm">Simpan Pengaturan</button>
+      </form>
+    </div>
   </div>
-</div>
 
-<!-- AOS -->
+<!-- PART 2/4 END -->
+<!-- PART 3/4 -->
 <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
 
 <script>
@@ -586,16 +589,32 @@ document.addEventListener('DOMContentLoaded', () => {
   // Fetch settings + comments
   async function fetchAndApply(type='wedding') {
     try {
-      const res = await fetch(`${scriptURL}?type=${type}`);
-      if (!res.ok) throw new Error('Fetch error');
-      const data = await res.json();
-      if (data.error) throw new Error(data.error);
+      const url = `${scriptURL}?type=${type}`;
+      console.log('Fetching:', url);
+      const res = await fetch(url);
+      const text = await res.text();
+      let data;
+      try { data = JSON.parse(text); } catch(e) {
+        console.error('Response not JSON:', text);
+        alert('Response dari server tidak valid JSON. Cek deploy Apps Script & permission.');
+        return;
+      }
+      if (!res.ok) {
+        console.error('HTTP error', res.status, data);
+        alert('Gagal memuat data: HTTP ' + res.status);
+        return;
+      }
+      if (data.error) {
+        console.error('Server error:', data.error);
+        alert('Server mengembalikan error: ' + data.error);
+        if (data.comments) showComments(data.comments);
+        return;
+      }
       applySettings(type, data.settings || {});
       showComments(data.comments || []);
     } catch (err) {
-      console.error(err);
-      // non-blocking alert
-      // alert('Gagal memuat data. Pastikan Apps Script & Spreadsheet sudah dikonfigurasi.');
+      console.error('fetchAndApply error:', err);
+      alert('Gagal memuat data undangan. Periksa console (F12) untuk detail.');
     }
   }
 
@@ -637,8 +656,8 @@ document.addEventListener('DOMContentLoaded', () => {
       renderPlaylistAdmin(type);
     }
     // init countdowns (use settings or defaults)
-    initCountdown(settings.akad_datetime || weddingDateDefault, {days:'days-w', hours:'hours-w', minutes:'minutes-w', seconds:'seconds-w'});
-    initCountdown(settings.khitan_datetime || khitanDateDefault, {days:'days-k', hours:'hours-k', minutes:'minutes-k', seconds:'seconds-k'});
+    initCountdown(settings.akad_datetime || weddingDateDefault, {container: document.getElementById('countdown-wedding'), days:'days-w', hours:'hours-w', minutes:'minutes-w', seconds:'seconds-w'});
+    initCountdown(settings.khitan_datetime || khitanDateDefault, {container: document.getElementById('countdown-khitan'), days:'days-k', hours:'hours-k', minutes:'minutes-k', seconds:'seconds-k'});
   }
 
   // Comments (shared)
@@ -661,6 +680,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // PART 3/4 CONTINUES...
+<!-- PART 4/4 -->
   // Guestbook submit handlers (shared)
   [guestbookFormW, guestbookFormK].forEach(form => {
     if (!form) return;
@@ -705,14 +726,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const countdownIntervals = {};
   function initCountdown(targetStr, ids){
     // clear previous interval for that container if any
-    if (ids.container && countdownIntervals[ids.container.id]) clearInterval(countdownIntervals[ids.container.id]);
+    const keyId = ids.container ? (ids.container.id || String(Math.random())) : String(Math.random());
+    if (countdownIntervals[keyId]) clearInterval(countdownIntervals[keyId]);
     const target = new Date(targetStr).getTime();
     if (isNaN(target)) return;
     function tick(){
       const now = Date.now(); const dist = target - now;
       if (dist < 0) {
         if (ids.container) ids.container.innerHTML = "<div class='text-center'>Acara Telah Berlangsung</div>";
-        clearInterval(countdownIntervals[ids.container.id]); return;
+        clearInterval(countdownIntervals[keyId]); return;
       }
       const days = Math.floor(dist / (1000*60*60*24));
       const hours = Math.floor((dist % (1000*60*60*24)) / (1000*60*60));
@@ -724,15 +746,11 @@ document.addEventListener('DOMContentLoaded', () => {
       if (ids.seconds) document.getElementById(ids.seconds).textContent = String(seconds).padStart(2,'0');
     }
     tick();
-    countdownIntervals[ids.container.id] = setInterval(tick, 1000);
+    countdownIntervals[keyId] = setInterval(tick, 1000);
   }
 
   // small helpers
   function escapeHtml(s){ if(!s) return ''; return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m]); }
-
-  // playlist switching / player control
-  // (simple: clicking preview uses previewPlayer; background music uses default first track if set)
-  // playback controls: we use preview only for admin. Background autoplay is attempted by browser policy.
 
   // initial small behavior: if user double clicks top area, open admin
   window.addEventListener('dblclick', ()=> openAdmin(currentType||'wedding'));
@@ -742,3 +760,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </body>
 </html>
+<!-- PART 4/4 END -->
